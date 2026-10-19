@@ -1,0 +1,59 @@
+{{ "<!--" | safeHTML }}
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+{{ "-->" | safeHTML }}
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{{- /* 优先取 description；否则尝试自动摘要，摘要越界崩溃时降级为空，避免整页渲染失败 */ -}}
+{{- $description := .Description -}}
+{{- if not $description -}}
+  {{- with try .Summary -}}
+    {{- if not .Err -}}{{- $description = .Value -}}{{- end -}}
+  {{- end -}}
+{{- end -}}
+<meta name="description" content="{{ with $description }}{{ . | plainify | htmlUnescape | truncate 150 }}{{ end }}">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark">
+
+{{- with .Page.Params.BookHref -}}
+  <meta http-equiv="Refresh" content="0; url='{{ . }}'" />
+{{- end -}}
+
+{{ partial "opengraph.html" . }}
+{{ partial "schema.html" . }}
+
+<title>{{ partial "docs/html-head-title" . }}</title>
+{{ partial "docs/html-head-favicon" . }}
+
+{{- $manifest := resources.Get "manifest.json" | resources.ExecuteAsTemplate "manifest.json" . }}
+<link rel="manifest" href="{{ $manifest.RelPermalink }}">
+<link rel="canonical" href="{{ .Permalink }}">
+
+{{- range .Translations }}
+  <link rel="alternate" hreflang="{{ default .Site.Language.Locale .Language.Name }}" href="{{ .Permalink }}" title="{{ partial "docs/title" . }}">
+{{- end -}}
+
+<!-- Theme stylesheet, you can customize scss by creating `assets/_custom.scss` in your website -->
+{{- $styles := resources.Get "book.scss" | resources.ExecuteAsTemplate "book.scss" . | css.Sass | resources.Minify }}
+<link rel="stylesheet" href="{{ $styles.RelPermalink }}">
+
+<!-- Search -->
+{{- if default true .Site.Params.BookSearch -}}
+  {{- $searchJSFile := printf "%s.search.js" .Language.Name }}
+  {{- $searchJS := resources.Get "search.js" | resources.ExecuteAsTemplate $searchJSFile . | resources.Minify }}
+  <script defer type="module" src="{{ $searchJS.RelPermalink }}"></script>
+{{ end -}}
+
+<!-- Service Worker -->
+{{- if .Site.Params.BookServiceWorker -}}
+  {{- $swJS := resources.Get "sw-register.js" | resources.ExecuteAsTemplate "sw.js" . | resources.Minify }}
+  <script defer src="{{ $swJS.RelPermalink }}"></script>
+{{ end -}}
+
+{{ partial "google_analytics.html" . }}
+
+{{- range .AlternativeOutputFormats -}}
+  {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Title | safeHTML }}
+{{ end -}}

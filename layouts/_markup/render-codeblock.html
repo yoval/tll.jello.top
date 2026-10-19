@@ -1,0 +1,38 @@
+{{- $result := (transform.HighlightCodeBlock . .Options).Wrapped -}}
+{{- /* 语言标签名称；纯文本块不显示标签 */ -}}
+{{- $labels := dict
+  "sql" "SQL"
+  "powershell" "PowerShell"
+  "ps1" "PowerShell"
+  "bash" "Shell"
+  "sh" "Shell"
+  "shell" "Shell"
+  "python" "Python"
+  "py" "Python"
+  "yaml" "YAML"
+  "yml" "YAML"
+  "json" "JSON"
+  "toml" "TOML"
+  "ini" "INI"
+  "csv" "CSV"
+  "xml" "XML"
+  "html" "HTML"
+  "css" "CSS"
+  "scss" "SCSS"
+  "javascript" "JavaScript"
+  "js" "JavaScript"
+  "text" ""
+  "txt" ""
+  "plain" ""
+-}}
+{{- $label := "" -}}
+{{- with .Type -}}
+  {{- if not (in (slice "text" "txt" "plain" "") .) -}}
+    {{- $label = or (index $labels .) (upper .) -}}
+  {{- end -}}
+{{- end -}}
+{{- with $label -}}
+  <div class="code-block" data-lang="{{ . }}">{{ $result | safeHTML }}</div>
+{{- else -}}
+  <div class="code-block">{{ $result | safeHTML }}</div>
+{{- end -}}

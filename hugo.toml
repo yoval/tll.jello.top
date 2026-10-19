@@ -1,0 +1,25 @@
+baseURL = 'https://tll.jello.top/'
+locale = 'zh-CN'
+title = 'Data Documentation'
+theme = 'hugo-book'
+
+# 中文路径不乱码
+disablePathToLower = true
+
+# 代码高亮
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.tableOfContents]
+    startLevel = 1
+  [markup.highlight]
+    # 使用 CSS 类名高亮，配色见 assets/_chroma.scss
+    noClasses = false
+
+[params]
+  BookTheme = 'light'
+  BookLogo = 'https://www.tianlala.com/favicon.ico'
+  BookSection = '*'
+  BookSearch = true
+  BookComments = false

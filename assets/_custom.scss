@@ -1,0 +1,212 @@
+// 语法高亮配色（由 hugo gen chromastyles --style=catppuccin-latte 生成）
+@import "chroma";
+
+/* ===== 字体 ===== */
+// 主题未声明正文字体（themes/hugo-book/assets/_fonts.scss 里是空的），默认会回退到浏览器字体。
+// 此处显式指定中英文回退顺序：正文用系统黑体系列，代码用等宽字体。
+:root {
+  --text-font-family: "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --code-font-family: "JetBrains Mono", "Fira Code", "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Noto Sans Mono CJK SC", "Sarasa Mono SC", "Microsoft YaHei", monospace;
+}
+
+body {
+  font-family: var(--text-font-family);
+}
+
+/* ===== 中文排版 ===== */
+// 参考汉字标准格式（Han.css）：挤压中文标点两侧的空白，中英混排更紧凑
+.markdown :is(p, li, dd, dt, blockquote, th, td, h1, h2, h3, h4) {
+  text-spacing-trim: trim-all;
+}
+
+/* ===== 标题与正文 ===== */
+.markdown {
+  // 一级标题改为浅色、不加粗，与 MkDocs Material 一致
+  h1 {
+    font-size: 2rem;
+    line-height: 1.3;
+    color: #5c6675;
+    margin: 1.5rem 0 1rem;
+  }
+
+  h2 {
+    font-size: 1.5625rem;
+    line-height: 1.4;
+  }
+
+  p {
+    margin: 1em 0;
+  }
+
+  // 正文链接常态带下划线，悬停时加深
+  a {
+    text-decoration: underline;
+    text-decoration-color: rgba(66, 108, 173, 0.4);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    transition: text-decoration-color 0.15s ease;
+  }
+
+  a:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+/* ===== 表格 ===== */
+// 参考 MkDocs Material 的卡片式表格：圆角、细阴影、表头浅底、行间细线，取消斑马纹和竖线。
+// 排除渠道分组页自带的 .channel-table，避免全局规则覆盖它自己的配色。
+.markdown table:not(.channel-table) {
+  border: 0;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.06);
+
+  thead,
+  tbody {
+    border: 0;
+  }
+
+  th {
+    background: var(--gray-100, #f8f9fa);
+    border: 0;
+    border-bottom: 1px solid var(--gray-300, #dee2e6);
+    font-weight: 600;
+  }
+
+  td {
+    border: 0;
+    border-top: 1px solid var(--gray-200, #e9ecef);
+  }
+
+  tr:nth-child(2n) {
+    background: transparent;
+  }
+}
+
+/* ===== 代码块 ===== */
+// 渲染钩子 layouts/_markup/render-codeblock.html 为每个围栏代码块包裹 .code-block
+.markdown .code-block {
+  position: relative;
+  margin: 1.5rem 0;
+
+  // 语言标签：贴在代码块左上角上边框外侧，不进入代码区，避免被代码块背景遮挡
+  &[data-lang] {
+    margin-top: 2.25rem; // 为上方标签留出空间
+  }
+
+  &[data-lang]::before {
+    content: attr(data-lang);
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateY(-100%);
+    z-index: 2;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #7c8391;
+    border: 1px solid #dcdfe9;
+    border-bottom: 0; // 与代码块上边框共用一条线
+    border-radius: 4px 4px 0 0;
+    pointer-events: none;
+  }
+
+  .highlight {
+    border-radius: 8px;
+  }
+
+  // 代码块本体：由滚动容器承担圆角与边框，避免滚动条溢出圆角
+  pre {
+    margin: 0;
+    padding: 18px 20px;
+    background: #eff1f5;
+    border: 1px solid #dcdfe9;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: var(--code-font-family);
+    font-size: var(--font-size-smaller, 0.875rem);
+    line-height: 1.7;
+    tab-size: 4;
+
+    code {
+      padding: 0;
+      border: 0;
+      background: none;
+      font-size: inherit;
+      line-height: inherit;
+      color: inherit;
+    }
+  }
+
+  // 细滚动条
+  pre::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  pre::-webkit-scrollbar-thumb {
+    background: #ccd1dc;
+    border-radius: 4px;
+  }
+
+  pre::-webkit-scrollbar-thumb:hover {
+    background: #b8bfcd;
+  }
+}
+
+// 行内代码
+.markdown code {
+  font-family: var(--code-font-family);
+  padding: 0.15em 0.4em;
+  background: #f0f3f8;
+  border: 0;
+  border-radius: 4px;
+  color: #364152;
+  word-break: break-word;
+}
+
+/* ===== 代码块复制按钮 ===== */
+pre {
+  position: relative;
+}
+
+pre > button.copy-code {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 3px 10px;
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--gray-500, #adb5bd);
+  background: var(--body-background, #fff);
+  border: 1px solid var(--gray-200, #e9ecef);
+  border-radius: 999px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  z-index: 1;
+}
+
+pre:hover > button.copy-code,
+pre:focus-within > button.copy-code {
+  opacity: 1;
+}
+
+pre > button.copy-code:hover {
+  color: #364152;
+  border-color: #ccd1dc;
+}
+
+pre > button.copy-code.copied {
+  color: #2f9e44;
+  border-color: #b2f2bb;
+}
+
+// 触屏无 hover，复制按钮常驻
+@media (hover: none) {
+  pre > button.copy-code {
+    opacity: 1;
+  }
+}
