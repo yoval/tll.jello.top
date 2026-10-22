@@ -226,3 +226,107 @@ pre > button.copy-code.copied {
     font-size: 0.92em;  // 略大于子页面
   }
 }
+
+/* ===== 上新记录页 · 卡片网格 ===== */
+// 多列卡片布局 + 日期徽章 + 价格高亮，纯文字不依赖图片。
+.launch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0 2rem;
+}
+
+.launch-card {
+  background: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  padding: 1rem 1.1rem 0.9rem;
+  transition: box-shadow 0.18s ease, border-color 0.18s ease;
+
+  &:hover {
+    border-color: #d8dee6;
+    box-shadow: 0 4px 16px rgba(92, 102, 117, 0.08);
+  }
+}
+
+.launch-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  margin-bottom: 0.55rem;
+  flex-wrap: wrap;
+}
+
+// 日期胶囊徽章
+.launch-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: #fff;
+  background: linear-gradient(135deg, #6c8cff, #8f6cff);
+  padding: 0.18rem 0.55rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+// 系列名
+.launch-title {
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: #2d3748;
+  line-height: 1.35;
+}
+
+// 联名/备注小字（接在系列名后面的灰色圆括号）
+.launch-note {
+  font-size: 0.78rem;
+  color: #9aa4b2;
+  font-weight: 400;
+}
+
+// 产品列表 · 紧凑无 bullet
+.launch-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.45rem 0 0;
+
+  li {
+    padding: 0.3rem 0;
+    font-size: 0.88rem;
+    color: #4a5568;
+    border-top: 1px dashed #eef0f3;
+
+    &:first-child { border-top: none; padding-top: 0.15rem; }
+  }
+}
+
+// 产品名与价格的分隔
+.launch-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.launch-product {
+  flex: 1;
+  min-width: 0;
+  color: #3a4454;
+}
+
+// 价格数字高亮
+.launch-price {
+  font-weight: 600;
+  color: #e0567a;   // 甜啦啦品牌粉
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+// 备注小字（现磨咖啡机门店、小程序专供等）
+.launch-meta {
+  display: block;
+  font-size: 0.72rem;
+  color: #a0aab8;
+  margin-top: 0.05rem;
+  padding-left: 0.02rem;
+}
