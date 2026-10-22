@@ -228,137 +228,290 @@ pre > button.copy-code.copied {
 }
 
 /* ===== 上新记录页 · Timeline ===== */
-// 左侧竖线 + 节点圆点 + 右侧内容卡片，按时间倒序排列。
+// 左侧时间竖线 + 节点圆点，右侧是批次卡片；卡片内的价格与说明各自成列对齐。
 .launch-timeline {
-  position: relative;
-  margin: 1.25rem 0 2rem;
-  padding-left: 1.75rem;
+  --launch-line: #e6e9f2;
+  --launch-dot-a: #6c8cff;
+  --launch-dot-b: #9b7cf0;
+  --launch-divider: #eff1f6;
+  --launch-text: #333c4a;
+  --launch-muted: #9aa3b2;
+  --launch-price: #4f5ca8;
 
-  // 时间竖线（半透明渐变，视觉上与圆点呼应）
+  position: relative;
+  margin: 1.5rem 0 2.25rem;
+  padding-left: 1.65rem;
+
+  // 时间竖线：顶部实、底部淡出，与圆点呼应
   &::before {
     content: "";
     position: absolute;
-    left: 0.55rem;
-    top: 0.25rem;
-    bottom: 0.25rem;
+    left: 0.45rem;
+    top: 0.6rem;
+    bottom: 0.6rem;
     width: 2px;
-    background: linear-gradient(180deg, #8f6cff, #c5cae0 70%, #eef0f3);
+    border-radius: 2px;
+    background: linear-gradient(180deg, rgba(108, 140, 255, 0.45), var(--launch-line) 50%, rgba(230, 233, 242, 0.3));
   }
 }
 
-// 单个时间节点（圆点 + 内容）
+// 单个批次节点
 .launch-node {
   position: relative;
-  margin-bottom: 1.1rem;
+  margin-bottom: 0.85rem;
 
-  // 圆点：蓝紫渐变 + 白色描边
+  &:last-child { margin-bottom: 0; }
+
+  // 圆点：与卡片标题行居中对齐；白色描边盖住竖线
   &::before {
     content: "";
     position: absolute;
-    left: -1.43rem;
-    top: 0.55rem;
-    width: 0.9rem;
-    height: 0.9rem;
+    left: -1.44rem;
+    top: 0.92rem;
+    width: 0.62rem;
+    height: 0.62rem;
     border-radius: 50%;
-    background: linear-gradient(135deg, #6c8cff, #8f6cff);
-    border: 2px solid #fff;
-    box-shadow: 0 0 0 2px #e6e8f0;
+    background: linear-gradient(135deg, var(--launch-dot-a), var(--launch-dot-b));
+    box-shadow: 0 0 0 3px #fff;
     z-index: 1;
   }
 }
 
-// 节点内容卡片（比之前更轻，因为 timeline 本身已经有视觉层级）
+// 批次卡片：比之前更轻，视觉层级交给时间轴
 .launch-card {
   background: #fff;
-  border: 1px solid #eef0f3;
+  border: 1px solid #eceff5;
   border-radius: 10px;
-  padding: 0.8rem 1rem 0.75rem;
-  transition: box-shadow 0.18s ease, border-color 0.18s ease;
+  padding: 0.7rem 0.95rem 0.5rem;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
 
   &:hover {
-    border-color: #d0d6df;
-    box-shadow: 0 3px 12px rgba(92, 102, 117, 0.06);
+    border-color: #dfe4ee;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
   }
 }
 
 .launch-head {
   display: flex;
   align-items: baseline;
-  gap: 0.5rem;
-  margin-bottom: 0.35rem;
   flex-wrap: wrap;
+  gap: 0.1rem 0.5rem;
+  margin-bottom: 0.15rem;
 }
 
-// 日期胶囊徽章（timeline 中更紧凑）
+// 日期胶囊徽章
 .launch-badge {
+  flex-shrink: 0;
+  padding: 0.08rem 0.45rem;
   font-size: 0.7rem;
   font-weight: 600;
-  letter-spacing: 0.02em;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
   color: #fff;
-  background: linear-gradient(135deg, #6c8cff, #8f6cff);
-  padding: 0.14rem 0.5rem;
+  background: linear-gradient(135deg, var(--launch-dot-a), var(--launch-dot-b));
   border-radius: 999px;
-  flex-shrink: 0;
 }
 
 // 系列名
 .launch-title {
-  font-size: 0.98rem;
+  font-size: 0.94rem;
   font-weight: 600;
-  color: #2d3748;
-  line-height: 1.3;
+  line-height: 1.45;
+  color: var(--launch-text);
 }
 
-// 联名/备注小字
+// 联名 / 备注小字
 .launch-note {
   font-size: 0.75rem;
-  color: #9aa4b2;
   font-weight: 400;
-}
+  line-height: 1.45;
+  color: var(--launch-muted);
 
-// 产品列表 · 紧凑无 bullet
-.launch-card ul {
-  list-style: none;
-  padding: 0;
-  margin: 0.3rem 0 0;
-
-  li {
-    padding: 0.22rem 0;
-    font-size: 0.85rem;
-    color: #4a5568;
-    border-top: 1px dashed #eef0f3;
-
-    &:first-child { border-top: none; padding-top: 0.08rem; }
+  &::before {
+    content: "·";
+    margin-right: 0.35rem;
+    color: #c3c9d6;
   }
 }
 
-// 产品名与价格的分隔
+// 产品列表：整张卡片共用一套网格，名称 / 价格 / 说明三列因此逐行对齐。
+// 名称与价格列按内容自适应（价格紧随名称，避免大片空白），说明列吃掉剩余宽度。
+.markdown .launch-card ul {
+  display: grid;
+  grid-template-columns: max-content max-content minmax(0, 1fr);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// li 与 .launch-item 不生成盒子，三个 span 直接参与网格排布
+.launch-card li,
 .launch-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 0.5rem;
+  display: contents;
 }
 
-.launch-product {
-  flex: 1;
-  min-width: 0;
-  color: #3a4454;
-}
-
-// 价格数字高亮
-.launch-price {
-  font-weight: 600;
-  color: #e0567a;   // 甜啦啦品牌粉
-  white-space: nowrap;
-  font-variant-numeric: tabular-nums;
-}
-
-// 备注小字（现磨咖啡机门店、小程序专供等）
+.launch-product,
+.launch-price,
 .launch-meta {
-  display: block;
-  font-size: 0.7rem;
-  color: #a0aab8;
-  margin-top: 0.02rem;
-  padding-left: 0.02rem;
+  padding: 0.3rem 0;
+  border-top: 1px dashed var(--launch-divider);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+// 产品名列
+.launch-product {
+  grid-column: 1;
+  padding-right: 2.75rem;
+  color: #3b4553;
+}
+
+// 价格列：右对齐 + 等宽数字，跨行自然成列
+.launch-price {
+  grid-column: 2;
+  padding-right: 1.15rem;
+  font-weight: 600;
+  color: var(--launch-price);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+// 注释列：跟在价格之后，占用剩余宽度并右对齐，使卡片左右都有内容
+.launch-meta {
+  grid-column: 3;
+  font-size: 0.74rem;
+  color: var(--launch-muted);
+  text-align: right;
+  white-space: nowrap;
+}
+
+// 首行不画上分隔线
+.launch-card li:first-child {
+  .launch-product,
+  .launch-price,
+  .launch-meta {
+    border-top: 0;
+  }
+}
+
+// 杯型子行：首列补「↳」，价格与上一行价格列对齐
+.launch-item--sub {
+  &::before {
+    content: "↳";
+    grid-column: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0.3rem 0.85rem 0.3rem 0;
+    border-top: 1px dashed var(--launch-divider);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: #b3bccc;
+  }
+
+  .launch-price {
+    font-weight: 500;
+    color: #6873b8;
+  }
+}
+
+// 窄屏：改为纵向排布（名称与价格同行、注释另起一行），避免三列挤压溢出
+@media (max-width: 720px) {
+  .launch-timeline {
+    margin: 1.25rem 0 1.75rem;
+    padding-left: 1.15rem;
+
+    &::before {
+      left: 0.28rem;
+    }
+  }
+
+  .launch-node {
+    margin-bottom: 0.75rem;
+
+    &::before {
+      left: -1rem;
+      top: 0.85rem;
+      width: 0.55rem;
+      height: 0.55rem;
+      box-shadow: 0 0 0 2.5px #fff;
+    }
+  }
+
+  .launch-card {
+    padding: 0.65rem 0.8rem 0.45rem;
+  }
+
+  .markdown .launch-card ul {
+    display: block;
+  }
+
+  .launch-card li {
+    display: block;
+    padding: 0.32rem 0;
+    border-top: 1px dashed var(--launch-divider);
+
+    &:first-child {
+      padding-top: 0;
+      border-top: 0;
+    }
+  }
+
+  .launch-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 0.5rem;
+    row-gap: 0.05rem;
+  }
+
+  .launch-product,
+  .launch-price {
+    padding: 0;
+    border-top: 0;
+    font-size: 0.84rem;
+  }
+
+  .launch-product {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding-right: 0;
+  }
+
+  .launch-price {
+    margin-left: auto;
+    text-align: right;
+  }
+
+  .launch-meta {
+    flex: 1 1 100%;
+    margin-top: 0.15rem;
+    padding: 0;
+    border-top: 0;
+    font-size: 0.72rem;
+    text-align: right;
+    white-space: normal;
+  }
+
+  // 杯型子行：整体靠右，箭头紧贴价格，与上一行价格右边缘对齐
+  .launch-item--sub {
+    justify-content: flex-end;
+
+    &::before {
+      content: "↳";
+      display: inline;
+      flex: 0 0 auto;
+      padding: 0;
+      border: 0;
+      margin-right: 0.3rem;
+      font-size: 0.75rem;
+      color: #aeb8c8;
+    }
+
+    .launch-price {
+      margin-left: 0;
+    }
+  }
 }
