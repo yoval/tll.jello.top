@@ -6,6 +6,9 @@ theme = 'hugo-book'
 # 中文路径不乱码
 disablePathToLower = true
 
+# URL 规范化：自动补尾部斜杠，避免 404
+canonicalizeURLs = true
+
 # 代码高亮
 [markup]
   [markup.goldmark]

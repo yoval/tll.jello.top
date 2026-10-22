@@ -9,9 +9,9 @@ weight: 1
 
 ## 快速入口
 
-- [门店日GMV查询](/data-dictionary/queries/门店日GMV查询)
-- [渠道分组对照](/reference/渠道分组)
-- [常用术语](/glossary/常用术语)
+- [门店日GMV查询]({{< ref "/queries/门店日GMV查询" >}})
+- [渠道分组对照]({{< ref "/reference/渠道分组" >}})
+- [常用术语]({{< ref "/glossary/常用术语" >}})
 
 ## 内容导航
 
