@@ -86,5 +86,6 @@ FROM ads_dbs_trade_shop_di;
 {{< notice warning "注意" >}}
 1. 门店销售汇总 ≥ 产品销售汇总，差额来自配送费、包装费（算门店流水但不算商品流水）。
 2. channel_name 为来源渠道，非原始支付渠道。
-3. 两表渠道口径差异及对比见 [来源渠道对比]({{< ref "/reference/来源渠道对比" >}})。
+3. **门店销售流水建议优先使用 [支付渠道版]({{< ref "/data-dictionary/ads_dbs_trade_shop_pay_channel_di" >}})**，中台驾驶舱以此为基准。
+4. 两表渠道口径差异及对比见 [来源渠道对比]({{< ref "/reference/来源渠道对比" >}})。
 {{< /notice >}}
