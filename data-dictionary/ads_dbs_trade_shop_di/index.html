@@ -24,7 +24,7 @@ https://github.com/alex-shpak/hugo-book
   <meta itemprop="name" content="门店销售（来源渠道）">
   <meta itemprop="description" content="门店销售#门店日汇总表，粒度为 门店 × 日期 × 渠道，表名 ads_dbs_trade_shop_di（库 tll_bi_dw）。
 字段查询#SELECT COLUMN_NAME AS 字段名, COLUMN_TYPE AS 字段类型, COLUMN_COMMENT AS 字段注释 FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = &#39;tll_bi_dw&#39; AND TABLE_NAME = &#39;ads_dbs_trade_shop_di&#39;;字段说明#字段名 字段类型 字段注释 business_date varchar(20) 日期 prov_id varchar(100) 省份编码 prov_name varchar(100) 省份名称 city_id varchar(100) 城市编码 city_name varchar(100) 城市名称 city_level varchar(100) 城市等级 district_id varchar(100) 区县编码 district_name varchar(100) 区县名称 bussiness_type varchar(100) 业务类型 anal_type varchar(100) 分析类型 shop_id varchar(20) 门店统计 id channel_name varchar(100) 渠道 franchisee_type varchar(20) 门店类型 food_sales_amount decimalv3(16, 2) 菜品销售 total_mealFee decimalv3(16, 2) 总餐盒费 freight_amount decimalv3(16, 2) 配送费（商家配送） total_amount decimalv3(16, 2) 流水金额 pay_amount decimalv3(16, 2) 实收金额 order_count bigint(20) 订单量 discount_amount decimalv3(16, 2) 优惠金额 item_scrap_amount decimalv3(16, 2) 报废金额 dp_item_count bigint(20) 商品销量 dp_total_amount decimalv3(16, 2) 商品流水金额 pt varchar(20) 时间分区 shop_di vs food_di channel_name 差异#ads_dbs_trade_shop_di（门店销售）和 ads_dbs_trade_food_di（产品销售）的渠道名存在两处不同：">
-  <meta itemprop="wordCount" content="189">
+  <meta itemprop="wordCount" content="191">
 
 <title>门店销售（来源渠道） • Data Documentation</title>
 <link rel="icon" href="/favicon.png" >
@@ -1028,6 +1028,7 @@ https://github.com/alex-shpak/hugo-book
   <div class="notice-body"><ol>
 <li>门店销售汇总 ≥ 产品销售汇总，差额来自配送费、包装费（算门店流水但不算商品流水）。</li>
 <li>channel_name 为来源渠道，非原始支付渠道。</li>
+<li><strong>门店销售流水建议优先使用 <a href="https://tll.jello.top/data-dictionary/ads_dbs_trade_shop_pay_channel_di/">支付渠道版</a></strong>，中台驾驶舱以此为基准。</li>
 <li>两表渠道口径差异及对比见 <a href="https://tll.jello.top/reference/%E6%9D%A5%E6%BA%90%E6%B8%A0%E9%81%93%E5%AF%B9%E6%AF%94/">来源渠道对比</a>。</li>
 </ol></div>
 </div>
