@@ -515,3 +515,81 @@ pre > button.copy-code.copied {
     }
   }
 }
+
+// 小料卡片网格（与上新记录共享 .launch-card）
+.launch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.75rem;
+  margin: 0.8rem 0 1rem;
+}
+
+.launch-grid .launch-card {
+  padding: 0.7rem 0.85rem 0.5rem;
+}
+
+// 小料头部：品类徽章 + 名称
+.launch-grid .launch-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.launch-date {
+  flex-shrink: 0;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #fff;
+  background: linear-gradient(135deg, var(--launch-dot-a, #5563a8), var(--launch-dot-b, #7b8fd4));
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+}
+
+.launch-grid .launch-head .launch-date {
+  background: linear-gradient(135deg, #6b7fc7, #8aa0e0);
+}
+
+.launch-series {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--launch-text, #2e3440);
+}
+
+// 小料表格
+.launch-table {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+
+  td {
+    padding: 0.25rem 0;
+    border: 0;
+    line-height: 1.4;
+  }
+
+  td:first-child {
+    width: 3.5rem;
+    color: #8a94a6;
+    font-size: 0.75rem;
+  }
+
+  td:last-child {
+    text-align: right;
+    color: var(--launch-text, #2e3440);
+  }
+
+  tr + tr td {
+    border-top: 1px dashed #eceff5;
+  }
+}
+
+@media (max-width: 640px) {
+  .launch-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.55rem;
+  }
+}

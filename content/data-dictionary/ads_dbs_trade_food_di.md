@@ -1,6 +1,6 @@
 ---
-title: "产品销售"
-weight: 2
+title: "产品销售（来源渠道）"
+weight: 3
 ---
 
 # 产品销售
@@ -126,6 +126,40 @@ AND TABLE_NAME = 'ads_dbs_trade_food_di';
 | stat_shop_id                     | varchar(64)      | 门店统计id                                             |
 | stat_shop_name                   | varchar(255)     | 门店统计名称                                           |
 | send_whse                        | varchar(64)      | 仓库                                                   |
+
+## food_di vs shop_di channel_name 差异
+
+`ads_dbs_trade_food_di`（产品销售）和 `ads_dbs_trade_shop_di`（门店销售）的渠道名存在两处不同：
+
+| 差异 | food_di | shop_di |
+|---|---|---|
+| 到店-小程序 | `微信小程序` + `支付宝小程序`（两条分开） | `小程序`（一条汇总） |
+| 渠道总数 | 14 条 | 12 条 |
+
+> 两张表的 `anal_type` 取值一致（`到家` / `到店`），到家 4 个渠道完全相同。
+
+## anal_type × channel_name 枚举值
+
+```sql
+SELECT DISTINCT anal_type, channel_name
+FROM ads_dbs_trade_food_di;
+```
+
+| anal_type | channel_name |
+|---|---|
+| 到家 | 美团外卖 |
+| 到家 | 淘宝闪购 |
+| 到家 | 自营外卖 |
+| 到家 | 京东外卖 |
+| 到店 | pos 收银 |
+| 到店 | 微信小程序 |
+| 到店 | 支付宝小程序 |
+| 到店 | 抖音小程序（核销工具） |
+| 到店 | 美团/大众点评团购 |
+| 到店 | 抖音团购 |
+| 到店 | 高德团购 |
+| 到店 | 快手团购 |
+| 到店 | 美团在线点 |
 
 ## 注意事项
 
