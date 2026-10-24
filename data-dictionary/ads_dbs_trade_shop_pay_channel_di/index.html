@@ -25,7 +25,7 @@ https://github.com/alex-shpak/hugo-book
   <meta itemprop="name" content="门店销售（支付渠道）">
   <meta itemprop="description" content="门店销售#门店渠道销售日表，粒度为 门店 × 日期 × 支付原始渠道，表名 ads_dbs_trade_shop_pay_channel_di（库 tll_bi_dw）。
 推荐使用此表 门店销售流水的首选来源。">
-  <meta itemprop="wordCount" content="150">
+  <meta itemprop="wordCount" content="148">
 
 <title>门店销售（支付渠道） • Data Documentation</title>
 <link rel="icon" href="/favicon.png" >
@@ -802,10 +802,8 @@ https://github.com/alex-shpak/hugo-book
 </style><div class="notice info">
   <div class="notice-title"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>推荐使用此表</div>
   <div class="notice-body"><p>门店销售流水的<strong>首选来源</strong>。</p>
-<ul>
-<li>与 <code>ads_dbs_trade_shop_di</code>（来源渠道）总额几乎一致（差异 &lt; 0.05%），且能进一步拆解到 <code>ads_dbs_trade_food_di</code>（商品流水）口径。</li>
-<li><strong>中台驾驶舱 → 渠道拆分模块以此表为基准</strong>，为保证输出数据一致性，门店销售数据应采用此表。</li>
-</ul></div>
+<p><strong>唯一原因：中台驾驶舱 → 渠道拆分模块以此表为基准</strong>。如果不用这张，输出数据会和中台对不上。</p>
+<p>虽然 <a href="https://tll.jello.top/data-dictionary/ads_dbs_trade_shop_di/">ads_dbs_trade_shop_di</a>（来源渠道）在业务上是更好的选择——能直接对应到 <code>ads_dbs_trade_food_di</code>（商品流水）口径，可拆分配送费/包装费。但为了数据一致性，门店销售统一采用本表。</p></div>
 </div>
 
 <h2 id="字段查询">字段查询<a class="anchor" href="#%e5%ad%97%e6%ae%b5%e6%9f%a5%e8%af%a2">#</a></h2>
