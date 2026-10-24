@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="zh-CN" dir="ltr">
+<head>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="定时任务工作台#本机通过 Windows 任务计划程序注册的开机延迟任务，以及统一的日常任务交互菜单。
+开机任务时间线#触发方式均为系统启动后延迟执行：
+延迟 任务名 执行内容 角色 &#43;1 min KeepMySQLAlive wscript keep_mysql_alive.vbs 后台拉起 …">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://tll.jello.top/projects/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E5%B7%A5%E4%BD%9C%E5%8F%B0/">
+  <meta property="og:site_name" content="Data Documentation">
+  <meta property="og:title" content="定时任务工作台">
+  <meta property="og:description" content="定时任务工作台#本机通过 Windows 任务计划程序注册的开机延迟任务，以及统一的日常任务交互菜单。
+开机任务时间线#触发方式均为系统启动后延迟执行：
+延迟 任务名 执行内容 角色 &#43;1 min KeepMySQLAlive wscript keep_mysql_alive.vbs 后台拉起 WSL2 MySQL 容器常驻 &#43;2 min ClearDownloads clear_downloads.bat 清空下载文件夹 &#43;5 min DailyMenu daily.bat 弹出日常任务菜单，手动选择执行 &#43;10 min BeisengUsersDaily python main.py 自动同步北森通讯录 XML 配置文件均保留在项目目录，重装系统后可用：
+schtasks /Create /TN &lt;任务名&gt; /XML &lt;文件.xml&gt; /FDailyMenu 菜单#编号 任务 对应项目 01 同步门店信息表 门店信息管理 02 同步北森信息 北森通讯录同步（cookie 过期时手动保底） 21 校对标准菜品名称 标准菜品名称核对 31 清空下载文件夹 同 ClearDownloads 自动任务 99 测试 — 常用管理命令#schtasks /Query /TN &#34;BeisengUsersDaily&#34; /V /FO LIST # 查看任务 schtasks /Run /TN &#34;DailyMenu&#34; # 立即运行 schtasks /Change /TN &#34;KeepMySQLAlive&#34; /Disable # 禁用 schtasks /Delete /TN &#34;KeepMySQLAlive&#34; /F # 删除（需管理员） taskschd.msc # 图形界面彻底停止 MySQL：wsl --shutdown（WSL 虚拟机关闭，容器随之停止）。">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="projects">
+
+
+  <meta itemprop="name" content="定时任务工作台">
+  <meta itemprop="description" content="定时任务工作台#本机通过 Windows 任务计划程序注册的开机延迟任务，以及统一的日常任务交互菜单。
+开机任务时间线#触发方式均为系统启动后延迟执行：
+延迟 任务名 执行内容 角色 &#43;1 min KeepMySQLAlive wscript keep_mysql_alive.vbs 后台拉起 WSL2 MySQL 容器常驻 &#43;2 min ClearDownloads clear_downloads.bat 清空下载文件夹 &#43;5 min DailyMenu daily.bat 弹出日常任务菜单，手动选择执行 &#43;10 min BeisengUsersDaily python main.py 自动同步北森通讯录 XML 配置文件均保留在项目目录，重装系统后可用：
+schtasks /Create /TN &lt;任务名&gt; /XML &lt;文件.xml&gt; /FDailyMenu 菜单#编号 任务 对应项目 01 同步门店信息表 门店信息管理 02 同步北森信息 北森通讯录同步（cookie 过期时手动保底） 21 校对标准菜品名称 标准菜品名称核对 31 清空下载文件夹 同 ClearDownloads 自动任务 99 测试 — 常用管理命令#schtasks /Query /TN &#34;BeisengUsersDaily&#34; /V /FO LIST # 查看任务 schtasks /Run /TN &#34;DailyMenu&#34; # 立即运行 schtasks /Change /TN &#34;KeepMySQLAlive&#34; /Disable # 禁用 schtasks /Delete /TN &#34;KeepMySQLAlive&#34; /F # 删除（需管理员） taskschd.msc # 图形界面彻底停止 MySQL：wsl --shutdown（WSL 虚拟机关闭，容器随之停止）。">
+  <meta itemprop="wordCount" content="102">
+
+<title>定时任务工作台 • Data Documentation</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="https://tll.jello.top/projects/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E5%B7%A5%E4%BD%9C%E5%8F%B0/">
+<link rel="stylesheet" href="/book.min.css">
+
+
+  <script defer type="module" src="/en.search.min.js"></script>
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-projects">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="https://www.tianlala.com/favicon.ico" alt="Logo" /><span>Data Documentation</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      数据字典</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/data-dictionary/ads_dbs_trade_shop_pay_channel_di/" class="">
+      门店销售（支付渠道）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/data-dictionary/ads_dbs_trade_shop_di/" class="">
+      门店销售（来源渠道）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/data-dictionary/ads_dbs_trade_food_di/" class="">
+      产品销售（来源渠道）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/data-dictionary/dwd_rps_tll_order_details_di/" class="">
+      门店报货信息</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/data-dictionary/dim_oas_formmain_0145_df/" class="">
+      门店管理表</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d43966a73403828c9c11f55cc6f0f707" class="toggle"  />
+    <label for="section-d43966a73403828c9c11f55cc6f0f707" class="flex">
+      <a role="button" class="">
+        常用查询</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/%E9%97%A8%E5%BA%97%E6%97%A5GMV%E6%9F%A5%E8%AF%A2/" class="">
+      门店日GMV查询</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/%E8%B5%A0%E8%8C%B6%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2/" class="">
+      赠茶数据查询</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/%E5%8A%A0%E7%9B%9F%E5%BA%97%E6%AF%8F%E6%97%A5%E5%90%84%E6%B8%A0%E9%81%93%E6%B5%81%E6%B0%B4/" class="">
+      加盟店每日各渠道流水</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2cb822f103845855e927ff8ab980e529" class="toggle" checked />
+    <label for="section-2cb822f103845855e927ff8ab980e529" class="flex">
+      <a role="button" class="">
+        项目管理</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c24cc055d3c9e0d6450918c00f548d76" class="toggle"  />
+    <label for="section-c24cc055d3c9e0d6450918c00f548d76" class="flex">
+      <a role="button" class="">
+        日常任务</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/daily/%E5%8C%97%E6%A3%AE%E9%80%9A%E8%AE%AF%E5%BD%95%E5%90%8C%E6%AD%A5/" class="">
+      北森通讯录同步</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/daily/%E9%97%A8%E5%BA%97%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/" class="">
+      门店信息管理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/daily/%E6%A0%87%E5%87%86%E8%8F%9C%E5%93%81%E5%90%8D%E7%A7%B0%E6%A0%B8%E5%AF%B9/" class="">
+      标准菜品名称核对</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-bd1e344e17b9897a7435d9fa71e8c255" class="toggle"  />
+    <label for="section-bd1e344e17b9897a7435d9fa71e8c255" class="flex">
+      <a role="button" class="">
+        管理工具</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/manage/%E9%97%A8%E5%BA%97%E8%90%A5%E4%B8%9A%E6%89%A7%E7%85%A7%E7%AE%A1%E7%90%86/" class="">
+      门店营业执照管理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/manage/%E9%97%A8%E5%BA%97%E9%94%80%E5%94%AE%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5/" class="">
+      门店销售数据同步</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/manage/%E9%97%A8%E5%BA%97%E6%8A%A5%E9%80%81%E5%90%8D%E7%A7%B0%E7%94%9F%E6%88%90/" class="">
+      门店报送名称生成</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-62bda4b1e27fd89189aed4fe906db280" class="toggle"  />
+    <label for="section-62bda4b1e27fd89189aed4fe906db280" class="flex">
+      <a role="button" class="">
+        月度任务</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E6%9C%88%E5%BA%A6%E4%BA%A7%E5%93%81%E9%94%80%E5%94%AE%E6%B1%87%E6%80%BB/" class="">
+      月度产品销售汇总</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E5%A4%9A%E6%97%B6%E6%AE%B5%E6%B8%A0%E9%81%93%E5%90%8C%E6%AF%94%E5%88%86%E6%9E%90/" class="">
+      多时段渠道同比分析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E5%91%A8%E8%BE%B9%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="">
+      周边数据分析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%A8%8E%E5%8A%A1%E6%8A%A5%E9%80%81/" class="">
+      小程序税务报送</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E6%9C%88%E5%BA%A6%E6%95%B0%E6%8D%AE%E6%A6%82%E8%A7%88/" class="">
+      月度数据概览</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E5%B7%A5%E4%BD%9C%E5%8F%B0/" class="active">
+      定时任务工作台</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/%E6%A0%87%E5%87%86%E8%8F%9C%E5%93%81%E5%90%8D%E7%A7%B0%E6%B8%85%E6%B4%97/" class="">
+      标准菜品名称清洗</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/csv%E6%96%87%E4%BB%B6%E7%9A%84%E5%88%86%E5%89%B2/" class="">
+      CSV文件分割</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      产品记录</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/product/2026%E4%BA%A7%E5%93%81%E4%B8%8A%E6%96%B0%E8%AE%B0%E5%BD%95/" class="">
+      2026产品上新记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/product/2025%E4%BA%A7%E5%93%81%E4%B8%8A%E6%96%B0%E8%AE%B0%E5%BD%95/" class="">
+      2025产品上新记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/product/%E5%B0%8F%E6%96%99/" class="">
+      小料</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      常用术语</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/glossary/%E5%B8%B8%E7%94%A8%E6%9C%AF%E8%AF%AD/" class="">
+      常用术语</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      参考资料</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E6%B8%A0%E9%81%93%E5%88%86%E7%BB%84/" class="">
+      支付渠道分组</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E6%9D%A5%E6%BA%90%E6%B8%A0%E9%81%93%E5%AF%B9%E6%AF%94/" class="">
+      来源渠道 vs 商品流水</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E6%94%AF%E4%BB%98%E6%B8%A0%E9%81%93%E5%AF%B9%E6%AF%94/" class="">
+      来源渠道 vs 支付渠道</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>定时任务工作台</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#定时任务工作台">定时任务工作台</a>
+      <ul>
+        <li><a href="#开机任务时间线">开机任务时间线</a></li>
+        <li><a href="#dailymenu-菜单">DailyMenu 菜单</a></li>
+        <li><a href="#常用管理命令">常用管理命令</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="定时任务工作台">定时任务工作台<a class="anchor" href="#%e5%ae%9a%e6%97%b6%e4%bb%bb%e5%8a%a1%e5%b7%a5%e4%bd%9c%e5%8f%b0">#</a></h1>
+<p>本机通过 Windows 任务计划程序注册的开机延迟任务，以及统一的日常任务交互菜单。</p>
+<h2 id="开机任务时间线">开机任务时间线<a class="anchor" href="#%e5%bc%80%e6%9c%ba%e4%bb%bb%e5%8a%a1%e6%97%b6%e9%97%b4%e7%ba%bf">#</a></h2>
+<p>触发方式均为系统启动后延迟执行：</p>
+<table>
+  <thead>
+      <tr>
+          <th>延迟</th>
+          <th>任务名</th>
+          <th>执行内容</th>
+          <th>角色</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>+1 min</td>
+          <td><code>KeepMySQLAlive</code></td>
+          <td><code>wscript keep_mysql_alive.vbs</code></td>
+          <td>后台拉起 WSL2 MySQL 容器常驻</td>
+      </tr>
+      <tr>
+          <td>+2 min</td>
+          <td><code>ClearDownloads</code></td>
+          <td><code>clear_downloads.bat</code></td>
+          <td>清空下载文件夹</td>
+      </tr>
+      <tr>
+          <td>+5 min</td>
+          <td><code>DailyMenu</code></td>
+          <td><code>daily.bat</code></td>
+          <td>弹出日常任务菜单，手动选择执行</td>
+      </tr>
+      <tr>
+          <td>+10 min</td>
+          <td><code>BeisengUsersDaily</code></td>
+          <td><code>python main.py</code></td>
+          <td>自动同步北森通讯录</td>
+      </tr>
+  </tbody>
+</table>
+<p>XML 配置文件均保留在项目目录，重装系统后可用：</p>
+<div class="code-block" data-lang="PowerShell"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">schtasks</span> <span class="p">/</span><span class="n">Create</span> <span class="p">/</span><span class="n">TN</span> <span class="p">&lt;</span><span class="n">任务名</span><span class="p">&gt;</span> <span class="p">/</span><span class="n">XML</span> <span class="p">&lt;</span><span class="n">文件</span><span class="p">.</span><span class="n">xml</span><span class="p">&gt;</span> <span class="p">/</span><span class="n">F</span></span></span></code></pre></div></div><h2 id="dailymenu-菜单">DailyMenu 菜单<a class="anchor" href="#dailymenu-%e8%8f%9c%e5%8d%95">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>编号</th>
+          <th>任务</th>
+          <th>对应项目</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>01</td>
+          <td>同步门店信息表</td>
+          <td><a href="https://tll.jello.top/projects/daily/%E9%97%A8%E5%BA%97%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/">门店信息管理</a></td>
+      </tr>
+      <tr>
+          <td>02</td>
+          <td>同步北森信息</td>
+          <td><a href="https://tll.jello.top/projects/daily/%E5%8C%97%E6%A3%AE%E9%80%9A%E8%AE%AF%E5%BD%95%E5%90%8C%E6%AD%A5/">北森通讯录同步</a>（cookie 过期时手动保底）</td>
+      </tr>
+      <tr>
+          <td>21</td>
+          <td>校对标准菜品名称</td>
+          <td><a href="https://tll.jello.top/projects/daily/%E6%A0%87%E5%87%86%E8%8F%9C%E5%93%81%E5%90%8D%E7%A7%B0%E6%A0%B8%E5%AF%B9/">标准菜品名称核对</a></td>
+      </tr>
+      <tr>
+          <td>31</td>
+          <td>清空下载文件夹</td>
+          <td>同 <code>ClearDownloads</code> 自动任务</td>
+      </tr>
+      <tr>
+          <td>99</td>
+          <td>测试</td>
+          <td>—</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="常用管理命令">常用管理命令<a class="anchor" href="#%e5%b8%b8%e7%94%a8%e7%ae%a1%e7%90%86%e5%91%bd%e4%bb%a4">#</a></h2>
+<div class="code-block" data-lang="PowerShell"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">schtasks</span> <span class="p">/</span><span class="n">Query</span> <span class="p">/</span><span class="n">TN</span> <span class="s2">&#34;BeisengUsersDaily&#34;</span> <span class="p">/</span><span class="n">V</span> <span class="p">/</span><span class="n">FO</span> <span class="n">LIST</span>   <span class="c"># 查看任务</span>
+</span></span><span class="line"><span class="cl"><span class="n">schtasks</span> <span class="p">/</span><span class="n">Run</span>   <span class="p">/</span><span class="n">TN</span> <span class="s2">&#34;DailyMenu&#34;</span>                       <span class="c"># 立即运行</span>
+</span></span><span class="line"><span class="cl"><span class="n">schtasks</span> <span class="p">/</span><span class="n">Change</span> <span class="p">/</span><span class="n">TN</span> <span class="s2">&#34;KeepMySQLAlive&#34;</span> <span class="p">/</span><span class="n">Disable</span>        <span class="c"># 禁用</span>
+</span></span><span class="line"><span class="cl"><span class="n">schtasks</span> <span class="p">/</span><span class="n">Delete</span> <span class="p">/</span><span class="n">TN</span> <span class="s2">&#34;KeepMySQLAlive&#34;</span> <span class="p">/</span><span class="n">F</span>              <span class="c"># 删除（需管理员）</span>
+</span></span><span class="line"><span class="cl"><span class="n">taskschd</span><span class="p">.</span><span class="py">msc</span>                                          <span class="c"># 图形界面</span></span></span></code></pre></div></div><p>彻底停止 MySQL：<code>wsl --shutdown</code>（WSL 虚拟机关闭，容器随之停止）。</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+<div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/projects/monthly/%E6%9C%88%E5%BA%A6%E6%95%B0%E6%8D%AE%E6%A6%82%E8%A7%88/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>月度数据概览</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/projects/%E6%A0%87%E5%87%86%E8%8F%9C%E5%93%81%E5%90%8D%E7%A7%B0%E6%B8%85%E6%B4%97/" class="flex align-center">
+        <span>标准菜品名称清洗</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#定时任务工作台">定时任务工作台</a>
+      <ul>
+        <li><a href="#开机任务时间线">开机任务时间线</a></li>
+        <li><a href="#dailymenu-菜单">DailyMenu 菜单</a></li>
+        <li><a href="#常用管理命令">常用管理命令</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  <script>
+(function () {
+  document.querySelectorAll('pre > code').forEach(function (codeBlock) {
+    var pre = codeBlock.parentNode;
+    var button = document.createElement('button');
+    button.className = 'copy-code';
+    button.textContent = '复制';
+    button.addEventListener('click', function () {
+      var text = codeBlock.textContent;
+      navigator.clipboard.writeText(text).then(function () {
+        button.textContent = '已复制';
+        button.classList.add('copied');
+        setTimeout(function () {
+          button.textContent = '复制';
+          button.classList.remove('copied');
+        }, 2000);
+      });
+    });
+    pre.appendChild(button);
+  });
+})();
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

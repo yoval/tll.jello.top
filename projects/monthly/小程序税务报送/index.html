@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="zh-CN" dir="ltr">
+<head>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="小程序税务报送#面向税务机关的两张报送表生成工具：《平台内经营者和从业人员身份信息报送表》与《收入信息报送表》，生成 CSV 后自动用 7-Zip AES-256 加密压缩。
+数据依赖： 执照库 license_manage（门店营业执照管理 维护），提供报送名称与统一社会信用代码 门店信息 …">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://tll.jello.top/projects/monthly/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%A8%8E%E5%8A%A1%E6%8A%A5%E9%80%81/">
+  <meta property="og:site_name" content="Data Documentation">
+  <meta property="og:title" content="小程序税务报送">
+  <meta property="og:description" content="小程序税务报送#面向税务机关的两张报送表生成工具：《平台内经营者和从业人员身份信息报送表》与《收入信息报送表》，生成 CSV 后自动用 7-Zip AES-256 加密压缩。
+数据依赖： 执照库 license_manage（门店营业执照管理 维护），提供报送名称与统一社会信用代码 门店信息 shop_info / shop_current（门店信息管理 每日重建） 本期报税表 输入/小程序报税表_图表1.xlsx 数据链路#输入/小程序报税表_图表1.xlsx → license_manage.platform_tax_report（replace 全量重建） → 匹配 license_store_license、shop_info/shop_current，剔除特殊门店 → 输出 收入信息 / 人员身份信息 CSV → 同名加密 zip运行方式#python main.py upload # 1. 导入本期报税表 python main.py person # 2. 身份信息表（21 列，一店一行） python main.py revenue # 3. 收入信息表（27 列，同店多周期先汇总） python main.py all # 依次执行全部（默认） python main.py revenue --no-zip # 只出 CSV 不压缩报送规则要点#报送范围：当期有收入的门店；两张表均剔除 license_special_store 特殊门店（学校店/景区店/测试店） 名称/统一社会信用代码取执照表最新版本（is_latest=1） 唯一标识码 = {门店编号}_{version}，两张表保持一致 联系人/电话取 shop_info 最新记录；经营开始时间取最早记录 已解约门店状态填 03|退出，否则 01|新增 注意事项#压缩密码在 config.ini [Archive].password，留空则只打包不加密 表头从 模板/ 官方文件动态读取，模板升级无需改代码 运行结束的 WARNING 汇总需人工核对：报送名称为空、未匹配执照、未匹配门店记录">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="projects">
+
+
+  <meta itemprop="name" content="小程序税务报送">
+  <meta itemprop="description" content="小程序税务报送#面向税务机关的两张报送表生成工具：《平台内经营者和从业人员身份信息报送表》与《收入信息报送表》，生成 CSV 后自动用 7-Zip AES-256 加密压缩。
+数据依赖： 执照库 license_manage（门店营业执照管理 维护），提供报送名称与统一社会信用代码 门店信息 shop_info / shop_current（门店信息管理 每日重建） 本期报税表 输入/小程序报税表_图表1.xlsx 数据链路#输入/小程序报税表_图表1.xlsx → license_manage.platform_tax_report（replace 全量重建） → 匹配 license_store_license、shop_info/shop_current，剔除特殊门店 → 输出 收入信息 / 人员身份信息 CSV → 同名加密 zip运行方式#python main.py upload # 1. 导入本期报税表 python main.py person # 2. 身份信息表（21 列，一店一行） python main.py revenue # 3. 收入信息表（27 列，同店多周期先汇总） python main.py all # 依次执行全部（默认） python main.py revenue --no-zip # 只出 CSV 不压缩报送规则要点#报送范围：当期有收入的门店；两张表均剔除 license_special_store 特殊门店（学校店/景区店/测试店） 名称/统一社会信用代码取执照表最新版本（is_latest=1） 唯一标识码 = {门店编号}_{version}，两张表保持一致 联系人/电话取 shop_info 最新记录；经营开始时间取最早记录 已解约门店状态填 03|退出，否则 01|新增 注意事项#压缩密码在 config.ini [Archive].password，留空则只打包不加密 表头从 模板/ 官方文件动态读取，模板升级无需改代码 运行结束的 WARNING 汇总需人工核对：报送名称为空、未匹配执照、未匹配门店记录">
+  <meta itemprop="wordCount" content="91">
+
+<title>小程序税务报送 • Data Documentation</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="https://tll.jello.top/projects/monthly/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%A8%8E%E5%8A%A1%E6%8A%A5%E9%80%81/">
+<link rel="stylesheet" href="/book.min.css">
+
+
+  <script defer type="module" src="/en.search.min.js"></script>
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-projects">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="https://www.tianlala.com/favicon.ico" alt="Logo" /><span>Data Documentation</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      数据字典</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/data-dictionary/ads_dbs_trade_shop_pay_channel_di/" class="">
+      门店销售（支付渠道）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/data-dictionary/ads_dbs_trade_shop_di/" class="">
+      门店销售（来源渠道）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/data-dictionary/ads_dbs_trade_food_di/" class="">
+      产品销售（来源渠道）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/data-dictionary/dwd_rps_tll_order_details_di/" class="">
+      门店报货信息</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/data-dictionary/dim_oas_formmain_0145_df/" class="">
+      门店管理表</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d43966a73403828c9c11f55cc6f0f707" class="toggle"  />
+    <label for="section-d43966a73403828c9c11f55cc6f0f707" class="flex">
+      <a role="button" class="">
+        常用查询</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/%E9%97%A8%E5%BA%97%E6%97%A5GMV%E6%9F%A5%E8%AF%A2/" class="">
+      门店日GMV查询</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/%E8%B5%A0%E8%8C%B6%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2/" class="">
+      赠茶数据查询</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/%E5%8A%A0%E7%9B%9F%E5%BA%97%E6%AF%8F%E6%97%A5%E5%90%84%E6%B8%A0%E9%81%93%E6%B5%81%E6%B0%B4/" class="">
+      加盟店每日各渠道流水</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2cb822f103845855e927ff8ab980e529" class="toggle" checked />
+    <label for="section-2cb822f103845855e927ff8ab980e529" class="flex">
+      <a role="button" class="">
+        项目管理</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c24cc055d3c9e0d6450918c00f548d76" class="toggle"  />
+    <label for="section-c24cc055d3c9e0d6450918c00f548d76" class="flex">
+      <a role="button" class="">
+        日常任务</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/daily/%E5%8C%97%E6%A3%AE%E9%80%9A%E8%AE%AF%E5%BD%95%E5%90%8C%E6%AD%A5/" class="">
+      北森通讯录同步</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/daily/%E9%97%A8%E5%BA%97%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/" class="">
+      门店信息管理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/daily/%E6%A0%87%E5%87%86%E8%8F%9C%E5%93%81%E5%90%8D%E7%A7%B0%E6%A0%B8%E5%AF%B9/" class="">
+      标准菜品名称核对</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-bd1e344e17b9897a7435d9fa71e8c255" class="toggle"  />
+    <label for="section-bd1e344e17b9897a7435d9fa71e8c255" class="flex">
+      <a role="button" class="">
+        管理工具</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/manage/%E9%97%A8%E5%BA%97%E8%90%A5%E4%B8%9A%E6%89%A7%E7%85%A7%E7%AE%A1%E7%90%86/" class="">
+      门店营业执照管理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/manage/%E9%97%A8%E5%BA%97%E9%94%80%E5%94%AE%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5/" class="">
+      门店销售数据同步</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/manage/%E9%97%A8%E5%BA%97%E6%8A%A5%E9%80%81%E5%90%8D%E7%A7%B0%E7%94%9F%E6%88%90/" class="">
+      门店报送名称生成</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-62bda4b1e27fd89189aed4fe906db280" class="toggle" checked />
+    <label for="section-62bda4b1e27fd89189aed4fe906db280" class="flex">
+      <a role="button" class="">
+        月度任务</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E6%9C%88%E5%BA%A6%E4%BA%A7%E5%93%81%E9%94%80%E5%94%AE%E6%B1%87%E6%80%BB/" class="">
+      月度产品销售汇总</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E5%A4%9A%E6%97%B6%E6%AE%B5%E6%B8%A0%E9%81%93%E5%90%8C%E6%AF%94%E5%88%86%E6%9E%90/" class="">
+      多时段渠道同比分析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E5%91%A8%E8%BE%B9%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="">
+      周边数据分析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%A8%8E%E5%8A%A1%E6%8A%A5%E9%80%81/" class="active">
+      小程序税务报送</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E6%9C%88%E5%BA%A6%E6%95%B0%E6%8D%AE%E6%A6%82%E8%A7%88/" class="">
+      月度数据概览</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E5%B7%A5%E4%BD%9C%E5%8F%B0/" class="">
+      定时任务工作台</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/%E6%A0%87%E5%87%86%E8%8F%9C%E5%93%81%E5%90%8D%E7%A7%B0%E6%B8%85%E6%B4%97/" class="">
+      标准菜品名称清洗</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/csv%E6%96%87%E4%BB%B6%E7%9A%84%E5%88%86%E5%89%B2/" class="">
+      CSV文件分割</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      产品记录</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/product/2026%E4%BA%A7%E5%93%81%E4%B8%8A%E6%96%B0%E8%AE%B0%E5%BD%95/" class="">
+      2026产品上新记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/product/2025%E4%BA%A7%E5%93%81%E4%B8%8A%E6%96%B0%E8%AE%B0%E5%BD%95/" class="">
+      2025产品上新记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/product/%E5%B0%8F%E6%96%99/" class="">
+      小料</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      常用术语</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/glossary/%E5%B8%B8%E7%94%A8%E6%9C%AF%E8%AF%AD/" class="">
+      常用术语</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      参考资料</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E6%B8%A0%E9%81%93%E5%88%86%E7%BB%84/" class="">
+      支付渠道分组</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E6%9D%A5%E6%BA%90%E6%B8%A0%E9%81%93%E5%AF%B9%E6%AF%94/" class="">
+      来源渠道 vs 商品流水</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E6%94%AF%E4%BB%98%E6%B8%A0%E9%81%93%E5%AF%B9%E6%AF%94/" class="">
+      来源渠道 vs 支付渠道</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>小程序税务报送</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#小程序税务报送">小程序税务报送</a>
+      <ul>
+        <li><a href="#数据链路">数据链路</a></li>
+        <li><a href="#运行方式">运行方式</a></li>
+        <li><a href="#报送规则要点">报送规则要点</a></li>
+        <li><a href="#注意事项">注意事项</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="小程序税务报送">小程序税务报送<a class="anchor" href="#%e5%b0%8f%e7%a8%8b%e5%ba%8f%e7%a8%8e%e5%8a%a1%e6%8a%a5%e9%80%81">#</a></h1>
+<p>面向税务机关的两张报送表生成工具：《平台内经营者和从业人员身份信息报送表》与《收入信息报送表》，生成 CSV 后自动用 7-Zip AES-256 加密压缩。</p>
+<ul>
+<li><strong>数据依赖</strong>：
+<ul>
+<li>执照库 <code>license_manage</code>（<a href="https://tll.jello.top/projects/manage/%E9%97%A8%E5%BA%97%E8%90%A5%E4%B8%9A%E6%89%A7%E7%85%A7%E7%AE%A1%E7%90%86/">门店营业执照管理</a> 维护），提供报送名称与统一社会信用代码</li>
+<li>门店信息 <code>shop_info</code> / <code>shop_current</code>（<a href="https://tll.jello.top/projects/daily/%E9%97%A8%E5%BA%97%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/">门店信息管理</a> 每日重建）</li>
+<li>本期报税表 <code>输入/小程序报税表_图表1.xlsx</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="数据链路">数据链路<a class="anchor" href="#%e6%95%b0%e6%8d%ae%e9%93%be%e8%b7%af">#</a></h2>
+<div class="code-block"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">输入/小程序报税表_图表1.xlsx
+</span></span><span class="line"><span class="cl">→ license_manage.platform_tax_report（replace 全量重建）
+</span></span><span class="line"><span class="cl">→ 匹配 license_store_license、shop_info/shop_current，剔除特殊门店
+</span></span><span class="line"><span class="cl">→ 输出 收入信息 / 人员身份信息 CSV → 同名加密 zip</span></span></code></pre></div></div><h2 id="运行方式">运行方式<a class="anchor" href="#%e8%bf%90%e8%a1%8c%e6%96%b9%e5%bc%8f">#</a></h2>
+<div class="code-block" data-lang="Shell"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">python main.py upload     <span class="c1"># 1. 导入本期报税表</span>
+</span></span><span class="line"><span class="cl">python main.py person     <span class="c1"># 2. 身份信息表（21 列，一店一行）</span>
+</span></span><span class="line"><span class="cl">python main.py revenue    <span class="c1"># 3. 收入信息表（27 列，同店多周期先汇总）</span>
+</span></span><span class="line"><span class="cl">python main.py all        <span class="c1"># 依次执行全部（默认）</span>
+</span></span><span class="line"><span class="cl">python main.py revenue --no-zip   <span class="c1"># 只出 CSV 不压缩</span></span></span></code></pre></div></div><h2 id="报送规则要点">报送规则要点<a class="anchor" href="#%e6%8a%a5%e9%80%81%e8%a7%84%e5%88%99%e8%a6%81%e7%82%b9">#</a></h2>
+<ul>
+<li>报送范围：当期有收入的门店；两张表均剔除 <code>license_special_store</code> 特殊门店（学校店/景区店/测试店）</li>
+<li>名称/统一社会信用代码取执照表最新版本（<code>is_latest=1</code>）</li>
+<li>唯一标识码 = <code>{门店编号}_{version}</code>，两张表保持一致</li>
+<li>联系人/电话取 <code>shop_info</code> 最新记录；经营开始时间取最早记录</li>
+<li>已解约门店状态填 <code>03|退出</code>，否则 <code>01|新增</code></li>
+</ul>
+<h2 id="注意事项">注意事项<a class="anchor" href="#%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9">#</a></h2>
+<ul>
+<li>压缩密码在 <code>config.ini [Archive].password</code>，留空则只打包不加密</li>
+<li>表头从 <code>模板/</code> 官方文件动态读取，模板升级无需改代码</li>
+<li>运行结束的 WARNING 汇总需人工核对：报送名称为空、未匹配执照、未匹配门店记录</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+<div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/projects/monthly/%E5%91%A8%E8%BE%B9%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>周边数据分析</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/projects/monthly/%E6%9C%88%E5%BA%A6%E6%95%B0%E6%8D%AE%E6%A6%82%E8%A7%88/" class="flex align-center">
+        <span>月度数据概览</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#小程序税务报送">小程序税务报送</a>
+      <ul>
+        <li><a href="#数据链路">数据链路</a></li>
+        <li><a href="#运行方式">运行方式</a></li>
+        <li><a href="#报送规则要点">报送规则要点</a></li>
+        <li><a href="#注意事项">注意事项</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  <script>
+(function () {
+  document.querySelectorAll('pre > code').forEach(function (codeBlock) {
+    var pre = codeBlock.parentNode;
+    var button = document.createElement('button');
+    button.className = 'copy-code';
+    button.textContent = '复制';
+    button.addEventListener('click', function () {
+      var text = codeBlock.textContent;
+      navigator.clipboard.writeText(text).then(function () {
+        button.textContent = '已复制';
+        button.classList.add('copied');
+        setTimeout(function () {
+          button.textContent = '复制';
+          button.classList.remove('copied');
+        }, 2000);
+      });
+    });
+    pre.appendChild(button);
+  });
+})();
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="zh-CN" dir="ltr">
+<head>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="门店管理表#中台同步的 OA 门店主数据日表，粒度为门店，表名 dim_oas_formmain_0145_df（库 tll_bi_dw）。
+字段查询#SELECT COLUMN_NAME AS 字段名, COLUMN_TYPE AS 字段类型, COLUMN_COMMENT AS 字段注释 …">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://tll.jello.top/data-dictionary/dim_oas_formmain_0145_df/">
+  <meta property="og:site_name" content="Data Documentation">
+  <meta property="og:title" content="门店管理表">
+  <meta property="og:description" content="门店管理表#中台同步的 OA 门店主数据日表，粒度为门店，表名 dim_oas_formmain_0145_df（库 tll_bi_dw）。
+字段查询#SELECT COLUMN_NAME AS 字段名, COLUMN_TYPE AS 字段类型, COLUMN_COMMENT AS 字段注释 FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = &#39;tll_bi_dw&#39; AND TABLE_NAME = &#39;dim_oas_formmain_0145_df&#39;;字段说明#列名 数据类型 注释 shop_oneid varchar(255) 门店唯一编码 shop_id varchar(255) 门店id shop_name varchar(255) 门店名称 oa_shop_code varchar(255) OA门店编号 oa_shop_name varchar(255) OA门店名称 shop_type varchar(255) 门店类型 shop_status varchar(255) 门店状态 busi_status varchar(255) 运营状态 open_date varchar(255) 开业日期 shop_open_time varchar(255) 营业时间 region_name varchar(255) 所属大区 region_manager_name varchar(255) 大区经理名称 prov_manager_name varchar(255) 省经理名称 district_manager_name varchar(255) 区域经理名称 supervisor_name varchar(255) 督导 shop_addr varchar(255) 门店地址 prov_name varchar(255) 所属省份 prov_id varchar(255) 所属省份id city_name varchar(255) 所属城市 city_id varchar(255) 所属城市id district_name varchar(255) 所属区县 district_id varchar(255) 所属区县id area_division varchar(255) 所属行政区划 busi_area_level varchar(255) 商圈等级 send_whse varchar(255) 发货仓库 cont_status varchar(255) 合同状态(初签、过户、迁址等) shop_area varchar(255) 经营面积 license_name varchar(255) 营业执照名称 license_person varchar(255) 营业执照法人 license_phone varchar(255) 法人号码 license_addr varchar(255) 营业执照地址 u8c_cus_id varchar(255) U8C客商编码 regist_date varchar(255) 登记日期 close_shop_date varchar(255) 闭店日期 contract_sign_date varchar(255) 签约日期 contract_id varchar(255) 合同编号 contract_start_date varchar(255) 合同开始日期 contract_end_date varchar(255) 合同结束日期 load_time varchar(255) 中台数据加工时间 pt varchar(255) 天分区 shop_level varchar(5) 门店等级 agent_code varchar(10) 代理商编码 agent_name varchar(255) 代理商名称 rebate_ratio decimalv3(10, 2) 代理商返利系数 sap_shop_id varchar(255) sap门店编码 rps_discount varchar(255) 报货等级 expand_personnel varchar(200) busi_district_type varchar(255) 商圈类型 direct_store_manager varchar(255) 直营店经理 street varchar(255) 街道 city_level varchar(255) 所属城市等级 registrant varchar(128) 登记人 shop_rent decimalv3(10, 2) 门店租金 if_subsidy varchar(8) 是否补贴 if_agent_area varchar(8) 是否属于代理区域 first_sign_date varchar(128) 初签日期 first_sign_name varchar(128) 初签人名称 shop_short_name varchar(255) 门店简称 注意事项#注意 通常使用自己维护的门店管理表（shop_current，见 门店信息管理），不使用这张中台表。">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="data-dictionary">
+
+
+  <meta itemprop="name" content="门店管理表">
+  <meta itemprop="description" content="门店管理表#中台同步的 OA 门店主数据日表，粒度为门店，表名 dim_oas_formmain_0145_df（库 tll_bi_dw）。
+字段查询#SELECT COLUMN_NAME AS 字段名, COLUMN_TYPE AS 字段类型, COLUMN_COMMENT AS 字段注释 FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = &#39;tll_bi_dw&#39; AND TABLE_NAME = &#39;dim_oas_formmain_0145_df&#39;;字段说明#列名 数据类型 注释 shop_oneid varchar(255) 门店唯一编码 shop_id varchar(255) 门店id shop_name varchar(255) 门店名称 oa_shop_code varchar(255) OA门店编号 oa_shop_name varchar(255) OA门店名称 shop_type varchar(255) 门店类型 shop_status varchar(255) 门店状态 busi_status varchar(255) 运营状态 open_date varchar(255) 开业日期 shop_open_time varchar(255) 营业时间 region_name varchar(255) 所属大区 region_manager_name varchar(255) 大区经理名称 prov_manager_name varchar(255) 省经理名称 district_manager_name varchar(255) 区域经理名称 supervisor_name varchar(255) 督导 shop_addr varchar(255) 门店地址 prov_name varchar(255) 所属省份 prov_id varchar(255) 所属省份id city_name varchar(255) 所属城市 city_id varchar(255) 所属城市id district_name varchar(255) 所属区县 district_id varchar(255) 所属区县id area_division varchar(255) 所属行政区划 busi_area_level varchar(255) 商圈等级 send_whse varchar(255) 发货仓库 cont_status varchar(255) 合同状态(初签、过户、迁址等) shop_area varchar(255) 经营面积 license_name varchar(255) 营业执照名称 license_person varchar(255) 营业执照法人 license_phone varchar(255) 法人号码 license_addr varchar(255) 营业执照地址 u8c_cus_id varchar(255) U8C客商编码 regist_date varchar(255) 登记日期 close_shop_date varchar(255) 闭店日期 contract_sign_date varchar(255) 签约日期 contract_id varchar(255) 合同编号 contract_start_date varchar(255) 合同开始日期 contract_end_date varchar(255) 合同结束日期 load_time varchar(255) 中台数据加工时间 pt varchar(255) 天分区 shop_level varchar(5) 门店等级 agent_code varchar(10) 代理商编码 agent_name varchar(255) 代理商名称 rebate_ratio decimalv3(10, 2) 代理商返利系数 sap_shop_id varchar(255) sap门店编码 rps_discount varchar(255) 报货等级 expand_personnel varchar(200) busi_district_type varchar(255) 商圈类型 direct_store_manager varchar(255) 直营店经理 street varchar(255) 街道 city_level varchar(255) 所属城市等级 registrant varchar(128) 登记人 shop_rent decimalv3(10, 2) 门店租金 if_subsidy varchar(8) 是否补贴 if_agent_area varchar(8) 是否属于代理区域 first_sign_date varchar(128) 初签日期 first_sign_name varchar(128) 初签人名称 shop_short_name varchar(255) 门店简称 注意事项#注意 通常使用自己维护的门店管理表（shop_current，见 门店信息管理），不使用这张中台表。">
+  <meta itemprop="wordCount" content="209">
+
+<title>门店管理表 • Data Documentation</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="https://tll.jello.top/data-dictionary/dim_oas_formmain_0145_df/">
+<link rel="stylesheet" href="/book.min.css">
+
+
+  <script defer type="module" src="/en.search.min.js"></script>
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-data-dictionary">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="https://www.tianlala.com/favicon.ico" alt="Logo" /><span>Data Documentation</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      数据字典</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/data-dictionary/ads_dbs_trade_shop_pay_channel_di/" class="">
+      门店销售（支付渠道）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/data-dictionary/ads_dbs_trade_shop_di/" class="">
+      门店销售（来源渠道）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/data-dictionary/ads_dbs_trade_food_di/" class="">
+      产品销售（来源渠道）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/data-dictionary/dwd_rps_tll_order_details_di/" class="">
+      门店报货信息</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/data-dictionary/dim_oas_formmain_0145_df/" class="active">
+      门店管理表</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d43966a73403828c9c11f55cc6f0f707" class="toggle"  />
+    <label for="section-d43966a73403828c9c11f55cc6f0f707" class="flex">
+      <a role="button" class="">
+        常用查询</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/%E9%97%A8%E5%BA%97%E6%97%A5GMV%E6%9F%A5%E8%AF%A2/" class="">
+      门店日GMV查询</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/%E8%B5%A0%E8%8C%B6%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2/" class="">
+      赠茶数据查询</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/%E5%8A%A0%E7%9B%9F%E5%BA%97%E6%AF%8F%E6%97%A5%E5%90%84%E6%B8%A0%E9%81%93%E6%B5%81%E6%B0%B4/" class="">
+      加盟店每日各渠道流水</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2cb822f103845855e927ff8ab980e529" class="toggle"  />
+    <label for="section-2cb822f103845855e927ff8ab980e529" class="flex">
+      <a role="button" class="">
+        项目管理</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c24cc055d3c9e0d6450918c00f548d76" class="toggle"  />
+    <label for="section-c24cc055d3c9e0d6450918c00f548d76" class="flex">
+      <a role="button" class="">
+        日常任务</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/daily/%E5%8C%97%E6%A3%AE%E9%80%9A%E8%AE%AF%E5%BD%95%E5%90%8C%E6%AD%A5/" class="">
+      北森通讯录同步</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/daily/%E9%97%A8%E5%BA%97%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/" class="">
+      门店信息管理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/daily/%E6%A0%87%E5%87%86%E8%8F%9C%E5%93%81%E5%90%8D%E7%A7%B0%E6%A0%B8%E5%AF%B9/" class="">
+      标准菜品名称核对</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-bd1e344e17b9897a7435d9fa71e8c255" class="toggle"  />
+    <label for="section-bd1e344e17b9897a7435d9fa71e8c255" class="flex">
+      <a role="button" class="">
+        管理工具</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/manage/%E9%97%A8%E5%BA%97%E8%90%A5%E4%B8%9A%E6%89%A7%E7%85%A7%E7%AE%A1%E7%90%86/" class="">
+      门店营业执照管理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/manage/%E9%97%A8%E5%BA%97%E9%94%80%E5%94%AE%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5/" class="">
+      门店销售数据同步</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/manage/%E9%97%A8%E5%BA%97%E6%8A%A5%E9%80%81%E5%90%8D%E7%A7%B0%E7%94%9F%E6%88%90/" class="">
+      门店报送名称生成</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-62bda4b1e27fd89189aed4fe906db280" class="toggle"  />
+    <label for="section-62bda4b1e27fd89189aed4fe906db280" class="flex">
+      <a role="button" class="">
+        月度任务</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E6%9C%88%E5%BA%A6%E4%BA%A7%E5%93%81%E9%94%80%E5%94%AE%E6%B1%87%E6%80%BB/" class="">
+      月度产品销售汇总</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E5%A4%9A%E6%97%B6%E6%AE%B5%E6%B8%A0%E9%81%93%E5%90%8C%E6%AF%94%E5%88%86%E6%9E%90/" class="">
+      多时段渠道同比分析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E5%91%A8%E8%BE%B9%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="">
+      周边数据分析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%A8%8E%E5%8A%A1%E6%8A%A5%E9%80%81/" class="">
+      小程序税务报送</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E6%9C%88%E5%BA%A6%E6%95%B0%E6%8D%AE%E6%A6%82%E8%A7%88/" class="">
+      月度数据概览</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E5%B7%A5%E4%BD%9C%E5%8F%B0/" class="">
+      定时任务工作台</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/%E6%A0%87%E5%87%86%E8%8F%9C%E5%93%81%E5%90%8D%E7%A7%B0%E6%B8%85%E6%B4%97/" class="">
+      标准菜品名称清洗</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/csv%E6%96%87%E4%BB%B6%E7%9A%84%E5%88%86%E5%89%B2/" class="">
+      CSV文件分割</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      产品记录</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/product/2026%E4%BA%A7%E5%93%81%E4%B8%8A%E6%96%B0%E8%AE%B0%E5%BD%95/" class="">
+      2026产品上新记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/product/2025%E4%BA%A7%E5%93%81%E4%B8%8A%E6%96%B0%E8%AE%B0%E5%BD%95/" class="">
+      2025产品上新记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/product/%E5%B0%8F%E6%96%99/" class="">
+      小料</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      常用术语</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/glossary/%E5%B8%B8%E7%94%A8%E6%9C%AF%E8%AF%AD/" class="">
+      常用术语</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      参考资料</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E6%B8%A0%E9%81%93%E5%88%86%E7%BB%84/" class="">
+      支付渠道分组</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E6%9D%A5%E6%BA%90%E6%B8%A0%E9%81%93%E5%AF%B9%E6%AF%94/" class="">
+      来源渠道 vs 商品流水</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E6%94%AF%E4%BB%98%E6%B8%A0%E9%81%93%E5%AF%B9%E6%AF%94/" class="">
+      来源渠道 vs 支付渠道</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>门店管理表</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#门店管理表">门店管理表</a>
+      <ul>
+        <li><a href="#字段查询">字段查询</a></li>
+        <li><a href="#字段说明">字段说明</a></li>
+        <li><a href="#注意事项">注意事项</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="门店管理表">门店管理表<a class="anchor" href="#%e9%97%a8%e5%ba%97%e7%ae%a1%e7%90%86%e8%a1%a8">#</a></h1>
+<p>中台同步的 OA 门店主数据日表，粒度为门店，表名 <code>dim_oas_formmain_0145_df</code>（库 <code>tll_bi_dw</code>）。</p>
+<h2 id="字段查询">字段查询<a class="anchor" href="#%e5%ad%97%e6%ae%b5%e6%9f%a5%e8%af%a2">#</a></h2>
+<div class="code-block" data-lang="SQL"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">COLUMN_NAME</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="err">字段名</span><span class="p">,</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">COLUMN_TYPE</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="err">字段类型</span><span class="p">,</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">COLUMN_COMMENT</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="err">字段注释</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="k">FROM</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">COLUMNS</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="k">WHERE</span><span class="w"> </span><span class="n">TABLE_SCHEMA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;tll_bi_dw&#39;</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="k">AND</span><span class="w"> </span><span class="k">TABLE_NAME</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;dim_oas_formmain_0145_df&#39;</span><span class="p">;</span></span></span></code></pre></div></div><h2 id="字段说明">字段说明<a class="anchor" href="#%e5%ad%97%e6%ae%b5%e8%af%b4%e6%98%8e">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>列名</th>
+          <th>数据类型</th>
+          <th>注释</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>shop_oneid</td>
+          <td>varchar(255)</td>
+          <td>门店唯一编码</td>
+      </tr>
+      <tr>
+          <td>shop_id</td>
+          <td>varchar(255)</td>
+          <td>门店id</td>
+      </tr>
+      <tr>
+          <td>shop_name</td>
+          <td>varchar(255)</td>
+          <td>门店名称</td>
+      </tr>
+      <tr>
+          <td>oa_shop_code</td>
+          <td>varchar(255)</td>
+          <td>OA门店编号</td>
+      </tr>
+      <tr>
+          <td>oa_shop_name</td>
+          <td>varchar(255)</td>
+          <td>OA门店名称</td>
+      </tr>
+      <tr>
+          <td>shop_type</td>
+          <td>varchar(255)</td>
+          <td>门店类型</td>
+      </tr>
+      <tr>
+          <td>shop_status</td>
+          <td>varchar(255)</td>
+          <td>门店状态</td>
+      </tr>
+      <tr>
+          <td>busi_status</td>
+          <td>varchar(255)</td>
+          <td>运营状态</td>
+      </tr>
+      <tr>
+          <td>open_date</td>
+          <td>varchar(255)</td>
+          <td>开业日期</td>
+      </tr>
+      <tr>
+          <td>shop_open_time</td>
+          <td>varchar(255)</td>
+          <td>营业时间</td>
+      </tr>
+      <tr>
+          <td>region_name</td>
+          <td>varchar(255)</td>
+          <td>所属大区</td>
+      </tr>
+      <tr>
+          <td>region_manager_name</td>
+          <td>varchar(255)</td>
+          <td>大区经理名称</td>
+      </tr>
+      <tr>
+          <td>prov_manager_name</td>
+          <td>varchar(255)</td>
+          <td>省经理名称</td>
+      </tr>
+      <tr>
+          <td>district_manager_name</td>
+          <td>varchar(255)</td>
+          <td>区域经理名称</td>
+      </tr>
+      <tr>
+          <td>supervisor_name</td>
+          <td>varchar(255)</td>
+          <td>督导</td>
+      </tr>
+      <tr>
+          <td>shop_addr</td>
+          <td>varchar(255)</td>
+          <td>门店地址</td>
+      </tr>
+      <tr>
+          <td>prov_name</td>
+          <td>varchar(255)</td>
+          <td>所属省份</td>
+      </tr>
+      <tr>
+          <td>prov_id</td>
+          <td>varchar(255)</td>
+          <td>所属省份id</td>
+      </tr>
+      <tr>
+          <td>city_name</td>
+          <td>varchar(255)</td>
+          <td>所属城市</td>
+      </tr>
+      <tr>
+          <td>city_id</td>
+          <td>varchar(255)</td>
+          <td>所属城市id</td>
+      </tr>
+      <tr>
+          <td>district_name</td>
+          <td>varchar(255)</td>
+          <td>所属区县</td>
+      </tr>
+      <tr>
+          <td>district_id</td>
+          <td>varchar(255)</td>
+          <td>所属区县id</td>
+      </tr>
+      <tr>
+          <td>area_division</td>
+          <td>varchar(255)</td>
+          <td>所属行政区划</td>
+      </tr>
+      <tr>
+          <td>busi_area_level</td>
+          <td>varchar(255)</td>
+          <td>商圈等级</td>
+      </tr>
+      <tr>
+          <td>send_whse</td>
+          <td>varchar(255)</td>
+          <td>发货仓库</td>
+      </tr>
+      <tr>
+          <td>cont_status</td>
+          <td>varchar(255)</td>
+          <td>合同状态(初签、过户、迁址等)</td>
+      </tr>
+      <tr>
+          <td>shop_area</td>
+          <td>varchar(255)</td>
+          <td>经营面积</td>
+      </tr>
+      <tr>
+          <td>license_name</td>
+          <td>varchar(255)</td>
+          <td>营业执照名称</td>
+      </tr>
+      <tr>
+          <td>license_person</td>
+          <td>varchar(255)</td>
+          <td>营业执照法人</td>
+      </tr>
+      <tr>
+          <td>license_phone</td>
+          <td>varchar(255)</td>
+          <td>法人号码</td>
+      </tr>
+      <tr>
+          <td>license_addr</td>
+          <td>varchar(255)</td>
+          <td>营业执照地址</td>
+      </tr>
+      <tr>
+          <td>u8c_cus_id</td>
+          <td>varchar(255)</td>
+          <td>U8C客商编码</td>
+      </tr>
+      <tr>
+          <td>regist_date</td>
+          <td>varchar(255)</td>
+          <td>登记日期</td>
+      </tr>
+      <tr>
+          <td>close_shop_date</td>
+          <td>varchar(255)</td>
+          <td>闭店日期</td>
+      </tr>
+      <tr>
+          <td>contract_sign_date</td>
+          <td>varchar(255)</td>
+          <td>签约日期</td>
+      </tr>
+      <tr>
+          <td>contract_id</td>
+          <td>varchar(255)</td>
+          <td>合同编号</td>
+      </tr>
+      <tr>
+          <td>contract_start_date</td>
+          <td>varchar(255)</td>
+          <td>合同开始日期</td>
+      </tr>
+      <tr>
+          <td>contract_end_date</td>
+          <td>varchar(255)</td>
+          <td>合同结束日期</td>
+      </tr>
+      <tr>
+          <td>load_time</td>
+          <td>varchar(255)</td>
+          <td>中台数据加工时间</td>
+      </tr>
+      <tr>
+          <td>pt</td>
+          <td>varchar(255)</td>
+          <td>天分区</td>
+      </tr>
+      <tr>
+          <td>shop_level</td>
+          <td>varchar(5)</td>
+          <td>门店等级</td>
+      </tr>
+      <tr>
+          <td>agent_code</td>
+          <td>varchar(10)</td>
+          <td>代理商编码</td>
+      </tr>
+      <tr>
+          <td>agent_name</td>
+          <td>varchar(255)</td>
+          <td>代理商名称</td>
+      </tr>
+      <tr>
+          <td>rebate_ratio</td>
+          <td>decimalv3(10, 2)</td>
+          <td>代理商返利系数</td>
+      </tr>
+      <tr>
+          <td>sap_shop_id</td>
+          <td>varchar(255)</td>
+          <td>sap门店编码</td>
+      </tr>
+      <tr>
+          <td>rps_discount</td>
+          <td>varchar(255)</td>
+          <td>报货等级</td>
+      </tr>
+      <tr>
+          <td>expand_personnel</td>
+          <td>varchar(200)</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>busi_district_type</td>
+          <td>varchar(255)</td>
+          <td>商圈类型</td>
+      </tr>
+      <tr>
+          <td>direct_store_manager</td>
+          <td>varchar(255)</td>
+          <td>直营店经理</td>
+      </tr>
+      <tr>
+          <td>street</td>
+          <td>varchar(255)</td>
+          <td>街道</td>
+      </tr>
+      <tr>
+          <td>city_level</td>
+          <td>varchar(255)</td>
+          <td>所属城市等级</td>
+      </tr>
+      <tr>
+          <td>registrant</td>
+          <td>varchar(128)</td>
+          <td>登记人</td>
+      </tr>
+      <tr>
+          <td>shop_rent</td>
+          <td>decimalv3(10, 2)</td>
+          <td>门店租金</td>
+      </tr>
+      <tr>
+          <td>if_subsidy</td>
+          <td>varchar(8)</td>
+          <td>是否补贴</td>
+      </tr>
+      <tr>
+          <td>if_agent_area</td>
+          <td>varchar(8)</td>
+          <td>是否属于代理区域</td>
+      </tr>
+      <tr>
+          <td>first_sign_date</td>
+          <td>varchar(128)</td>
+          <td>初签日期</td>
+      </tr>
+      <tr>
+          <td>first_sign_name</td>
+          <td>varchar(128)</td>
+          <td>初签人名称</td>
+      </tr>
+      <tr>
+          <td>shop_short_name</td>
+          <td>varchar(255)</td>
+          <td>门店简称</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="注意事项">注意事项<a class="anchor" href="#%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9">#</a></h2>
+<style>
+  .notice {
+    --notice-title-color: #fff;
+    --notice-title-bg: #6be;
+    --notice-content-color: #444;
+    --notice-content-bg: #e7f2fa;
+    padding: 0;
+    margin: 1em 0;
+    border-radius: 6px;
+    overflow: hidden;
+    color: var(--notice-content-color);
+    background: var(--notice-content-bg);
+    border: 1px solid var(--notice-title-bg);
+  }
+  .notice.info {
+    --notice-title-bg: #fb7;
+    --notice-content-bg: #fff8e7;
+  }
+  .notice.tip {
+    --notice-title-bg: #5a5;
+    --notice-content-bg: #e8f5e9;
+  }
+  .notice.warning {
+    --notice-title-bg: #c33;
+    --notice-content-bg: #fdecea;
+  }
+  .notice .notice-title {
+    margin: 0;
+    padding: 6px 16px;
+    font-weight: 700;
+    font-size: .9em;
+    color: var(--notice-title-color);
+    background: var(--notice-title-bg);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .notice .notice-title svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+    flex-shrink: 0;
+  }
+  .notice .notice-body {
+    padding: 12px 16px;
+    line-height: 1.7;
+  }
+  .notice .notice-body > :last-child {
+    margin-bottom: 0;
+  }
+  .notice .notice-body > :first-child {
+    margin-top: 0;
+  }
+</style><div class="notice warning">
+  <div class="notice-title"><svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>注意</div>
+  <div class="notice-body"><p>通常使用自己维护的门店管理表（<code>shop_current</code>，见 <a href="https://tll.jello.top/projects/daily/%E9%97%A8%E5%BA%97%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/">门店信息管理</a>），不使用这张中台表。</p></div>
+</div>
+
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+<div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/data-dictionary/dwd_rps_tll_order_details_di/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>门店报货信息</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/queries/%E9%97%A8%E5%BA%97%E6%97%A5GMV%E6%9F%A5%E8%AF%A2/" class="flex align-center">
+        <span>门店日GMV查询</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#门店管理表">门店管理表</a>
+      <ul>
+        <li><a href="#字段查询">字段查询</a></li>
+        <li><a href="#字段说明">字段说明</a></li>
+        <li><a href="#注意事项">注意事项</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  <script>
+(function () {
+  document.querySelectorAll('pre > code').forEach(function (codeBlock) {
+    var pre = codeBlock.parentNode;
+    var button = document.createElement('button');
+    button.className = 'copy-code';
+    button.textContent = '复制';
+    button.addEventListener('click', function () {
+      var text = codeBlock.textContent;
+      navigator.clipboard.writeText(text).then(function () {
+        button.textContent = '已复制';
+        button.classList.add('copied');
+        setTimeout(function () {
+          button.textContent = '复制';
+          button.classList.remove('copied');
+        }, 2000);
+      });
+    });
+    pre.appendChild(button);
+  });
+})();
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

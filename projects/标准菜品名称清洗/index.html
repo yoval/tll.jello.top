@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="zh-CN" dir="ltr">
+<head>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="标准菜品名称清洗#借助大模型将中台历史商品名称批量匹配到 OA 标准单品名称，生成名称映射表。属于一次性/不定期清洗，日常核对见 标准菜品名称核对。
+项目仓库：https://fuwenyue.coding.net/p/tianlala/d/standard_food_name/git 目录结构# …">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://tll.jello.top/projects/%E6%A0%87%E5%87%86%E8%8F%9C%E5%93%81%E5%90%8D%E7%A7%B0%E6%B8%85%E6%B4%97/">
+  <meta property="og:site_name" content="Data Documentation">
+  <meta property="og:title" content="标准菜品名称清洗">
+  <meta property="og:description" content="标准菜品名称清洗#借助大模型将中台历史商品名称批量匹配到 OA 标准单品名称，生成名称映射表。属于一次性/不定期清洗，日常核对见 标准菜品名称核对。
+项目仓库：https://fuwenyue.coding.net/p/tianlala/d/standard_food_name/git 目录结构#标准菜品名称 ├─ main.py # 主程序 ├─ README.md # 项目说明 ├─ 所有产品名称.csv # 输入：产品名称 ├─ 标准单品名称.xlsx # 输入：标准菜品名称 ├─ 标准菜品名称映射.json # 输出：匹配结果 └─ 标准菜品名称映射.xlsx # 输出：匹配结果数据获取#待清洗产品名称#文件名保存为 所有产品名称.csv：
+SELECT DISTINCT item_name AS 商品名称 FROM ads_dbs_trade_food_di WHERE business_date LIKE &#39;202605%&#39; AND dp_item_count &gt; 0 ORDER BY item_name标准菜品名称#OA 导出的 标准单品名称.xlsx。
+匹配规则#通过大模型批量语义匹配，核心 prompt 构建如下：
+def build_prompt(batch_products): &#34;&#34;&#34;为一批商品名称构建匹配 prompt&#34;&#34;&#34; product_list = &#34;\n&#34;.join([f&#34;{i&#43;1}. {name}&#34; for i, name in enumerate(batch_products)]) return f&#34;&#34;&#34;你是一个餐饮行业商品名称匹配专家。请将以下【待匹配商品名称】逐一匹配到最合适的【标准单品名称】。 规则： 1. 语义相似即可匹配，不需要完全一样。例如&#34;一桶水果茶1000ml&#34;可以匹配&#34;一桶水果茶&#34;。 2. 忽略容量、温度、赠品描述等修饰词。例如&#34;蜂蜜冰茉莉（500ml）&#34;匹配&#34;蜂蜜冰茉莉&#34;。 3. 如果一个待匹配名称包含多个独立商品（如一桶水果茶&#43;一桶全家福），请分别评估每个子商品与标准库的匹配置信度，仅输出你最有把握、匹配度最高的那一个单品。 4. 如果找不到合适的匹配，标记为&#34;无匹配&#34;。 5. 只返回 JSON 数组，不要任何其他文字。 【标准单品名称列表】（共{len(standard_names)}个）： {standard_list_text} 【待匹配商品名称】（共{len(batch_products)}个）： {product_list} 请返回 JSON 对象，格式如下： {{&#34;matches&#34;: [{{&#34;商品名称&#34;: &#34;xxx&#34;, &#34;匹配标准名称&#34;: &#34;yyy&#34;}}, ...]}}&#34;&#34;&#34;">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="projects">
+
+
+  <meta itemprop="name" content="标准菜品名称清洗">
+  <meta itemprop="description" content="标准菜品名称清洗#借助大模型将中台历史商品名称批量匹配到 OA 标准单品名称，生成名称映射表。属于一次性/不定期清洗，日常核对见 标准菜品名称核对。
+项目仓库：https://fuwenyue.coding.net/p/tianlala/d/standard_food_name/git 目录结构#标准菜品名称 ├─ main.py # 主程序 ├─ README.md # 项目说明 ├─ 所有产品名称.csv # 输入：产品名称 ├─ 标准单品名称.xlsx # 输入：标准菜品名称 ├─ 标准菜品名称映射.json # 输出：匹配结果 └─ 标准菜品名称映射.xlsx # 输出：匹配结果数据获取#待清洗产品名称#文件名保存为 所有产品名称.csv：
+SELECT DISTINCT item_name AS 商品名称 FROM ads_dbs_trade_food_di WHERE business_date LIKE &#39;202605%&#39; AND dp_item_count &gt; 0 ORDER BY item_name标准菜品名称#OA 导出的 标准单品名称.xlsx。
+匹配规则#通过大模型批量语义匹配，核心 prompt 构建如下：
+def build_prompt(batch_products): &#34;&#34;&#34;为一批商品名称构建匹配 prompt&#34;&#34;&#34; product_list = &#34;\n&#34;.join([f&#34;{i&#43;1}. {name}&#34; for i, name in enumerate(batch_products)]) return f&#34;&#34;&#34;你是一个餐饮行业商品名称匹配专家。请将以下【待匹配商品名称】逐一匹配到最合适的【标准单品名称】。 规则： 1. 语义相似即可匹配，不需要完全一样。例如&#34;一桶水果茶1000ml&#34;可以匹配&#34;一桶水果茶&#34;。 2. 忽略容量、温度、赠品描述等修饰词。例如&#34;蜂蜜冰茉莉（500ml）&#34;匹配&#34;蜂蜜冰茉莉&#34;。 3. 如果一个待匹配名称包含多个独立商品（如一桶水果茶&#43;一桶全家福），请分别评估每个子商品与标准库的匹配置信度，仅输出你最有把握、匹配度最高的那一个单品。 4. 如果找不到合适的匹配，标记为&#34;无匹配&#34;。 5. 只返回 JSON 数组，不要任何其他文字。 【标准单品名称列表】（共{len(standard_names)}个）： {standard_list_text} 【待匹配商品名称】（共{len(batch_products)}个）： {product_list} 请返回 JSON 对象，格式如下： {{&#34;matches&#34;: [{{&#34;商品名称&#34;: &#34;xxx&#34;, &#34;匹配标准名称&#34;: &#34;yyy&#34;}}, ...]}}&#34;&#34;&#34;">
+  <meta itemprop="wordCount" content="101">
+
+<title>标准菜品名称清洗 • Data Documentation</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="https://tll.jello.top/projects/%E6%A0%87%E5%87%86%E8%8F%9C%E5%93%81%E5%90%8D%E7%A7%B0%E6%B8%85%E6%B4%97/">
+<link rel="stylesheet" href="/book.min.css">
+
+
+  <script defer type="module" src="/en.search.min.js"></script>
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-projects">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="https://www.tianlala.com/favicon.ico" alt="Logo" /><span>Data Documentation</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      数据字典</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/data-dictionary/ads_dbs_trade_shop_pay_channel_di/" class="">
+      门店销售（支付渠道）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/data-dictionary/ads_dbs_trade_shop_di/" class="">
+      门店销售（来源渠道）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/data-dictionary/ads_dbs_trade_food_di/" class="">
+      产品销售（来源渠道）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/data-dictionary/dwd_rps_tll_order_details_di/" class="">
+      门店报货信息</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/data-dictionary/dim_oas_formmain_0145_df/" class="">
+      门店管理表</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d43966a73403828c9c11f55cc6f0f707" class="toggle"  />
+    <label for="section-d43966a73403828c9c11f55cc6f0f707" class="flex">
+      <a role="button" class="">
+        常用查询</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/%E9%97%A8%E5%BA%97%E6%97%A5GMV%E6%9F%A5%E8%AF%A2/" class="">
+      门店日GMV查询</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/%E8%B5%A0%E8%8C%B6%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2/" class="">
+      赠茶数据查询</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/%E5%8A%A0%E7%9B%9F%E5%BA%97%E6%AF%8F%E6%97%A5%E5%90%84%E6%B8%A0%E9%81%93%E6%B5%81%E6%B0%B4/" class="">
+      加盟店每日各渠道流水</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2cb822f103845855e927ff8ab980e529" class="toggle" checked />
+    <label for="section-2cb822f103845855e927ff8ab980e529" class="flex">
+      <a role="button" class="">
+        项目管理</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c24cc055d3c9e0d6450918c00f548d76" class="toggle"  />
+    <label for="section-c24cc055d3c9e0d6450918c00f548d76" class="flex">
+      <a role="button" class="">
+        日常任务</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/daily/%E5%8C%97%E6%A3%AE%E9%80%9A%E8%AE%AF%E5%BD%95%E5%90%8C%E6%AD%A5/" class="">
+      北森通讯录同步</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/daily/%E9%97%A8%E5%BA%97%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/" class="">
+      门店信息管理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/daily/%E6%A0%87%E5%87%86%E8%8F%9C%E5%93%81%E5%90%8D%E7%A7%B0%E6%A0%B8%E5%AF%B9/" class="">
+      标准菜品名称核对</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-bd1e344e17b9897a7435d9fa71e8c255" class="toggle"  />
+    <label for="section-bd1e344e17b9897a7435d9fa71e8c255" class="flex">
+      <a role="button" class="">
+        管理工具</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/manage/%E9%97%A8%E5%BA%97%E8%90%A5%E4%B8%9A%E6%89%A7%E7%85%A7%E7%AE%A1%E7%90%86/" class="">
+      门店营业执照管理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/manage/%E9%97%A8%E5%BA%97%E9%94%80%E5%94%AE%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5/" class="">
+      门店销售数据同步</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/manage/%E9%97%A8%E5%BA%97%E6%8A%A5%E9%80%81%E5%90%8D%E7%A7%B0%E7%94%9F%E6%88%90/" class="">
+      门店报送名称生成</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-62bda4b1e27fd89189aed4fe906db280" class="toggle"  />
+    <label for="section-62bda4b1e27fd89189aed4fe906db280" class="flex">
+      <a role="button" class="">
+        月度任务</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E6%9C%88%E5%BA%A6%E4%BA%A7%E5%93%81%E9%94%80%E5%94%AE%E6%B1%87%E6%80%BB/" class="">
+      月度产品销售汇总</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E5%A4%9A%E6%97%B6%E6%AE%B5%E6%B8%A0%E9%81%93%E5%90%8C%E6%AF%94%E5%88%86%E6%9E%90/" class="">
+      多时段渠道同比分析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E5%91%A8%E8%BE%B9%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="">
+      周边数据分析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%A8%8E%E5%8A%A1%E6%8A%A5%E9%80%81/" class="">
+      小程序税务报送</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E6%9C%88%E5%BA%A6%E6%95%B0%E6%8D%AE%E6%A6%82%E8%A7%88/" class="">
+      月度数据概览</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E5%B7%A5%E4%BD%9C%E5%8F%B0/" class="">
+      定时任务工作台</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/%E6%A0%87%E5%87%86%E8%8F%9C%E5%93%81%E5%90%8D%E7%A7%B0%E6%B8%85%E6%B4%97/" class="active">
+      标准菜品名称清洗</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/csv%E6%96%87%E4%BB%B6%E7%9A%84%E5%88%86%E5%89%B2/" class="">
+      CSV文件分割</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      产品记录</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/product/2026%E4%BA%A7%E5%93%81%E4%B8%8A%E6%96%B0%E8%AE%B0%E5%BD%95/" class="">
+      2026产品上新记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/product/2025%E4%BA%A7%E5%93%81%E4%B8%8A%E6%96%B0%E8%AE%B0%E5%BD%95/" class="">
+      2025产品上新记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/product/%E5%B0%8F%E6%96%99/" class="">
+      小料</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      常用术语</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/glossary/%E5%B8%B8%E7%94%A8%E6%9C%AF%E8%AF%AD/" class="">
+      常用术语</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      参考资料</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E6%B8%A0%E9%81%93%E5%88%86%E7%BB%84/" class="">
+      支付渠道分组</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E6%9D%A5%E6%BA%90%E6%B8%A0%E9%81%93%E5%AF%B9%E6%AF%94/" class="">
+      来源渠道 vs 商品流水</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E6%94%AF%E4%BB%98%E6%B8%A0%E9%81%93%E5%AF%B9%E6%AF%94/" class="">
+      来源渠道 vs 支付渠道</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>标准菜品名称清洗</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#标准菜品名称清洗">标准菜品名称清洗</a>
+      <ul>
+        <li><a href="#目录结构">目录结构</a></li>
+        <li><a href="#数据获取">数据获取</a>
+          <ul>
+            <li><a href="#待清洗产品名称">待清洗产品名称</a></li>
+            <li><a href="#标准菜品名称">标准菜品名称</a></li>
+          </ul>
+        </li>
+        <li><a href="#匹配规则">匹配规则</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="标准菜品名称清洗">标准菜品名称清洗<a class="anchor" href="#%e6%a0%87%e5%87%86%e8%8f%9c%e5%93%81%e5%90%8d%e7%a7%b0%e6%b8%85%e6%b4%97">#</a></h1>
+<p>借助大模型将中台历史商品名称批量匹配到 OA 标准单品名称，生成名称映射表。属于一次性/不定期清洗，日常核对见 <a href="https://tll.jello.top/projects/daily/%E6%A0%87%E5%87%86%E8%8F%9C%E5%93%81%E5%90%8D%E7%A7%B0%E6%A0%B8%E5%AF%B9/">标准菜品名称核对</a>。</p>
+<ul>
+<li><strong>项目仓库</strong>：<a href="https://fuwenyue.coding.net/p/tianlala/d/standard_food_name/git">https://fuwenyue.coding.net/p/tianlala/d/standard_food_name/git</a></li>
+</ul>
+<h2 id="目录结构">目录结构<a class="anchor" href="#%e7%9b%ae%e5%bd%95%e7%bb%93%e6%9e%84">#</a></h2>
+<div class="code-block"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">标准菜品名称
+</span></span><span class="line"><span class="cl">├─ main.py                       # 主程序
+</span></span><span class="line"><span class="cl">├─ README.md                     # 项目说明
+</span></span><span class="line"><span class="cl">├─ 所有产品名称.csv              # 输入：产品名称
+</span></span><span class="line"><span class="cl">├─ 标准单品名称.xlsx             # 输入：标准菜品名称
+</span></span><span class="line"><span class="cl">├─ 标准菜品名称映射.json         # 输出：匹配结果
+</span></span><span class="line"><span class="cl">└─ 标准菜品名称映射.xlsx         # 输出：匹配结果</span></span></code></pre></div></div><h2 id="数据获取">数据获取<a class="anchor" href="#%e6%95%b0%e6%8d%ae%e8%8e%b7%e5%8f%96">#</a></h2>
+<h3 id="待清洗产品名称">待清洗产品名称<a class="anchor" href="#%e5%be%85%e6%b8%85%e6%b4%97%e4%ba%a7%e5%93%81%e5%90%8d%e7%a7%b0">#</a></h3>
+<p>文件名保存为 <code>所有产品名称.csv</code>：</p>
+<div class="code-block" data-lang="SQL"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">item_name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="err">商品名称</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">FROM</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">ads_dbs_trade_food_di</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">WHERE</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">business_date</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;202605%&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">dp_item_count</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">item_name</span></span></span></code></pre></div></div><h3 id="标准菜品名称">标准菜品名称<a class="anchor" href="#%e6%a0%87%e5%87%86%e8%8f%9c%e5%93%81%e5%90%8d%e7%a7%b0">#</a></h3>
+<p>OA 导出的 <code>标准单品名称.xlsx</code>。</p>
+<h2 id="匹配规则">匹配规则<a class="anchor" href="#%e5%8c%b9%e9%85%8d%e8%a7%84%e5%88%99">#</a></h2>
+<p>通过大模型批量语义匹配，核心 prompt 构建如下：</p>
+<div class="code-block" data-lang="Python"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">build_prompt</span><span class="p">(</span><span class="n">batch_products</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;&#34;&#34;为一批商品名称构建匹配 prompt&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">product_list</span> <span class="o">=</span> <span class="s2">&#34;</span><span class="se">\n</span><span class="s2">&#34;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">. </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#34;</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">batch_products</span><span class="p">)])</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="sa">f</span><span class="s2">&#34;&#34;&#34;你是一个餐饮行业商品名称匹配专家。请将以下【待匹配商品名称】逐一匹配到最合适的【标准单品名称】。
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">规则：
+</span></span></span><span class="line"><span class="cl"><span class="s2">1. 语义相似即可匹配，不需要完全一样。例如&#34;一桶水果茶1000ml&#34;可以匹配&#34;一桶水果茶&#34;。
+</span></span></span><span class="line"><span class="cl"><span class="s2">2. 忽略容量、温度、赠品描述等修饰词。例如&#34;蜂蜜冰茉莉（500ml）&#34;匹配&#34;蜂蜜冰茉莉&#34;。
+</span></span></span><span class="line"><span class="cl"><span class="s2">3. 如果一个待匹配名称包含多个独立商品（如一桶水果茶+一桶全家福），请分别评估每个子商品与标准库的匹配置信度，仅输出你最有把握、匹配度最高的那一个单品。
+</span></span></span><span class="line"><span class="cl"><span class="s2">4. 如果找不到合适的匹配，标记为&#34;无匹配&#34;。
+</span></span></span><span class="line"><span class="cl"><span class="s2">5. 只返回 JSON 数组，不要任何其他文字。
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">【标准单品名称列表】（共</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">standard_names</span><span class="p">)</span><span class="si">}</span><span class="s2">个）：
+</span></span></span><span class="line"><span class="cl"><span class="si">{</span><span class="n">standard_list_text</span><span class="si">}</span><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">【待匹配商品名称】（共</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">batch_products</span><span class="p">)</span><span class="si">}</span><span class="s2">个）：
+</span></span></span><span class="line"><span class="cl"><span class="si">{</span><span class="n">product_list</span><span class="si">}</span><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">请返回 JSON 对象，格式如下：
+</span></span></span><span class="line"><span class="cl"><span class="se">{{</span><span class="s2">&#34;matches&#34;: [</span><span class="se">{{</span><span class="s2">&#34;商品名称&#34;: &#34;xxx&#34;, &#34;匹配标准名称&#34;: &#34;yyy&#34;</span><span class="se">}}</span><span class="s2">, ...]</span><span class="se">}}</span><span class="s2">&#34;&#34;&#34;</span></span></span></code></pre></div></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+<div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/projects/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E5%B7%A5%E4%BD%9C%E5%8F%B0/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>定时任务工作台</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/projects/csv%E6%96%87%E4%BB%B6%E7%9A%84%E5%88%86%E5%89%B2/" class="flex align-center">
+        <span>CSV文件分割</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#标准菜品名称清洗">标准菜品名称清洗</a>
+      <ul>
+        <li><a href="#目录结构">目录结构</a></li>
+        <li><a href="#数据获取">数据获取</a>
+          <ul>
+            <li><a href="#待清洗产品名称">待清洗产品名称</a></li>
+            <li><a href="#标准菜品名称">标准菜品名称</a></li>
+          </ul>
+        </li>
+        <li><a href="#匹配规则">匹配规则</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  <script>
+(function () {
+  document.querySelectorAll('pre > code').forEach(function (codeBlock) {
+    var pre = codeBlock.parentNode;
+    var button = document.createElement('button');
+    button.className = 'copy-code';
+    button.textContent = '复制';
+    button.addEventListener('click', function () {
+      var text = codeBlock.textContent;
+      navigator.clipboard.writeText(text).then(function () {
+        button.textContent = '已复制';
+        button.classList.add('copied');
+        setTimeout(function () {
+          button.textContent = '复制';
+          button.classList.remove('copied');
+        }, 2000);
+      });
+    });
+    pre.appendChild(button);
+  });
+})();
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

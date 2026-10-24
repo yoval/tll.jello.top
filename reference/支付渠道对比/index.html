@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="zh-CN" dir="ltr">
+<head>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="来源渠道 vs 支付渠道 对比分析#对比 ads_dbs_trade_shop_di（来源渠道 channel_name）与 ads_dbs_trade_shop_pay_channel_di（支付渠道 payment_channels）。
+两表总额几乎完全一致（差异 &lt; 0.05%），但渠道字段 …">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://tll.jello.top/reference/%E6%94%AF%E4%BB%98%E6%B8%A0%E9%81%93%E5%AF%B9%E6%AF%94/">
+  <meta property="og:site_name" content="Data Documentation">
+  <meta property="og:title" content="来源渠道 vs 支付渠道">
+  <meta property="og:description" content="来源渠道 vs 支付渠道 对比分析#对比 ads_dbs_trade_shop_di（来源渠道 channel_name）与 ads_dbs_trade_shop_pay_channel_di（支付渠道 payment_channels）。
+两表总额几乎完全一致（差异 &lt; 0.05%），但渠道字段的定义不同：
+表 字段 含义 渠道数 shop_di channel_name 订单来源（订单从哪来） 14 shop_pay_channel_di payment_channels 支付/核销方式（用户怎么付的） 18 SQL#-- shop_di：来源渠道 SELECT DATE_FORMAT(business_date, &#39;%Y-%m&#39;) AS 月份, channel_name AS 渠道, SUM(total_amount) AS 流水 FROM ads_dbs_trade_shop_di WHERE business_date LIKE &#39;2026%&#39; GROUP BY 月份, 渠道 ORDER BY 月份, 渠道; -- shop_pay_channel_di：支付渠道 SELECT DATE_FORMAT(pt, &#39;%Y-%m&#39;) AS 月份, payment_channels AS 渠道, SUM(amount) AS 流水 FROM ads_dbs_trade_shop_pay_channel_di WHERE pt LIKE &#39;2026%&#39; GROUP BY 月份, 渠道 ORDER BY 月份, 渠道;各月汇总差异#两表总额完全对得上，10 个月差异率均在 ±0.1% 以内，全年仅 -0.03%。">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="reference">
+
+
+  <meta itemprop="name" content="来源渠道 vs 支付渠道">
+  <meta itemprop="description" content="来源渠道 vs 支付渠道 对比分析#对比 ads_dbs_trade_shop_di（来源渠道 channel_name）与 ads_dbs_trade_shop_pay_channel_di（支付渠道 payment_channels）。
+两表总额几乎完全一致（差异 &lt; 0.05%），但渠道字段的定义不同：
+表 字段 含义 渠道数 shop_di channel_name 订单来源（订单从哪来） 14 shop_pay_channel_di payment_channels 支付/核销方式（用户怎么付的） 18 SQL#-- shop_di：来源渠道 SELECT DATE_FORMAT(business_date, &#39;%Y-%m&#39;) AS 月份, channel_name AS 渠道, SUM(total_amount) AS 流水 FROM ads_dbs_trade_shop_di WHERE business_date LIKE &#39;2026%&#39; GROUP BY 月份, 渠道 ORDER BY 月份, 渠道; -- shop_pay_channel_di：支付渠道 SELECT DATE_FORMAT(pt, &#39;%Y-%m&#39;) AS 月份, payment_channels AS 渠道, SUM(amount) AS 流水 FROM ads_dbs_trade_shop_pay_channel_di WHERE pt LIKE &#39;2026%&#39; GROUP BY 月份, 渠道 ORDER BY 月份, 渠道;各月汇总差异#两表总额完全对得上，10 个月差异率均在 ±0.1% 以内，全年仅 -0.03%。">
+  <meta itemprop="wordCount" content="258">
+
+<title>来源渠道 vs 支付渠道 • Data Documentation</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="https://tll.jello.top/reference/%E6%94%AF%E4%BB%98%E6%B8%A0%E9%81%93%E5%AF%B9%E6%AF%94/">
+<link rel="stylesheet" href="/book.min.css">
+
+
+  <script defer type="module" src="/en.search.min.js"></script>
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-reference">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="https://www.tianlala.com/favicon.ico" alt="Logo" /><span>Data Documentation</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      数据字典</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/data-dictionary/ads_dbs_trade_shop_pay_channel_di/" class="">
+      门店销售（支付渠道）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/data-dictionary/ads_dbs_trade_shop_di/" class="">
+      门店销售（来源渠道）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/data-dictionary/ads_dbs_trade_food_di/" class="">
+      产品销售（来源渠道）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/data-dictionary/dwd_rps_tll_order_details_di/" class="">
+      门店报货信息</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/data-dictionary/dim_oas_formmain_0145_df/" class="">
+      门店管理表</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d43966a73403828c9c11f55cc6f0f707" class="toggle"  />
+    <label for="section-d43966a73403828c9c11f55cc6f0f707" class="flex">
+      <a role="button" class="">
+        常用查询</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/%E9%97%A8%E5%BA%97%E6%97%A5GMV%E6%9F%A5%E8%AF%A2/" class="">
+      门店日GMV查询</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/%E8%B5%A0%E8%8C%B6%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2/" class="">
+      赠茶数据查询</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/%E5%8A%A0%E7%9B%9F%E5%BA%97%E6%AF%8F%E6%97%A5%E5%90%84%E6%B8%A0%E9%81%93%E6%B5%81%E6%B0%B4/" class="">
+      加盟店每日各渠道流水</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2cb822f103845855e927ff8ab980e529" class="toggle"  />
+    <label for="section-2cb822f103845855e927ff8ab980e529" class="flex">
+      <a role="button" class="">
+        项目管理</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c24cc055d3c9e0d6450918c00f548d76" class="toggle"  />
+    <label for="section-c24cc055d3c9e0d6450918c00f548d76" class="flex">
+      <a role="button" class="">
+        日常任务</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/daily/%E5%8C%97%E6%A3%AE%E9%80%9A%E8%AE%AF%E5%BD%95%E5%90%8C%E6%AD%A5/" class="">
+      北森通讯录同步</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/daily/%E9%97%A8%E5%BA%97%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/" class="">
+      门店信息管理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/daily/%E6%A0%87%E5%87%86%E8%8F%9C%E5%93%81%E5%90%8D%E7%A7%B0%E6%A0%B8%E5%AF%B9/" class="">
+      标准菜品名称核对</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-bd1e344e17b9897a7435d9fa71e8c255" class="toggle"  />
+    <label for="section-bd1e344e17b9897a7435d9fa71e8c255" class="flex">
+      <a role="button" class="">
+        管理工具</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/manage/%E9%97%A8%E5%BA%97%E8%90%A5%E4%B8%9A%E6%89%A7%E7%85%A7%E7%AE%A1%E7%90%86/" class="">
+      门店营业执照管理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/manage/%E9%97%A8%E5%BA%97%E9%94%80%E5%94%AE%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5/" class="">
+      门店销售数据同步</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/manage/%E9%97%A8%E5%BA%97%E6%8A%A5%E9%80%81%E5%90%8D%E7%A7%B0%E7%94%9F%E6%88%90/" class="">
+      门店报送名称生成</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-62bda4b1e27fd89189aed4fe906db280" class="toggle"  />
+    <label for="section-62bda4b1e27fd89189aed4fe906db280" class="flex">
+      <a role="button" class="">
+        月度任务</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E6%9C%88%E5%BA%A6%E4%BA%A7%E5%93%81%E9%94%80%E5%94%AE%E6%B1%87%E6%80%BB/" class="">
+      月度产品销售汇总</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E5%A4%9A%E6%97%B6%E6%AE%B5%E6%B8%A0%E9%81%93%E5%90%8C%E6%AF%94%E5%88%86%E6%9E%90/" class="">
+      多时段渠道同比分析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E5%91%A8%E8%BE%B9%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="">
+      周边数据分析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%A8%8E%E5%8A%A1%E6%8A%A5%E9%80%81/" class="">
+      小程序税务报送</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E6%9C%88%E5%BA%A6%E6%95%B0%E6%8D%AE%E6%A6%82%E8%A7%88/" class="">
+      月度数据概览</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E5%B7%A5%E4%BD%9C%E5%8F%B0/" class="">
+      定时任务工作台</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/%E6%A0%87%E5%87%86%E8%8F%9C%E5%93%81%E5%90%8D%E7%A7%B0%E6%B8%85%E6%B4%97/" class="">
+      标准菜品名称清洗</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/csv%E6%96%87%E4%BB%B6%E7%9A%84%E5%88%86%E5%89%B2/" class="">
+      CSV文件分割</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      产品记录</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/product/2026%E4%BA%A7%E5%93%81%E4%B8%8A%E6%96%B0%E8%AE%B0%E5%BD%95/" class="">
+      2026产品上新记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/product/2025%E4%BA%A7%E5%93%81%E4%B8%8A%E6%96%B0%E8%AE%B0%E5%BD%95/" class="">
+      2025产品上新记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/product/%E5%B0%8F%E6%96%99/" class="">
+      小料</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      常用术语</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/glossary/%E5%B8%B8%E7%94%A8%E6%9C%AF%E8%AF%AD/" class="">
+      常用术语</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a>
+      参考资料</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E6%B8%A0%E9%81%93%E5%88%86%E7%BB%84/" class="">
+      支付渠道分组</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E6%9D%A5%E6%BA%90%E6%B8%A0%E9%81%93%E5%AF%B9%E6%AF%94/" class="">
+      来源渠道 vs 商品流水</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E6%94%AF%E4%BB%98%E6%B8%A0%E9%81%93%E5%AF%B9%E6%AF%94/" class="active">
+      来源渠道 vs 支付渠道</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>来源渠道 vs 支付渠道</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#来源渠道-vs-支付渠道-对比分析">来源渠道 vs 支付渠道 对比分析</a>
+      <ul>
+        <li><a href="#sql">SQL</a></li>
+        <li><a href="#各月汇总差异">各月汇总差异</a></li>
+        <li><a href="#渠道映射关系">渠道映射关系</a>
+          <ul>
+            <li><a href="#完全一致5-个">完全一致（5 个）</a></li>
+            <li><a href="#合并拆分2-组">合并/拆分（2 组）</a></li>
+            <li><a href="#同名异值4-个">同名异值（4 个）</a></li>
+            <li><a href="#shop_di-独有-vs-pay_channel-独有">shop_di 独有 vs pay_channel 独有</a></li>
+          </ul>
+        </li>
+        <li><a href="#口径差异总结">口径差异总结</a></li>
+        <li><a href="#注意事项">注意事项</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="来源渠道-vs-支付渠道-对比分析">来源渠道 vs 支付渠道 对比分析<a class="anchor" href="#%e6%9d%a5%e6%ba%90%e6%b8%a0%e9%81%93-vs-%e6%94%af%e4%bb%98%e6%b8%a0%e9%81%93-%e5%af%b9%e6%af%94%e5%88%86%e6%9e%90">#</a></h1>
+<p>对比 <code>ads_dbs_trade_shop_di</code>（来源渠道 <code>channel_name</code>）与 <code>ads_dbs_trade_shop_pay_channel_di</code>（支付渠道 <code>payment_channels</code>）。</p>
+<p>两表<strong>总额几乎完全一致</strong>（差异 &lt; 0.05%），但<strong>渠道字段的定义不同</strong>：</p>
+<table>
+  <thead>
+      <tr>
+          <th>表</th>
+          <th>字段</th>
+          <th>含义</th>
+          <th>渠道数</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>shop_di</td>
+          <td><code>channel_name</code></td>
+          <td><strong>订单来源</strong>（订单从哪来）</td>
+          <td>14</td>
+      </tr>
+      <tr>
+          <td>shop_pay_channel_di</td>
+          <td><code>payment_channels</code></td>
+          <td><strong>支付/核销方式</strong>（用户怎么付的）</td>
+          <td>18</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="sql">SQL<a class="anchor" href="#sql">#</a></h2>
+<div class="code-block" data-lang="SQL"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="c1">-- shop_di：来源渠道
+</span></span></span><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="n">DATE_FORMAT</span><span class="p">(</span><span class="n">business_date</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;%Y-%m&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="err">月份</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="n">channel_name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="err">渠道</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="k">SUM</span><span class="p">(</span><span class="n">total_amount</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="err">流水</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">FROM</span><span class="w"> </span><span class="n">ads_dbs_trade_shop_di</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">WHERE</span><span class="w"> </span><span class="n">business_date</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;2026%&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="err">月份</span><span class="p">,</span><span class="w"> </span><span class="err">渠道</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="err">月份</span><span class="p">,</span><span class="w"> </span><span class="err">渠道</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- shop_pay_channel_di：支付渠道
+</span></span></span><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="n">DATE_FORMAT</span><span class="p">(</span><span class="n">pt</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;%Y-%m&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="err">月份</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="n">payment_channels</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="err">渠道</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="k">SUM</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="err">流水</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">FROM</span><span class="w"> </span><span class="n">ads_dbs_trade_shop_pay_channel_di</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">WHERE</span><span class="w"> </span><span class="n">pt</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;2026%&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="err">月份</span><span class="p">,</span><span class="w"> </span><span class="err">渠道</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="err">月份</span><span class="p">,</span><span class="w"> </span><span class="err">渠道</span><span class="p">;</span></span></span></code></pre></div></div><h2 id="各月汇总差异">各月汇总差异<a class="anchor" href="#%e5%90%84%e6%9c%88%e6%b1%87%e6%80%bb%e5%b7%ae%e5%bc%82">#</a></h2>
+<p>两表总额<strong>完全对得上</strong>，10 个月差异率均在 ±0.1% 以内，全年仅 -0.03%。</p>
+<table>
+  <thead>
+      <tr>
+          <th>月份</th>
+          <th style="text-align: right">差异率（shop - pay）</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>01</td>
+          <td style="text-align: right">-0.01%</td>
+      </tr>
+      <tr>
+          <td>02</td>
+          <td style="text-align: right">-0.04%</td>
+      </tr>
+      <tr>
+          <td>03</td>
+          <td style="text-align: right">-0.00%</td>
+      </tr>
+      <tr>
+          <td>04</td>
+          <td style="text-align: right">+0.01%</td>
+      </tr>
+      <tr>
+          <td>05</td>
+          <td style="text-align: right">-0.01%</td>
+      </tr>
+      <tr>
+          <td>06</td>
+          <td style="text-align: right">+0.02%</td>
+      </tr>
+      <tr>
+          <td>07</td>
+          <td style="text-align: right">-0.09%</td>
+      </tr>
+      <tr>
+          <td>08</td>
+          <td style="text-align: right">-0.07%</td>
+      </tr>
+      <tr>
+          <td>09</td>
+          <td style="text-align: right">-0.08%</td>
+      </tr>
+      <tr>
+          <td>10</td>
+          <td style="text-align: right">-0.04%</td>
+      </tr>
+      <tr>
+          <td><strong>全年</strong></td>
+          <td style="text-align: right"><strong>-0.03%</strong></td>
+      </tr>
+  </tbody>
+</table>
+<blockquote class='book-hint '>
+<p>7-9 月差异稍大（-0.07% ~ -0.09%），可能与团购核销方式季节性波动有关，但绝对额仅几十万，可视为数据正常波动。</p>
+</blockquote><h2 id="渠道映射关系">渠道映射关系<a class="anchor" href="#%e6%b8%a0%e9%81%93%e6%98%a0%e5%b0%84%e5%85%b3%e7%b3%bb">#</a></h2>
+<h3 id="完全一致5-个">完全一致（5 个）<a class="anchor" href="#%e5%ae%8c%e5%85%a8%e4%b8%80%e8%87%b45-%e4%b8%aa">#</a></h3>
+<p>两边渠道名相同，流水完全一致：</p>
+<table>
+  <thead>
+      <tr>
+          <th>渠道</th>
+          <th style="text-align: right">shop_di</th>
+          <th style="text-align: right">pay_channel</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>微信小程序</td>
+          <td style="text-align: right">✓</td>
+          <td style="text-align: right">✓</td>
+      </tr>
+      <tr>
+          <td>支付宝小程序</td>
+          <td style="text-align: right">✓</td>
+          <td style="text-align: right">✓</td>
+      </tr>
+      <tr>
+          <td>美团外卖</td>
+          <td style="text-align: right">✓</td>
+          <td style="text-align: right">✓</td>
+      </tr>
+      <tr>
+          <td>高德团购</td>
+          <td style="text-align: right">✓</td>
+          <td style="text-align: right">✓</td>
+      </tr>
+      <tr>
+          <td>美团在线点</td>
+          <td style="text-align: right">✓</td>
+          <td style="text-align: right">✓</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="合并拆分2-组">合并/拆分（2 组）<a class="anchor" href="#%e5%90%88%e5%b9%b6%e6%8b%86%e5%88%862-%e7%bb%84">#</a></h3>
+<p>shop_di 把多个支付渠道合并为一个来源渠道：</p>
+<table>
+  <thead>
+      <tr>
+          <th>shop_di（来源）</th>
+          <th>pay_channel（支付）</th>
+          <th>说明</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>自营外卖</code> + <code>京东外卖</code></td>
+          <td><code>京东外卖</code></td>
+          <td>pay 合并了自营和京东的流水</td>
+      </tr>
+      <tr>
+          <td><code>小程序</code>（汇总）</td>
+          <td><code>甜啦啦小程序</code> + <code>甜啦啦小程序-储值业务</code></td>
+          <td>shop 把多个小程序入口合并</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="同名异值4-个">同名异值（4 个）<a class="anchor" href="#%e5%90%8c%e5%90%8d%e5%bc%82%e5%80%bc4-%e4%b8%aa">#</a></h3>
+<p>渠道名相同但流水差异巨大，<strong>shop_di 的 pos 收银包含了这些渠道的 POS 核销部分</strong>：</p>
+<table>
+  <thead>
+      <tr>
+          <th>渠道</th>
+          <th style="text-align: right">shop_di</th>
+          <th style="text-align: right">pay_channel</th>
+          <th style="text-align: right">差异倍数</th>
+          <th>原因</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>抖音团购</td>
+          <td style="text-align: right">小</td>
+          <td style="text-align: right">大 13×</td>
+          <td style="text-align: right">shop 大部分归 pos</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>美团/大众点评团购</td>
+          <td style="text-align: right">小</td>
+          <td style="text-align: right">大 14×</td>
+          <td style="text-align: right">shop 大部分归 pos</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>快手团购</td>
+          <td style="text-align: right">极小</td>
+          <td style="text-align: right">大</td>
+          <td style="text-align: right">shop 大部分归 pos</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>抖音小程序（核销工具）</td>
+          <td style="text-align: right">小</td>
+          <td style="text-align: right">大 10×</td>
+          <td style="text-align: right">shop 大部分归 pos</td>
+          <td></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong><code>pos收银</code> 是两张表差异最大的渠道</strong>：shop_di 比 pay_channel 多出约 1.2 亿，正好对应上述团购/核销渠道的差额——shop 把通过 POS 核销的团购券归为 <code>pos收银</code>，而 pay_channel 直接归为团购渠道。</p>
+<h3 id="shop_di-独有-vs-pay_channel-独有">shop_di 独有 vs pay_channel 独有<a class="anchor" href="#shop_di-%e7%8b%ac%e6%9c%89-vs-pay_channel-%e7%8b%ac%e6%9c%89">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>shop_di 独有</th>
+          <th>pay_channel 独有</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>自营外卖</code></td>
+          <td><code>甜啦啦小程序</code>、<code>甜啦啦小程序-储值业务</code></td>
+      </tr>
+      <tr>
+          <td><code>小程序</code></td>
+          <td><code>线上新增抖音团购</code>、<code>线上新增快手团购</code>、<code>线上新增美团团购</code></td>
+      </tr>
+      <tr>
+          <td></td>
+          <td><code>美团/大众点评小程序</code></td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="口径差异总结">口径差异总结<a class="anchor" href="#%e5%8f%a3%e5%be%84%e5%b7%ae%e5%bc%82%e6%80%bb%e7%bb%93">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>维度</th>
+          <th>shop_di（来源渠道）</th>
+          <th>pay_channel（支付渠道）</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>本质</td>
+          <td>订单从哪里来</td>
+          <td>用户怎么付钱</td>
+      </tr>
+      <tr>
+          <td>pos收银</td>
+          <td>含团购核销部分</td>
+          <td>仅 POS 直接收款</td>
+      </tr>
+      <tr>
+          <td>小程序</td>
+          <td>一条汇总</td>
+          <td>拆为甜啦啦/微信/支付宝/美团/抖音</td>
+      </tr>
+      <tr>
+          <td>外卖</td>
+          <td>自营 + 京东 分开</td>
+          <td>合并为一条京东外卖</td>
+      </tr>
+      <tr>
+          <td>团购</td>
+          <td>小额（仅非 POS 核销）</td>
+          <td>全额</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="注意事项">注意事项<a class="anchor" href="#%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9">#</a></h2>
+<style>
+  .notice {
+    --notice-title-color: #fff;
+    --notice-title-bg: #6be;
+    --notice-content-color: #444;
+    --notice-content-bg: #e7f2fa;
+    padding: 0;
+    margin: 1em 0;
+    border-radius: 6px;
+    overflow: hidden;
+    color: var(--notice-content-color);
+    background: var(--notice-content-bg);
+    border: 1px solid var(--notice-title-bg);
+  }
+  .notice.info {
+    --notice-title-bg: #fb7;
+    --notice-content-bg: #fff8e7;
+  }
+  .notice.tip {
+    --notice-title-bg: #5a5;
+    --notice-content-bg: #e8f5e9;
+  }
+  .notice.warning {
+    --notice-title-bg: #c33;
+    --notice-content-bg: #fdecea;
+  }
+  .notice .notice-title {
+    margin: 0;
+    padding: 6px 16px;
+    font-weight: 700;
+    font-size: .9em;
+    color: var(--notice-title-color);
+    background: var(--notice-title-bg);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .notice .notice-title svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+    flex-shrink: 0;
+  }
+  .notice .notice-body {
+    padding: 12px 16px;
+    line-height: 1.7;
+  }
+  .notice .notice-body > :last-child {
+    margin-bottom: 0;
+  }
+  .notice .notice-body > :first-child {
+    margin-top: 0;
+  }
+</style><div class="notice warning">
+  <div class="notice-title"><svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>注意</div>
+  <div class="notice-body"><ol>
+<li>两表总额一致（&lt; 0.05% 差异），但渠道<strong>不可直接按名称对比</strong>。</li>
+<li>团购/核销类渠道 shop_di 大幅偏小，差额计入 <code>pos收银</code>。</li>
+<li>需要对应口径时参考上方映射关系表。</li>
+</ol></div>
+</div>
+
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+<div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/reference/%E6%9D%A5%E6%BA%90%E6%B8%A0%E9%81%93%E5%AF%B9%E6%AF%94/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>来源渠道 vs 商品流水</span>
+      </a>
+    
+    </span>
+    <span>
+    
+    </span>
+  </div>
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#来源渠道-vs-支付渠道-对比分析">来源渠道 vs 支付渠道 对比分析</a>
+      <ul>
+        <li><a href="#sql">SQL</a></li>
+        <li><a href="#各月汇总差异">各月汇总差异</a></li>
+        <li><a href="#渠道映射关系">渠道映射关系</a>
+          <ul>
+            <li><a href="#完全一致5-个">完全一致（5 个）</a></li>
+            <li><a href="#合并拆分2-组">合并/拆分（2 组）</a></li>
+            <li><a href="#同名异值4-个">同名异值（4 个）</a></li>
+            <li><a href="#shop_di-独有-vs-pay_channel-独有">shop_di 独有 vs pay_channel 独有</a></li>
+          </ul>
+        </li>
+        <li><a href="#口径差异总结">口径差异总结</a></li>
+        <li><a href="#注意事项">注意事项</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  <script>
+(function () {
+  document.querySelectorAll('pre > code').forEach(function (codeBlock) {
+    var pre = codeBlock.parentNode;
+    var button = document.createElement('button');
+    button.className = 'copy-code';
+    button.textContent = '复制';
+    button.addEventListener('click', function () {
+      var text = codeBlock.textContent;
+      navigator.clipboard.writeText(text).then(function () {
+        button.textContent = '已复制';
+        button.classList.add('copied');
+        setTimeout(function () {
+          button.textContent = '复制';
+          button.classList.remove('copied');
+        }, 2000);
+      });
+    });
+    pre.appendChild(button);
+  });
+})();
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
