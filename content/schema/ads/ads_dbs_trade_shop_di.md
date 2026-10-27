@@ -10,9 +10,7 @@ weight: 2
 {{< notice info "定位" >}}
 按**订单来源渠道**汇总的门店销售数据。
 
-和 [支付渠道版]({{< ref "/data-dictionary/ads/ads_dbs_trade_shop_pay_channel_di" >}}) 相比：两表**总额差异 < 0.05%**，但渠道口径不同——本表按来源归并（如小程序汇总成一条），支付渠道版按原始支付渠道归并（归并规则来自 `cloud_cube_trade.channel_mapping`，小程序拆成多个）。
-
-**跨表按渠道名对比前，先看 [渠道对照表]({{< ref "/reference/渠道对照表" >}})，不要直接 JOIN。**
+和 [支付渠道版]({{< ref "/schema/ads/ads_dbs_trade_shop_pay_channel_di" >}}) 相比：两表**总额差异 < 0.05%**，但渠道口径不同——本表按来源归并（如小程序汇总成一条），支付渠道版按原始支付渠道归并（归并规则来自 [渠道映射表]({{< ref "/schema/biz/渠道映射表" >}})，小程序拆成多个）。
 {{< /notice >}}
 
 ## 字段查询
@@ -179,10 +177,9 @@ ORDER BY 月份;
 
 | 表 | 关系 |
 |---|---|
-| [ads_dbs_trade_food_di]({{< ref "/data-dictionary/ads/ads_dbs_trade_food_di" >}}) | 商品维度明细 |
-| [ads_dbs_trade_shop_pay_channel_di]({{< ref "/data-dictionary/ads/ads_dbs_trade_shop_pay_channel_di" >}}) | 同源门店流水（总额一致，渠道 ETL 不同） |
-| [来源渠道 vs 支付渠道]({{< ref "/reference/支付渠道对比" >}}) | 两表总额对比（仅总额，不对比渠道） |
-| [渠道对照表]({{< ref "/reference/渠道对照表" >}}) | 两表渠道枚举（仅作参考，不可用于跨表 JOIN） |
+| [ads_dbs_trade_food_di]({{< ref "/schema/ads/ads_dbs_trade_food_di" >}}) | 商品维度明细 |
+| [ads_dbs_trade_shop_pay_channel_di]({{< ref "/schema/ads/ads_dbs_trade_shop_pay_channel_di" >}}) | 同源门店流水（总额一致，渠道 ETL 不同） |
+| [渠道口径对比：来源 × 支付渠道]({{< ref "/reference/支付渠道对比" >}}) | 两表总额对比（仅总额，不对比渠道） |
 
 ## 注意事项
 
@@ -190,5 +187,5 @@ ORDER BY 月份;
 1. `total_amount` 是流水，含餐盒费、配送费；商品流水请用 `dp_total_amount`，不要混用。
 2. 与支付渠道版 ETL 链路不同，渠道名不可直接对比或 JOIN。
 3. `小程序` / `微信小程序` / `支付宝小程序` 三条并存，汇总到店流水时注意去重。
-4. 门店销售流水对外输出统一走 [支付渠道版]({{< ref "/data-dictionary/ads/ads_dbs_trade_shop_pay_channel_di" >}})，中台驾驶舱以其为基准。
+4. 门店销售流水对外输出统一走 [支付渠道版]({{< ref "/schema/ads/ads_dbs_trade_shop_pay_channel_di" >}})，中台驾驶舱以其为基准。
 {{< /notice >}}

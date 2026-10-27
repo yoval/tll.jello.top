@@ -7,7 +7,7 @@ weight: 2
 
 门店报货订单头日表，粒度为订单（一单一头），表名 `dwd_rps_tll_order_di`（库 `tll_bi_dw`）。
 
-与 [门店报货信息（详表）]({{< ref "/data-dictionary/dwd/dwd_rps_tll_order_details_di" >}}) 配套：头表存订单级状态/金额/时间，详表存商品明细。通过 `id`（头表）= `order_id`（详表）关联。
+与 [门店报货信息（详表）]({{< ref "/schema/dwd/dwd_rps_tll_order_details_di" >}}) 配套：头表存订单级状态/金额/时间，详表存商品明细。通过 `id`（头表）= `order_id`（详表）关联。
 
 ## 字段查询
 
@@ -133,7 +133,7 @@ AND TABLE_NAME = 'dwd_rps_tll_order_di';
 
 | 表 | 关系 |
 |---|---|
-| [dwd_rps_tll_order_details_di]({{< ref "/data-dictionary/dwd/dwd_rps_tll_order_details_di" >}}) | 详表，`id`（头表）= `order_id`（详表） |
+| [dwd_rps_tll_order_details_di]({{< ref "/schema/dwd/dwd_rps_tll_order_details_di" >}}) | 详表，`id`（头表）= `order_id`（详表） |
 
 ## 常用查询
 

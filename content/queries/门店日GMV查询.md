@@ -7,7 +7,7 @@ weight: 1
 
 按日期范围统计全部门店每日 GMV（流水合计），数据来自门店渠道销售表。
 
-- **数据表**：[ads_dbs_trade_shop_pay_channel_di]({{< ref "/data-dictionary/ads/ads_dbs_trade_shop_pay_channel_di" >}})
+- **数据表**：[ads_dbs_trade_shop_pay_channel_di]({{< ref "/schema/ads/ads_dbs_trade_shop_pay_channel_di" >}})
 - **粒度**：日期 × 全部门店（`shop_id LIKE 'TLL%'`，仅加盟门店）
 - **指标**：`SUM(amount)` 流水金额
 

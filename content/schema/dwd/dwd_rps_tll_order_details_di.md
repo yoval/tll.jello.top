@@ -74,7 +74,7 @@ AND TABLE_NAME = 'dwd_rps_tll_order_details_di';
 
 | 表 | 关系 |
 |---|---|
-| [dwd_rps_tll_order_di]({{< ref "/data-dictionary/dwd/dwd_rps_tll_order_di" >}}) | 订单头表，详表 `order_id` = 头表 `id` |
+| [dwd_rps_tll_order_di]({{< ref "/schema/dwd/dwd_rps_tll_order_di" >}}) | 订单头表，详表 `order_id` = 头表 `id` |
 
 ## 注意事项
 
