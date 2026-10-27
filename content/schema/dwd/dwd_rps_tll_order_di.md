@@ -66,8 +66,8 @@ AND TABLE_NAME = 'dwd_rps_tll_order_di';
 |---|---|---|
 | payable_amount | decimalv3(10,2) | 应付金额 |
 | discount_amount | decimalv3(10,2) | 优惠金额 |
-| actual_amount | decimalv3(10,2) | 订单总金额 |
-| refund_amount | decimalv3(10,2) | 退款金额 |
+| actual_amount | decimalv3(10,2) | 订单总金额（**下单原始金额，不扣 SKU 取消**） |
+| refund_amount | decimalv3(10,2) | 退款金额（实际已退款金额，多数取消订单此字段为 0） |
 | delivery_fee | decimalv3(10,2) | 配送费 |
 | packing_fee | decimalv3(10,2) | 打包费 |
 | franchisee_rate | decimalv3(10,2) | 加盟商费率折扣金额 |
@@ -134,6 +134,7 @@ AND TABLE_NAME = 'dwd_rps_tll_order_di';
 | 表 | 关系 |
 |---|---|
 | [dwd_rps_tll_order_details_di]({{< ref "/schema/dwd/dwd_rps_tll_order_details_di" >}}) | 详表，`id`（头表）= `order_id`（详表） |
+| [dwd_rps_tll_order_data_merge_di]({{< ref "/schema/dwd/dwd_rps_tll_order_data_merge_di" >}}) | **合并版**，已合并头+详+已扣取消量，日常查询优先用 |
 
 ## 常用查询
 
@@ -143,13 +144,14 @@ AND TABLE_NAME = 'dwd_rps_tll_order_di';
 WITH report_order AS (
     SELECT id, order_num, order_status, order_time, store_code
     FROM tll_bi_dw.dwd_rps_tll_order_di
+    WHERE pt >= '20250101' AND pt < '20260101'   -- ✅ 分区裁剪
 ),
 summary_table AS (
     SELECT
         uo.store_code       AS 门店编号,
         rod.product_info    AS 存货名称,
         rod.actual_amount   AS 实际金额,
-        rod.quantity        AS 数量,
+        rod.quantity - IFNULL(rod.cancel_quantity, 0) AS 有效数量,
         uo.order_time       AS 订单时间
     FROM report_order uo
     JOIN tll_bi_dw.dwd_rps_tll_order_details_di rod

@@ -5,7 +5,7 @@ weight: 3
 
 # 产品销售
 
-产品（商品）销售日表，粒度为 门店 × 日期 × 渠道 × 商品，表名 `ads_dbs_trade_food_di`（库 `tll_bi_dw`）。
+产品（商品）销售日表，粒度为 门店 × 日期 × 渠道 × 商品，表名 `tll_bi_dw.ads_dbs_trade_food_di`。
 
 ## 字段查询
 

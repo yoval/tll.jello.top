@@ -36,7 +36,7 @@ AND TABLE_NAME = 'dwd_rps_tll_order_details_di';
 | cancel_quantity                 | int(11)          | 取消数量                                               |
 | payable_amount                  | decimalv3(10, 2) | 应付金额                                               |
 | discount_amount                 | decimalv3(10, 2) | 优惠金额                                               |
-| actual_amount                   | decimalv3(10, 2) | 实付金额                                               |
+| actual_amount                   | decimalv3(10, 2) | 实付金额（**下单原始金额，不扣 SKU 取消**）            |
 | status                          | int(11)          | 状态                                                   |
 | tenant_id                       | varchar(255)     | 租户ID                                                 |
 | create_time                     | varchar(255)     | 创建时间                                               |
