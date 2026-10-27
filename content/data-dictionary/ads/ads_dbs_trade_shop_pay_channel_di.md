@@ -12,7 +12,7 @@ weight: 1
 
 **唯一原因：中台驾驶舱 → 渠道拆分模块以此表为基准**。如果不用这张，输出数据会和中台对不上。
 
-虽然 [ads_dbs_trade_shop_di]({{< ref "/data-dictionary/ads_dbs_trade_shop_di" >}})（来源渠道）在业务上是更好的选择——能直接对应到 `ads_dbs_trade_food_di`（商品流水）口径，可拆分配送费/包装费。但为了数据一致性，门店销售统一采用本表。
+虽然 [ads_dbs_trade_shop_di]({{< ref "/data-dictionary/ads/ads_dbs_trade_shop_di" >}})（来源渠道）在业务上是更好的选择——能直接对应到 `ads_dbs_trade_food_di`（商品流水）口径，可拆分配送费/包装费。但为了数据一致性，门店销售统一采用本表。
 {{< /notice >}}
 
 ## 字段查询

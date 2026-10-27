@@ -1,6 +1,6 @@
 ---
 title: "门店管理表"
-weight: 5
+weight: 1
 ---
 
 # 门店管理表
