@@ -70,8 +70,15 @@ AND TABLE_NAME = 'dwd_rps_tll_order_details_di';
 | shipping_method                 | int(11)          | 送货方式,0:起订,1:包邮,2:送货上门                      |
 | real_store_code                 | varchar(128)     | 真实门店code                                           |
 
+## 关联表
+
+| 表 | 关系 |
+|---|---|
+| [dwd_rps_tll_order_di]({{< ref "/data-dictionary/dwd/dwd_rps_tll_order_di" >}}) | 订单头表，详表 `order_id` = 头表 `id` |
+
 ## 注意事项
 
 {{< notice warning "注意" >}}
-报货记录通常以财务部统计为准。
+1. 与头表关联时用详表 `order_id` = 头表 `id`，不是 `order_num`。
+2. 报货记录通常以财务部统计为准。
 {{< /notice >}}
