@@ -82,6 +82,24 @@ AND TABLE_NAME = 'dim_oas_formmain_0145_df';
 | first_sign_name       | varchar(128)     | 初签人名称                   |
 | shop_short_name       | varchar(255)     | 门店简称                     |
 
+## 常用查询
+
+全量门店（最新分区，含在营/闭店/解约全状态，约 11,973 家）：
+
+```sql
+SELECT *
+FROM tll_bi_dw.dim_oas_formmain_0145_df
+WHERE pt = (
+    SELECT MAX(pt)
+    FROM tll_bi_dw.dim_oas_formmain_0145_df
+)
+ORDER BY shop_oneid;
+```
+
+`pt` 为 varchar 天分区（`YYYYMMDD`），按字符串比较即为时间序，直接 `MAX(pt)` 即可。该表仅保留最新一个分区，历史快照不落库。
+
+完整示例、常用列与参数调整见 [中台门店全量查询]({{< ref "/queries/中台门店全量查询" >}})。
+
 ## 注意事项
 
 {{< notice warning "注意" >}}

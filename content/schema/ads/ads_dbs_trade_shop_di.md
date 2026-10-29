@@ -98,6 +98,40 @@ FROM ads_dbs_trade_shop_di;
 
 共 **14 条**：到家 4 条 + 到店 10 条。
 
+### 渠道分组（4 组归并）
+
+实际分析时把 14 条渠道归并为 **4 组**：
+
+| 分组 | channel_name | 条数 |
+|---|---|---|
+| 外卖 | 美团外卖、京东外卖、自营外卖、淘宝闪购 | 4 |
+| 小程序 | 微信小程序、支付宝小程序、小程序 | 3 |
+| POS | pos收银 | 1 |
+| 团购 | 美团/大众点评团购、美团在线点、抖音团购、抖音小程序（核销工具）、快手团购、高德团购 | 6 |
+
+4+3+1+6 = 14，全量覆盖。
+
+```sql
+SELECT 
+    CASE
+        WHEN channel_name IN ('美团外卖', '京东外卖', '自营外卖', '淘宝闪购') THEN '外卖'
+        WHEN channel_name IN ('微信小程序', '支付宝小程序', '小程序') THEN '小程序'
+        WHEN channel_name = 'pos收银' THEN 'POS'
+        WHEN channel_name IN ('美团/大众点评团购', '美团在线点', '抖音团购',
+                              '抖音小程序（核销工具）', '快手团购', '高德团购') THEN '团购'
+    END             AS 渠道分组,
+    SUM(total_amount) AS 流水,
+    SUM(order_count)  AS 订单量
+FROM tll_bi_dw.ads_dbs_trade_shop_di
+WHERE business_date LIKE '2026%'
+GROUP BY 渠道分组
+ORDER BY 流水 DESC;
+```
+
+{{< notice info "与上方大渠道口径的区别" >}}
+本分组是独立的 4 组归并口径：**淘宝闪购归入外卖**（不是团购），美团在线点、抖音小程序（核销工具）归入团购。两套口径按场景选用，别混用。枚举值写全（不用 ELSE），新增渠道会以 NULL 暴露出来。
+{{< /notice >}}
+
 {{< notice warning "自营外卖口径" >}}
 **shop_di 的"自营外卖"是美团 POS 数据粒度不够的产物**：同一个支付渠道可能来自 POS、自营外卖、小程序多个入口，但美团接口返回的原始数据分不清来源，ETL 只能做模糊归并。
 
@@ -173,6 +207,8 @@ GROUP BY 月份
 ORDER BY 月份;
 ```
 
+营业天数相关的完整版查询见 [来源渠道月流水与营业天数]({{< ref "/queries/来源渠道月流水与营业天数" >}})。
+
 ## 关联表
 
 | 表 | 关系 |
@@ -188,4 +224,22 @@ ORDER BY 月份;
 2. 与支付渠道版 ETL 链路不同，渠道名不可直接对比或 JOIN。
 3. `小程序` / `微信小程序` / `支付宝小程序` 三条并存，汇总到店流水时注意去重。
 4. 门店销售流水对外输出统一走 [支付渠道版]({{< ref "/schema/ads/ads_dbs_trade_shop_pay_channel_di" >}})，中台驾驶舱以其为基准。
+{{< /notice >}}
+
+## 补充说明：旧版表
+
+{{< notice info "旧版表：只用于查 2025 年以前的数据" >}}
+本表在**旧版服务器**上还有个**同名旧版**（表名也是 `ads_dbs_trade_shop_di`，区别在服务器/连接），只用于查询 2025 年以前的数据。字段与渠道口径都不同：
+
+- `business_date` 是 **bigint**（新版是 varchar），过滤用数值范围，如 `business_date >= 20240101 AND business_date < 20250101`
+- 门店字段是 `stat_shop_id` / `stat_shop_name`（新版是 `shop_id`）
+- 渠道只有 **5 个值**，分组更简单：
+
+  | channel_name | 分组 |
+  |---|---|
+  | 美团外卖、饿了么外卖、自营外卖 | 外卖 |
+  | pos | POS |
+  | 小程序 | 小程序 |
+- 旧版里还是"饿了么外卖"（2025 年才更名淘宝闪购）
+- 自带 `_last_day` / `_last_week` / `_last_year` 同期对比列，另有 `report_amount`（报货金额）、`time_name`（时段）、`platform`（平台）等新版没有的字段
 {{< /notice >}}
