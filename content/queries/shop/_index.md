@@ -1,6 +1,6 @@
 ---
 title: 门店管理
-weight: 2
+weight: 4
 bookCollapseSection: true
 ---
 
