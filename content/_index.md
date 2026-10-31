@@ -9,7 +9,7 @@ weight: 1
 
 <div class="home-section-title">常用入口</div>
 <div class="home-grid cols-3">
-<a class="home-card" href="{{< ref "/queries/门店日GMV查询" >}}">
+<a class="home-card" href="{{< ref "/queries/trade/门店日GMV查询" >}}">
   <span class="home-icon">📊</span>
   <span class="home-title">门店日GMV查询</span>
   <span class="home-desc">按门店 × 日期查流水，shop_pay_channel_di</span>

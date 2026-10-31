@@ -1,6 +1,7 @@
 ---
 title: "门店日GMV查询"
 weight: 1
+aliases: ["/queries/门店日GMV查询/"]
 ---
 
 # 门店日GMV查询
