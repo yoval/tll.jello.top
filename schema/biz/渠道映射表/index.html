@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="zh-CN" dir="ltr">
+<head>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="cloud_cube_trade.channel_mapping#ads_dbs_trade_shop_pay_channel_di 的补充维度表。用来查&#34;某渠道里多少是现金付的、多少是微信付的、多少是抖音次卡&#34;这类支付方式拆解问题。
+库 cloud_cube_trade，业务库非数仓层。
+⚠️ …">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://tll.jello.top/schema/biz/%E6%B8%A0%E9%81%93%E6%98%A0%E5%B0%84%E8%A1%A8/">
+  <meta property="og:site_name" content="Data Documentation">
+  <meta property="og:title" content="渠道映射表（channel_mapping）">
+  <meta property="og:description" content="cloud_cube_trade.channel_mapping#ads_dbs_trade_shop_pay_channel_di 的补充维度表。用来查&#34;某渠道里多少是现金付的、多少是微信付的、多少是抖音次卡&#34;这类支付方式拆解问题。
+库 cloud_cube_trade，业务库非数仓层。
+⚠️ 这张表的定位（划重点）#容易踩的坑这张表的 payment_channel 存的是支付方式（现金/扫码/微信/支付宝/优惠券/储值/次卡/代金券/团购券），不是渠道名。">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="schema">
+
+
+  <meta itemprop="name" content="渠道映射表（channel_mapping）">
+  <meta itemprop="description" content="cloud_cube_trade.channel_mapping#ads_dbs_trade_shop_pay_channel_di 的补充维度表。用来查&#34;某渠道里多少是现金付的、多少是微信付的、多少是抖音次卡&#34;这类支付方式拆解问题。
+库 cloud_cube_trade，业务库非数仓层。
+⚠️ 这张表的定位（划重点）#容易踩的坑这张表的 payment_channel 存的是支付方式（现金/扫码/微信/支付宝/优惠券/储值/次卡/代金券/团购券），不是渠道名。">
+  <meta itemprop="wordCount" content="230">
+
+<title>渠道映射表（channel_mapping） • Data Documentation</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="https://tll.jello.top/schema/biz/%E6%B8%A0%E9%81%93%E6%98%A0%E5%B0%84%E8%A1%A8/">
+<link rel="stylesheet" href="/book.min.css">
+
+
+  <script defer type="module" src="/en.search.min.js"></script>
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-schema">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="https://www.tianlala.com/favicon.ico" alt="Logo" /><span>Data Documentation</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e3038f0890f07d4ad84776150bdfdb86" class="toggle" checked />
+    <label for="section-e3038f0890f07d4ad84776150bdfdb86" class="flex">
+      <a href="/schema/" class="">
+        数据字典</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/ads/" class="">
+      ADS 业务汇总层</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/ads/ads_dbs_trade_shop_pay_channel_di/" class="">
+      门店销售（支付渠道）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/ads/ads_dbs_trade_shop_di/" class="">
+      门店销售（来源渠道）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/ads/ads_dbs_trade_food_di/" class="">
+      产品销售（来源渠道）</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/dwd/" class="">
+      DWD 明细层</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/dwd/dwd_rps_tll_order_details_di/" class="">
+      门店报货信息</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/dwd/dwd_rps_tll_order_di/" class="">
+      门店报货订单头</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/dwd/dwd_rps_tll_order_data_merge_di/" class="">
+      门店报货订单（合并版）</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/dim/" class="">
+      DIM 维度层</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/dim/dim_oas_formmain_0145_df/" class="">
+      门店管理表</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f65cd99f51ae67f54d53f672b9120002" class="toggle" checked />
+    <label for="section-f65cd99f51ae67f54d53f672b9120002" class="flex">
+      <a href="/schema/biz/" class="">
+        BIZ 业务库配置</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/biz/%E6%B8%A0%E9%81%93%E6%98%A0%E5%B0%84%E8%A1%A8/" class="active">
+      渠道映射表（channel_mapping）</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d43966a73403828c9c11f55cc6f0f707" class="toggle"  />
+    <label for="section-d43966a73403828c9c11f55cc6f0f707" class="flex">
+      <a href="/queries/" class="">
+        常用查询</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-a277d2e380da469916dcdfafc8c82113" class="toggle"  />
+    <label for="section-a277d2e380da469916dcdfafc8c82113" class="flex">
+      <a href="/queries/trade/" class="">
+        门店销售</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/trade/%E9%97%A8%E5%BA%97%E6%97%A5GMV%E6%9F%A5%E8%AF%A2/" class="">
+      门店日GMV查询</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/trade/%E5%8A%A0%E7%9B%9F%E5%BA%97%E6%AF%8F%E6%97%A5%E5%90%84%E6%B8%A0%E9%81%93%E6%B5%81%E6%B0%B4/" class="">
+      加盟店每日各渠道流水</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/trade/%E6%9D%A5%E6%BA%90%E6%B8%A0%E9%81%93%E6%9C%88%E6%B5%81%E6%B0%B4%E4%B8%8E%E8%90%A5%E4%B8%9A%E5%A4%A9%E6%95%B0/" class="">
+      来源渠道月流水与营业天数</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-9f42d3c439d0a872027b6fd3fd5ebb93" class="toggle"  />
+    <label for="section-9f42d3c439d0a872027b6fd3fd5ebb93" class="flex">
+      <a href="/queries/product/" class="">
+        产品销售</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/product/%E8%B5%A0%E8%8C%B6%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2/" class="">
+      赠茶数据查询</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8d2b1892f9a219227730e5f314195268" class="toggle"  />
+    <label for="section-8d2b1892f9a219227730e5f314195268" class="flex">
+      <a href="/queries/order/" class="">
+        门店报货</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/order/%E9%97%A8%E5%BA%97%E6%8A%A5%E8%B4%A7%E9%87%91%E9%A2%9D/" class="">
+      门店报货金额</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ff33867fef04d8bf8bf9b129ec5eeec7" class="toggle"  />
+    <label for="section-ff33867fef04d8bf8bf9b129ec5eeec7" class="flex">
+      <a href="/queries/shop/" class="">
+        门店管理</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/shop/%E5%85%A8%E9%87%8F%E9%97%A8%E5%BA%97%E6%9F%A5%E8%AF%A2/" class="">
+      全量门店查询</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/shop/%E4%B8%AD%E5%8F%B0%E9%97%A8%E5%BA%97%E5%85%A8%E9%87%8F%E6%9F%A5%E8%AF%A2/" class="">
+      中台门店全量查询</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/shop/%E6%9C%88%E6%9C%AB%E8%BF%90%E8%90%A5%E7%8A%B6%E6%80%81/" class="">
+      月末运营状态</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2cb822f103845855e927ff8ab980e529" class="toggle"  />
+    <label for="section-2cb822f103845855e927ff8ab980e529" class="flex">
+      <a href="/projects/" class="">
+        项目管理</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c24cc055d3c9e0d6450918c00f548d76" class="toggle"  />
+    <label for="section-c24cc055d3c9e0d6450918c00f548d76" class="flex">
+      <a role="button" class="">
+        日常任务</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/daily/%E5%8C%97%E6%A3%AE%E9%80%9A%E8%AE%AF%E5%BD%95%E5%90%8C%E6%AD%A5/" class="">
+      北森通讯录同步</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/daily/%E9%97%A8%E5%BA%97%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/" class="">
+      门店信息管理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/daily/%E6%A0%87%E5%87%86%E8%8F%9C%E5%93%81%E5%90%8D%E7%A7%B0%E6%A0%B8%E5%AF%B9/" class="">
+      标准菜品名称核对</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-bd1e344e17b9897a7435d9fa71e8c255" class="toggle"  />
+    <label for="section-bd1e344e17b9897a7435d9fa71e8c255" class="flex">
+      <a role="button" class="">
+        管理工具</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/manage/%E9%97%A8%E5%BA%97%E8%90%A5%E4%B8%9A%E6%89%A7%E7%85%A7%E7%AE%A1%E7%90%86/" class="">
+      门店营业执照管理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/manage/%E9%97%A8%E5%BA%97%E9%94%80%E5%94%AE%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5/" class="">
+      门店销售数据同步</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/manage/%E9%97%A8%E5%BA%97%E6%8A%A5%E9%80%81%E5%90%8D%E7%A7%B0%E7%94%9F%E6%88%90/" class="">
+      门店报送名称生成</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-62bda4b1e27fd89189aed4fe906db280" class="toggle"  />
+    <label for="section-62bda4b1e27fd89189aed4fe906db280" class="flex">
+      <a role="button" class="">
+        月度任务</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E6%9C%88%E5%BA%A6%E4%BA%A7%E5%93%81%E9%94%80%E5%94%AE%E6%B1%87%E6%80%BB/" class="">
+      月度产品销售汇总</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E5%A4%9A%E6%97%B6%E6%AE%B5%E6%B8%A0%E9%81%93%E5%90%8C%E6%AF%94%E5%88%86%E6%9E%90/" class="">
+      多时段渠道同比分析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E5%91%A8%E8%BE%B9%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="">
+      周边数据分析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%A8%8E%E5%8A%A1%E6%8A%A5%E9%80%81/" class="">
+      小程序税务报送</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E6%9C%88%E5%BA%A6%E6%95%B0%E6%8D%AE%E6%A6%82%E8%A7%88/" class="">
+      月度数据概览</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E5%B7%A5%E4%BD%9C%E5%8F%B0/" class="">
+      定时任务工作台</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/%E6%A0%87%E5%87%86%E8%8F%9C%E5%93%81%E5%90%8D%E7%A7%B0%E6%B8%85%E6%B4%97/" class="">
+      标准菜品名称清洗</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/csv%E6%96%87%E4%BB%B6%E7%9A%84%E5%88%86%E5%89%B2/" class="">
+      CSV文件分割</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-61c6ed61374ffd240a8e1d7e56c0da3b" class="toggle"  />
+    <label for="section-61c6ed61374ffd240a8e1d7e56c0da3b" class="flex">
+      <a href="/product/" class="">
+        产品记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/product/2026%E4%BA%A7%E5%93%81%E4%B8%8A%E6%96%B0%E8%AE%B0%E5%BD%95/" class="">
+      2026产品上新记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/product/2025%E4%BA%A7%E5%93%81%E4%B8%8A%E6%96%B0%E8%AE%B0%E5%BD%95/" class="">
+      2025产品上新记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/product/%E5%B0%8F%E6%96%99/" class="">
+      小料</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8d1c888e090c0a816366703cafaf6b63" class="toggle"  />
+    <label for="section-8d1c888e090c0a816366703cafaf6b63" class="flex">
+      <a href="/glossary/" class="">
+        常用术语</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/glossary/%E5%B8%B8%E7%94%A8%E6%9C%AF%E8%AF%AD/" class="">
+      常用术语</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-104fe6818c947ac2ac06c592cf42df12" class="toggle"  />
+    <label for="section-104fe6818c947ac2ac06c592cf42df12" class="flex">
+      <a href="/reference/" class="">
+        参考资料</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E6%B8%A0%E9%81%93%E5%88%86%E7%BB%84/" class="">
+      支付渠道分组</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E6%9D%A5%E6%BA%90%E6%B8%A0%E9%81%93%E5%AF%B9%E6%AF%94/" class="">
+      渠道口径对比：来源 × 商品流水</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E6%94%AF%E4%BB%98%E6%B8%A0%E9%81%93%E5%AF%B9%E6%AF%94/" class="">
+      渠道口径对比：来源 × 支付渠道</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E7%96%91%E7%82%B9%E8%A7%84%E5%88%99/" class="">
+      平台涉税信息报送疑点规则</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>渠道映射表（channel_mapping）</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#cloud_cube_tradechannel_mapping">cloud_cube_trade.channel_mapping</a>
+      <ul>
+        <li><a href="#-这张表的定位划重点">⚠️ 这张表的定位（划重点）</a></li>
+        <li><a href="#字段定义">字段定义</a></li>
+        <li><a href="#真实数据">真实数据</a>
+          <ul>
+            <li><a href="#channel_type-取值仅-3-种">channel_type 取值（仅 3 种）</a></li>
+            <li><a href="#source--payment-拆解示例">source → payment 拆解示例</a></li>
+          </ul>
+        </li>
+        <li><a href="#常见支付方式枚举">常见支付方式枚举</a></li>
+        <li><a href="#使用场景">使用场景</a>
+          <ul>
+            <li><a href="#不要用它做的事">不要用它做的事</a></li>
+          </ul>
+        </li>
+        <li><a href="#注意事项">注意事项</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="cloud_cube_tradechannel_mapping">cloud_cube_trade.channel_mapping<a class="anchor" href="#cloud_cube_tradechannel_mapping">#</a></h1>
+<p><strong><code>ads_dbs_trade_shop_pay_channel_di</code> 的补充维度表</strong>。用来查&quot;某渠道里多少是现金付的、多少是微信付的、多少是抖音次卡&quot;这类<strong>支付方式拆解</strong>问题。</p>
+<p>库 <code>cloud_cube_trade</code>，业务库非数仓层。</p>
+<h2 id="-这张表的定位划重点">⚠️ 这张表的定位（划重点）<a class="anchor" href="#-%e8%bf%99%e5%bc%a0%e8%a1%a8%e7%9a%84%e5%ae%9a%e4%bd%8d%e5%88%92%e9%87%8d%e7%82%b9">#</a></h2>
+<style>
+  .notice {
+    --notice-title-color: #fff;
+    --notice-title-bg: #6be;
+    --notice-content-color: #444;
+    --notice-content-bg: #e7f2fa;
+    padding: 0;
+    margin: 1em 0;
+    border-radius: 6px;
+    overflow: hidden;
+    color: var(--notice-content-color);
+    background: var(--notice-content-bg);
+    border: 1px solid var(--notice-title-bg);
+  }
+  .notice.info {
+    --notice-title-bg: #fb7;
+    --notice-content-bg: #fff8e7;
+  }
+  .notice.tip {
+    --notice-title-bg: #5a5;
+    --notice-content-bg: #e8f5e9;
+  }
+  .notice.warning {
+    --notice-title-bg: #c33;
+    --notice-content-bg: #fdecea;
+  }
+  .notice .notice-title {
+    margin: 0;
+    padding: 6px 16px;
+    font-weight: 700;
+    font-size: .9em;
+    color: var(--notice-title-color);
+    background: var(--notice-title-bg);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .notice .notice-title svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+    flex-shrink: 0;
+  }
+  .notice .notice-body {
+    padding: 12px 16px;
+    line-height: 1.7;
+  }
+  .notice .notice-body > :last-child {
+    margin-bottom: 0;
+  }
+  .notice .notice-body > :first-child {
+    margin-top: 0;
+  }
+</style><div class="notice warning">
+  <div class="notice-title"><svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>容易踩的坑</div>
+  <div class="notice-body"><p>这张表的 <code>payment_channel</code> 存的是<strong>支付方式</strong>（现金/扫码/微信/支付宝/优惠券/储值/次卡/代金券/团购券），<strong>不是渠道名</strong>。</p>
+<ul>
+<li><code>source_channel</code> = 渠道名（美团外卖、抖音团购、pos收银、微信小程序）</li>
+<li><code>payment_channel</code> = 支付方式（现金、扫码支付、微信、支付宝、优惠券、储值、抖音次卡&hellip;）</li>
+<li><strong>和 <code>shop_di</code> / <code>food_di</code> 没有字段名上的对应关系</strong>，不要用它来做跨表渠道关联</li>
+<li><strong>不是跨表关联的枢纽</strong>，只是 pay_channel_di 的补充维度</li>
+</ul></div>
+</div>
+
+<h2 id="字段定义">字段定义<a class="anchor" href="#%e5%ad%97%e6%ae%b5%e5%ae%9a%e4%b9%89">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>字段</th>
+          <th>类型</th>
+          <th>注释</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>id</code></td>
+          <td>int(11)</td>
+          <td>自增主键</td>
+      </tr>
+      <tr>
+          <td><code>channel_type</code></td>
+          <td>varchar(200)</td>
+          <td>渠道大类：<strong>团购 / 外卖 / 自营</strong>（仅 3 种）</td>
+      </tr>
+      <tr>
+          <td><code>channel_type_code</code></td>
+          <td>varchar(200)</td>
+          <td>渠道类型编码</td>
+      </tr>
+      <tr>
+          <td><code>source_channel</code></td>
+          <td>varchar(200)</td>
+          <td><strong>渠道名</strong>（快手团购、美团外卖、pos收银&hellip;）</td>
+      </tr>
+      <tr>
+          <td><code>source_channel_code</code></td>
+          <td>varchar(200)</td>
+          <td>渠道名编码</td>
+      </tr>
+      <tr>
+          <td><code>payment_channel</code></td>
+          <td>varchar(200)</td>
+          <td><strong>支付方式</strong>（现金/扫码/微信/支付宝/优惠券/储值/次卡/代金券/团购券&hellip;）</td>
+      </tr>
+      <tr>
+          <td><code>payment_channel_code</code></td>
+          <td>varchar(200)</td>
+          <td>支付方式编码</td>
+      </tr>
+      <tr>
+          <td><code>fulfillment_method</code></td>
+          <td>varchar(200)</td>
+          <td>履约方式（当前<strong>全为空</strong>）</td>
+      </tr>
+      <tr>
+          <td><code>fulfillment_method_code</code></td>
+          <td>varchar(200)</td>
+          <td>履约方式编码</td>
+      </tr>
+      <tr>
+          <td><code>writeoff_channel</code></td>
+          <td>varchar(200)</td>
+          <td>核销渠道（当前<strong>全为空</strong>）</td>
+      </tr>
+      <tr>
+          <td><code>writeoff_channel_code</code></td>
+          <td>varchar(200)</td>
+          <td>核销渠道编码</td>
+      </tr>
+      <tr>
+          <td><code>payment_channel_source</code></td>
+          <td>varchar(255)</td>
+          <td>支付名（未用到）</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="真实数据">真实数据<a class="anchor" href="#%e7%9c%9f%e5%ae%9e%e6%95%b0%e6%8d%ae">#</a></h2>
+<h3 id="channel_type-取值仅-3-种">channel_type 取值（仅 3 种）<a class="anchor" href="#channel_type-%e5%8f%96%e5%80%bc%e4%bb%85-3-%e7%a7%8d">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>channel_type</th>
+          <th>source_channel（渠道名）</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>团购</strong></td>
+          <td>快手团购、抖音团购、美团/大众点评团购、高德团购</td>
+      </tr>
+      <tr>
+          <td><strong>外卖</strong></td>
+          <td>京东外卖、抖音外卖、淘宝闪购、美团在线点、美团外卖</td>
+      </tr>
+      <tr>
+          <td><strong>自营</strong></td>
+          <td>pos收银、微信小程序、抖音小程序（核销工具）、支付宝小程序</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="source--payment-拆解示例">source → payment 拆解示例<a class="anchor" href="#source--payment-%e6%8b%86%e8%a7%a3%e7%a4%ba%e4%be%8b">#</a></h3>
+<p><strong>快手团购（channel_type = 团购）</strong>，6 种支付方式：</p>
+<table>
+  <thead>
+      <tr>
+          <th>source_channel</th>
+          <th>payment_channel</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>快手团购</td>
+          <td>快手代金券、优惠券、现金、扫码支付、快手次卡、快手团购券</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>pos收银（channel_type = 自营）</strong>，4 种支付方式：</p>
+<table>
+  <thead>
+      <tr>
+          <th>source_channel</th>
+          <th>payment_channel</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>pos收银</td>
+          <td>储值、扫码支付、现金、优惠券</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>微信小程序（channel_type = 自营）</strong>，5 种支付方式：</p>
+<table>
+  <thead>
+      <tr>
+          <th>source_channel</th>
+          <th>payment_channel</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>微信小程序</td>
+          <td>微信、储值、优惠券、积分支付、其他</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>美团/大众点评团购（channel_type = 团购）</strong>，8 种支付方式：</p>
+<table>
+  <thead>
+      <tr>
+          <th>source_channel</th>
+          <th>payment_channel</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>美团/大众点评团购</td>
+          <td>点评代金券、现金、扫码支付、美团在线点、优惠券、点评次卡、点评团购券</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="常见支付方式枚举">常见支付方式枚举<a class="anchor" href="#%e5%b8%b8%e8%a7%81%e6%94%af%e4%bb%98%e6%96%b9%e5%bc%8f%e6%9e%9a%e4%b8%be">#</a></h2>
+<p>从 channel_mapping 真实数据提取的 payment_channel 全量值：</p>
+<table>
+  <thead>
+      <tr>
+          <th>支付方式</th>
+          <th>出现的渠道</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>现金</td>
+          <td>全渠道</td>
+      </tr>
+      <tr>
+          <td>扫码支付</td>
+          <td>全渠道</td>
+      </tr>
+      <tr>
+          <td>优惠券</td>
+          <td>全渠道</td>
+      </tr>
+      <tr>
+          <td>储值</td>
+          <td>pos收银、微信/支付宝小程序</td>
+      </tr>
+      <tr>
+          <td>微信</td>
+          <td>微信小程序</td>
+      </tr>
+      <tr>
+          <td>支付宝</td>
+          <td>支付宝小程序</td>
+      </tr>
+      <tr>
+          <td>抖音</td>
+          <td>抖音小程序核销工具</td>
+      </tr>
+      <tr>
+          <td>积分支付</td>
+          <td>微信/支付宝小程序</td>
+      </tr>
+      <tr>
+          <td>其他</td>
+          <td>微信/支付宝小程序</td>
+      </tr>
+      <tr>
+          <td>次卡</td>
+          <td>快手/抖音/美团点评/高德团购</td>
+      </tr>
+      <tr>
+          <td>代金券</td>
+          <td>快手/抖音/美团点评团购</td>
+      </tr>
+      <tr>
+          <td>团购券</td>
+          <td>快手/抖音/美团点评/高德团购</td>
+      </tr>
+      <tr>
+          <td>在线点</td>
+          <td>美团/大众点评团购</td>
+      </tr>
+      <tr>
+          <td>秒送</td>
+          <td>京东外卖</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="使用场景">使用场景<a class="anchor" href="#%e4%bd%bf%e7%94%a8%e5%9c%ba%e6%99%af">#</a></h2>
+<p>channel_mapping 的唯一正确用法——<strong>查支付方式分布</strong>：</p>
+<div class="code-block" data-lang="SQL"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="c1">-- 查 2026-10 抖音团购里各种支付方式的流水
+</span></span></span><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">cm</span><span class="p">.</span><span class="n">payment_channel</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="err">支付方式</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">SUM</span><span class="p">(</span><span class="n">pc</span><span class="p">.</span><span class="n">amount</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="err">流水</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">FROM</span><span class="w"> </span><span class="n">tll_bi_dw</span><span class="p">.</span><span class="n">ads_dbs_trade_shop_pay_channel_di</span><span class="w"> </span><span class="n">pc</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">JOIN</span><span class="w"> </span><span class="n">cloud_cube_trade</span><span class="p">.</span><span class="n">channel_mapping</span><span class="w"> </span><span class="n">cm</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">ON</span><span class="w"> </span><span class="n">pc</span><span class="p">.</span><span class="n">payment_channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cm</span><span class="p">.</span><span class="n">source_channel</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">WHERE</span><span class="w"> </span><span class="n">pc</span><span class="p">.</span><span class="n">pt</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;2026-10%&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">cm</span><span class="p">.</span><span class="n">source_channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;抖音团购&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">cm</span><span class="p">.</span><span class="n">payment_channel</span><span class="p">;</span></span></span></code></pre></div></div><h3 id="不要用它做的事">不要用它做的事<a class="anchor" href="#%e4%b8%8d%e8%a6%81%e7%94%a8%e5%ae%83%e5%81%9a%e7%9a%84%e4%ba%8b">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>❌ 错误用法</th>
+          <th>为什么错</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>JOIN shop_di 做跨表渠道关联</td>
+          <td>payment_channel 是支付方式，不是渠道名</td>
+      </tr>
+      <tr>
+          <td>查 source_channel 和 pay_channel_di.payment_channels 的映射</td>
+          <td>两者字段值不同（mapping 里没有甜啦啦小程序等）</td>
+      </tr>
+      <tr>
+          <td>当核销/履约配置表</td>
+          <td>fulfillment_method 和 writeoff_channel 当前全是空</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="注意事项">注意事项<a class="anchor" href="#%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9">#</a></h2>
+<div class="notice warning">
+  <div class="notice-title"><svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>注意</div>
+  <div class="notice-body"><ol>
+<li>跨库：数仓表在 <code>tll_bi_dw</code>，这张表在 <code>cloud_cube_trade</code>，示例 SQL 的库名前缀不要漏。</li>
+<li>当前 <code>fulfillment_method</code> 和 <code>writeoff_channel</code> <strong>全为空</strong>，不要依赖这两个字段。</li>
+<li>渠道新增后，需要同步补 channel_mapping 里的 source_channel → payment_channel 拆解。</li>
+</ol></div>
+</div>
+
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+<div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/schema/biz/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>BIZ 业务库配置</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/queries/" class="flex align-center">
+        <span>常用查询</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#cloud_cube_tradechannel_mapping">cloud_cube_trade.channel_mapping</a>
+      <ul>
+        <li><a href="#-这张表的定位划重点">⚠️ 这张表的定位（划重点）</a></li>
+        <li><a href="#字段定义">字段定义</a></li>
+        <li><a href="#真实数据">真实数据</a>
+          <ul>
+            <li><a href="#channel_type-取值仅-3-种">channel_type 取值（仅 3 种）</a></li>
+            <li><a href="#source--payment-拆解示例">source → payment 拆解示例</a></li>
+          </ul>
+        </li>
+        <li><a href="#常见支付方式枚举">常见支付方式枚举</a></li>
+        <li><a href="#使用场景">使用场景</a>
+          <ul>
+            <li><a href="#不要用它做的事">不要用它做的事</a></li>
+          </ul>
+        </li>
+        <li><a href="#注意事项">注意事项</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  <script>
+(function () {
+  document.querySelectorAll('pre > code').forEach(function (codeBlock) {
+    var pre = codeBlock.parentNode;
+    var button = document.createElement('button');
+    button.className = 'copy-code';
+    button.textContent = '复制';
+    button.addEventListener('click', function () {
+      var text = codeBlock.textContent;
+      navigator.clipboard.writeText(text).then(function () {
+        button.textContent = '已复制';
+        button.classList.add('copied');
+        setTimeout(function () {
+          button.textContent = '复制';
+          button.classList.remove('copied');
+        }, 2000);
+      });
+    });
+    pre.appendChild(button);
+  });
+})();
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

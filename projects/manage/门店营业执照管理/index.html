@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="zh-CN" dir="ltr">
+<head>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="门店营业执照管理#门店营业执照批量 OCR 识别、按统一社会信用代码走风鸟校验企业信息的 Web 管理系统（Flask），数据写入独立库 license_manage，含第三方 API 调用统计与后台任务历史。
+相关项目：执照库 license_manage 被 门店报送名称生成、小程序税务报送 …">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://tll.jello.top/projects/manage/%E9%97%A8%E5%BA%97%E8%90%A5%E4%B8%9A%E6%89%A7%E7%85%A7%E7%AE%A1%E7%90%86/">
+  <meta property="og:site_name" content="Data Documentation">
+  <meta property="og:title" content="门店营业执照管理">
+  <meta property="og:description" content="门店营业执照管理#门店营业执照批量 OCR 识别、按统一社会信用代码走风鸟校验企业信息的 Web 管理系统（Flask），数据写入独立库 license_manage，含第三方 API 调用统计与后台任务历史。
+相关项目：执照库 license_manage 被 门店报送名称生成、小程序税务报送 使用 核心功能#执照图片本地化：下载到 data/licenses/{门店编号}，OCR 一律识别本地文件，不依赖图床与 OA cookie 时效 OCR 识别：腾讯云 / 百度智能云双平台、多账号，识别统一社会信用代码 / 执照名称 / 经营者 风鸟校验：按统一社会信用代码查询工商信息；风鸟返回的正确号码优先采信，可自动纠正 OCR 错号；限速约 5 秒/条，触发上限自动暂停约 1 小时后续跑 版本化管理：门店执照以版本行存储（is_latest 标记最新），更换链接就地改写不开新版本，换执照内容追加新版本 导出：按「生效值」（校验 &gt; OCR，可手动指定）导出营业执照汇总 xlsx 调用统计 / 任务历史：接口 × 账号维度的费用监控，任务进度持久化在本地 SQLite 运行方式#pip install -r requirements.txt python app.py # http://127.0.0.1:5000 python app.py --port 8000 # 自定义端口注意事项#OA cookie 只在下载执照图片时使用（data/cookies_oa.json，浏览器导出覆盖）；风鸟账号 cookie 有效期数月，新增账号需在 config/settings.py 的 CHECK_CONFIG 中登记 config/settings.py 含云密钥与数据库口令，仓库为私人仓库，不得公开 数据库备份：python db/backup_db.py（优先 mysqldump），恢复加 --restore">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="projects">
+
+
+  <meta itemprop="name" content="门店营业执照管理">
+  <meta itemprop="description" content="门店营业执照管理#门店营业执照批量 OCR 识别、按统一社会信用代码走风鸟校验企业信息的 Web 管理系统（Flask），数据写入独立库 license_manage，含第三方 API 调用统计与后台任务历史。
+相关项目：执照库 license_manage 被 门店报送名称生成、小程序税务报送 使用 核心功能#执照图片本地化：下载到 data/licenses/{门店编号}，OCR 一律识别本地文件，不依赖图床与 OA cookie 时效 OCR 识别：腾讯云 / 百度智能云双平台、多账号，识别统一社会信用代码 / 执照名称 / 经营者 风鸟校验：按统一社会信用代码查询工商信息；风鸟返回的正确号码优先采信，可自动纠正 OCR 错号；限速约 5 秒/条，触发上限自动暂停约 1 小时后续跑 版本化管理：门店执照以版本行存储（is_latest 标记最新），更换链接就地改写不开新版本，换执照内容追加新版本 导出：按「生效值」（校验 &gt; OCR，可手动指定）导出营业执照汇总 xlsx 调用统计 / 任务历史：接口 × 账号维度的费用监控，任务进度持久化在本地 SQLite 运行方式#pip install -r requirements.txt python app.py # http://127.0.0.1:5000 python app.py --port 8000 # 自定义端口注意事项#OA cookie 只在下载执照图片时使用（data/cookies_oa.json，浏览器导出覆盖）；风鸟账号 cookie 有效期数月，新增账号需在 config/settings.py 的 CHECK_CONFIG 中登记 config/settings.py 含云密钥与数据库口令，仓库为私人仓库，不得公开 数据库备份：python db/backup_db.py（优先 mysqldump），恢复加 --restore">
+  <meta itemprop="wordCount" content="78">
+
+<title>门店营业执照管理 • Data Documentation</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="https://tll.jello.top/projects/manage/%E9%97%A8%E5%BA%97%E8%90%A5%E4%B8%9A%E6%89%A7%E7%85%A7%E7%AE%A1%E7%90%86/">
+<link rel="stylesheet" href="/book.min.css">
+
+
+  <script defer type="module" src="/en.search.min.js"></script>
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-projects">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="https://www.tianlala.com/favicon.ico" alt="Logo" /><span>Data Documentation</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e3038f0890f07d4ad84776150bdfdb86" class="toggle"  />
+    <label for="section-e3038f0890f07d4ad84776150bdfdb86" class="flex">
+      <a href="/schema/" class="">
+        数据字典</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/ads/" class="">
+      ADS 业务汇总层</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/ads/ads_dbs_trade_shop_pay_channel_di/" class="">
+      门店销售（支付渠道）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/ads/ads_dbs_trade_shop_di/" class="">
+      门店销售（来源渠道）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/ads/ads_dbs_trade_food_di/" class="">
+      产品销售（来源渠道）</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/dwd/" class="">
+      DWD 明细层</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/dwd/dwd_rps_tll_order_details_di/" class="">
+      门店报货信息</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/dwd/dwd_rps_tll_order_di/" class="">
+      门店报货订单头</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/dwd/dwd_rps_tll_order_data_merge_di/" class="">
+      门店报货订单（合并版）</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/dim/" class="">
+      DIM 维度层</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/dim/dim_oas_formmain_0145_df/" class="">
+      门店管理表</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f65cd99f51ae67f54d53f672b9120002" class="toggle"  />
+    <label for="section-f65cd99f51ae67f54d53f672b9120002" class="flex">
+      <a href="/schema/biz/" class="">
+        BIZ 业务库配置</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/biz/%E6%B8%A0%E9%81%93%E6%98%A0%E5%B0%84%E8%A1%A8/" class="">
+      渠道映射表（channel_mapping）</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d43966a73403828c9c11f55cc6f0f707" class="toggle"  />
+    <label for="section-d43966a73403828c9c11f55cc6f0f707" class="flex">
+      <a href="/queries/" class="">
+        常用查询</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-a277d2e380da469916dcdfafc8c82113" class="toggle"  />
+    <label for="section-a277d2e380da469916dcdfafc8c82113" class="flex">
+      <a href="/queries/trade/" class="">
+        门店销售</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/trade/%E9%97%A8%E5%BA%97%E6%97%A5GMV%E6%9F%A5%E8%AF%A2/" class="">
+      门店日GMV查询</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/trade/%E5%8A%A0%E7%9B%9F%E5%BA%97%E6%AF%8F%E6%97%A5%E5%90%84%E6%B8%A0%E9%81%93%E6%B5%81%E6%B0%B4/" class="">
+      加盟店每日各渠道流水</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/trade/%E6%9D%A5%E6%BA%90%E6%B8%A0%E9%81%93%E6%9C%88%E6%B5%81%E6%B0%B4%E4%B8%8E%E8%90%A5%E4%B8%9A%E5%A4%A9%E6%95%B0/" class="">
+      来源渠道月流水与营业天数</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-9f42d3c439d0a872027b6fd3fd5ebb93" class="toggle"  />
+    <label for="section-9f42d3c439d0a872027b6fd3fd5ebb93" class="flex">
+      <a href="/queries/product/" class="">
+        产品销售</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/product/%E8%B5%A0%E8%8C%B6%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2/" class="">
+      赠茶数据查询</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8d2b1892f9a219227730e5f314195268" class="toggle"  />
+    <label for="section-8d2b1892f9a219227730e5f314195268" class="flex">
+      <a href="/queries/order/" class="">
+        门店报货</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/order/%E9%97%A8%E5%BA%97%E6%8A%A5%E8%B4%A7%E9%87%91%E9%A2%9D/" class="">
+      门店报货金额</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ff33867fef04d8bf8bf9b129ec5eeec7" class="toggle"  />
+    <label for="section-ff33867fef04d8bf8bf9b129ec5eeec7" class="flex">
+      <a href="/queries/shop/" class="">
+        门店管理</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/shop/%E5%85%A8%E9%87%8F%E9%97%A8%E5%BA%97%E6%9F%A5%E8%AF%A2/" class="">
+      全量门店查询</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/shop/%E4%B8%AD%E5%8F%B0%E9%97%A8%E5%BA%97%E5%85%A8%E9%87%8F%E6%9F%A5%E8%AF%A2/" class="">
+      中台门店全量查询</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/shop/%E6%9C%88%E6%9C%AB%E8%BF%90%E8%90%A5%E7%8A%B6%E6%80%81/" class="">
+      月末运营状态</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2cb822f103845855e927ff8ab980e529" class="toggle" checked />
+    <label for="section-2cb822f103845855e927ff8ab980e529" class="flex">
+      <a href="/projects/" class="">
+        项目管理</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c24cc055d3c9e0d6450918c00f548d76" class="toggle"  />
+    <label for="section-c24cc055d3c9e0d6450918c00f548d76" class="flex">
+      <a role="button" class="">
+        日常任务</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/daily/%E5%8C%97%E6%A3%AE%E9%80%9A%E8%AE%AF%E5%BD%95%E5%90%8C%E6%AD%A5/" class="">
+      北森通讯录同步</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/daily/%E9%97%A8%E5%BA%97%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/" class="">
+      门店信息管理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/daily/%E6%A0%87%E5%87%86%E8%8F%9C%E5%93%81%E5%90%8D%E7%A7%B0%E6%A0%B8%E5%AF%B9/" class="">
+      标准菜品名称核对</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-bd1e344e17b9897a7435d9fa71e8c255" class="toggle" checked />
+    <label for="section-bd1e344e17b9897a7435d9fa71e8c255" class="flex">
+      <a role="button" class="">
+        管理工具</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/manage/%E9%97%A8%E5%BA%97%E8%90%A5%E4%B8%9A%E6%89%A7%E7%85%A7%E7%AE%A1%E7%90%86/" class="active">
+      门店营业执照管理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/manage/%E9%97%A8%E5%BA%97%E9%94%80%E5%94%AE%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5/" class="">
+      门店销售数据同步</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/manage/%E9%97%A8%E5%BA%97%E6%8A%A5%E9%80%81%E5%90%8D%E7%A7%B0%E7%94%9F%E6%88%90/" class="">
+      门店报送名称生成</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-62bda4b1e27fd89189aed4fe906db280" class="toggle"  />
+    <label for="section-62bda4b1e27fd89189aed4fe906db280" class="flex">
+      <a role="button" class="">
+        月度任务</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E6%9C%88%E5%BA%A6%E4%BA%A7%E5%93%81%E9%94%80%E5%94%AE%E6%B1%87%E6%80%BB/" class="">
+      月度产品销售汇总</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E5%A4%9A%E6%97%B6%E6%AE%B5%E6%B8%A0%E9%81%93%E5%90%8C%E6%AF%94%E5%88%86%E6%9E%90/" class="">
+      多时段渠道同比分析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E5%91%A8%E8%BE%B9%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="">
+      周边数据分析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%A8%8E%E5%8A%A1%E6%8A%A5%E9%80%81/" class="">
+      小程序税务报送</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E6%9C%88%E5%BA%A6%E6%95%B0%E6%8D%AE%E6%A6%82%E8%A7%88/" class="">
+      月度数据概览</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E5%B7%A5%E4%BD%9C%E5%8F%B0/" class="">
+      定时任务工作台</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/%E6%A0%87%E5%87%86%E8%8F%9C%E5%93%81%E5%90%8D%E7%A7%B0%E6%B8%85%E6%B4%97/" class="">
+      标准菜品名称清洗</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/csv%E6%96%87%E4%BB%B6%E7%9A%84%E5%88%86%E5%89%B2/" class="">
+      CSV文件分割</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-61c6ed61374ffd240a8e1d7e56c0da3b" class="toggle"  />
+    <label for="section-61c6ed61374ffd240a8e1d7e56c0da3b" class="flex">
+      <a href="/product/" class="">
+        产品记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/product/2026%E4%BA%A7%E5%93%81%E4%B8%8A%E6%96%B0%E8%AE%B0%E5%BD%95/" class="">
+      2026产品上新记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/product/2025%E4%BA%A7%E5%93%81%E4%B8%8A%E6%96%B0%E8%AE%B0%E5%BD%95/" class="">
+      2025产品上新记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/product/%E5%B0%8F%E6%96%99/" class="">
+      小料</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8d1c888e090c0a816366703cafaf6b63" class="toggle"  />
+    <label for="section-8d1c888e090c0a816366703cafaf6b63" class="flex">
+      <a href="/glossary/" class="">
+        常用术语</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/glossary/%E5%B8%B8%E7%94%A8%E6%9C%AF%E8%AF%AD/" class="">
+      常用术语</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-104fe6818c947ac2ac06c592cf42df12" class="toggle"  />
+    <label for="section-104fe6818c947ac2ac06c592cf42df12" class="flex">
+      <a href="/reference/" class="">
+        参考资料</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E6%B8%A0%E9%81%93%E5%88%86%E7%BB%84/" class="">
+      支付渠道分组</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E6%9D%A5%E6%BA%90%E6%B8%A0%E9%81%93%E5%AF%B9%E6%AF%94/" class="">
+      渠道口径对比：来源 × 商品流水</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E6%94%AF%E4%BB%98%E6%B8%A0%E9%81%93%E5%AF%B9%E6%AF%94/" class="">
+      渠道口径对比：来源 × 支付渠道</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E7%96%91%E7%82%B9%E8%A7%84%E5%88%99/" class="">
+      平台涉税信息报送疑点规则</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>门店营业执照管理</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#门店营业执照管理">门店营业执照管理</a>
+      <ul>
+        <li><a href="#核心功能">核心功能</a></li>
+        <li><a href="#运行方式">运行方式</a></li>
+        <li><a href="#注意事项">注意事项</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="门店营业执照管理">门店营业执照管理<a class="anchor" href="#%e9%97%a8%e5%ba%97%e8%90%a5%e4%b8%9a%e6%89%a7%e7%85%a7%e7%ae%a1%e7%90%86">#</a></h1>
+<p>门店营业执照批量 OCR 识别、按统一社会信用代码走风鸟校验企业信息的 <strong>Web 管理系统</strong>（Flask），数据写入独立库 <code>license_manage</code>，含第三方 API 调用统计与后台任务历史。</p>
+<ul>
+<li><strong>相关项目</strong>：执照库 <code>license_manage</code> 被 <a href="https://tll.jello.top/projects/manage/%E9%97%A8%E5%BA%97%E6%8A%A5%E9%80%81%E5%90%8D%E7%A7%B0%E7%94%9F%E6%88%90/">门店报送名称生成</a>、<a href="https://tll.jello.top/projects/monthly/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%A8%8E%E5%8A%A1%E6%8A%A5%E9%80%81/">小程序税务报送</a> 使用</li>
+</ul>
+<h2 id="核心功能">核心功能<a class="anchor" href="#%e6%a0%b8%e5%bf%83%e5%8a%9f%e8%83%bd">#</a></h2>
+<ol>
+<li><strong>执照图片本地化</strong>：下载到 <code>data/licenses/{门店编号}</code>，OCR 一律识别本地文件，不依赖图床与 OA cookie 时效</li>
+<li><strong>OCR 识别</strong>：腾讯云 / 百度智能云双平台、多账号，识别统一社会信用代码 / 执照名称 / 经营者</li>
+<li><strong>风鸟校验</strong>：按统一社会信用代码查询工商信息；风鸟返回的正确号码优先采信，可自动纠正 OCR 错号；限速约 5 秒/条，触发上限自动暂停约 1 小时后续跑</li>
+<li><strong>版本化管理</strong>：门店执照以版本行存储（<code>is_latest</code> 标记最新），更换链接就地改写不开新版本，换执照内容追加新版本</li>
+<li><strong>导出</strong>：按「生效值」（校验 &gt; OCR，可手动指定）导出营业执照汇总 xlsx</li>
+<li><strong>调用统计 / 任务历史</strong>：接口 × 账号维度的费用监控，任务进度持久化在本地 SQLite</li>
+</ol>
+<h2 id="运行方式">运行方式<a class="anchor" href="#%e8%bf%90%e8%a1%8c%e6%96%b9%e5%bc%8f">#</a></h2>
+<div class="code-block" data-lang="Shell"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pip install -r requirements.txt
+</span></span><span class="line"><span class="cl">python app.py                <span class="c1"># http://127.0.0.1:5000</span>
+</span></span><span class="line"><span class="cl">python app.py --port <span class="m">8000</span>    <span class="c1"># 自定义端口</span></span></span></code></pre></div></div><h2 id="注意事项">注意事项<a class="anchor" href="#%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9">#</a></h2>
+<ul>
+<li>OA cookie 只在下载执照图片时使用（<code>data/cookies_oa.json</code>，浏览器导出覆盖）；风鸟账号 cookie 有效期数月，新增账号需在 <code>config/settings.py</code> 的 <code>CHECK_CONFIG</code> 中登记</li>
+<li><code>config/settings.py</code> 含云密钥与数据库口令，仓库为私人仓库，<strong>不得公开</strong></li>
+<li>数据库备份：<code>python db/backup_db.py</code>（优先 mysqldump），恢复加 <code>--restore</code></li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+<div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/projects/daily/%E6%A0%87%E5%87%86%E8%8F%9C%E5%93%81%E5%90%8D%E7%A7%B0%E6%A0%B8%E5%AF%B9/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>标准菜品名称核对</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/projects/manage/%E9%97%A8%E5%BA%97%E9%94%80%E5%94%AE%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5/" class="flex align-center">
+        <span>门店销售数据同步</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#门店营业执照管理">门店营业执照管理</a>
+      <ul>
+        <li><a href="#核心功能">核心功能</a></li>
+        <li><a href="#运行方式">运行方式</a></li>
+        <li><a href="#注意事项">注意事项</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  <script>
+(function () {
+  document.querySelectorAll('pre > code').forEach(function (codeBlock) {
+    var pre = codeBlock.parentNode;
+    var button = document.createElement('button');
+    button.className = 'copy-code';
+    button.textContent = '复制';
+    button.addEventListener('click', function () {
+      var text = codeBlock.textContent;
+      navigator.clipboard.writeText(text).then(function () {
+        button.textContent = '已复制';
+        button.classList.add('copied');
+        setTimeout(function () {
+          button.textContent = '复制';
+          button.classList.remove('copied');
+        }, 2000);
+      });
+    });
+    pre.appendChild(button);
+  });
+})();
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="zh-CN" dir="ltr">
+<head>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="平台涉税信息报送疑点规则#税务部门对互联网平台企业报送的涉税信息做校验时命中的疑点指标，共 20 条。每条包含指标说明、应对策略与加工频率。
+维度 分布 总数 20 条 加工频率 日频 6 条（6、7、9、11、15、16）、月频 14 条 主题分类 收入数据质量 5 条、身份信息对应关系 6 条 …">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://tll.jello.top/reference/%E7%96%91%E7%82%B9%E8%A7%84%E5%88%99/">
+  <meta property="og:site_name" content="Data Documentation">
+  <meta property="og:title" content="平台涉税信息报送疑点规则">
+  <meta property="og:description" content="平台涉税信息报送疑点规则#税务部门对互联网平台企业报送的涉税信息做校验时命中的疑点指标，共 20 条。每条包含指标说明、应对策略与加工频率。
+维度 分布 总数 20 条 加工频率 日频 6 条（6、7、9、11、15、16）、月频 14 条 主题分类 收入数据质量 5 条、身份信息对应关系 6 条、免报与认证 2 条、代办申报 7 条 我们重点关注：第 06 条、第 07 条 20 条里实际需要盯的是第 6、7 条——两者校验的是同一件事：《收入信息报送表》里报的店铺标识，必须在《身份信息报送表》里找到同一个店铺。均为日频校验，出错当天就会命中。">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="reference">
+
+
+  <meta itemprop="name" content="平台涉税信息报送疑点规则">
+  <meta itemprop="description" content="平台涉税信息报送疑点规则#税务部门对互联网平台企业报送的涉税信息做校验时命中的疑点指标，共 20 条。每条包含指标说明、应对策略与加工频率。
+维度 分布 总数 20 条 加工频率 日频 6 条（6、7、9、11、15、16）、月频 14 条 主题分类 收入数据质量 5 条、身份信息对应关系 6 条、免报与认证 2 条、代办申报 7 条 我们重点关注：第 06 条、第 07 条 20 条里实际需要盯的是第 6、7 条——两者校验的是同一件事：《收入信息报送表》里报的店铺标识，必须在《身份信息报送表》里找到同一个店铺。均为日频校验，出错当天就会命中。">
+  <meta itemprop="wordCount" content="223">
+
+<title>平台涉税信息报送疑点规则 • Data Documentation</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="https://tll.jello.top/reference/%E7%96%91%E7%82%B9%E8%A7%84%E5%88%99/">
+<link rel="stylesheet" href="/book.min.css">
+
+
+  <script defer type="module" src="/en.search.min.js"></script>
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-reference">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="https://www.tianlala.com/favicon.ico" alt="Logo" /><span>Data Documentation</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e3038f0890f07d4ad84776150bdfdb86" class="toggle"  />
+    <label for="section-e3038f0890f07d4ad84776150bdfdb86" class="flex">
+      <a href="/schema/" class="">
+        数据字典</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/ads/" class="">
+      ADS 业务汇总层</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/ads/ads_dbs_trade_shop_pay_channel_di/" class="">
+      门店销售（支付渠道）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/ads/ads_dbs_trade_shop_di/" class="">
+      门店销售（来源渠道）</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/ads/ads_dbs_trade_food_di/" class="">
+      产品销售（来源渠道）</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/dwd/" class="">
+      DWD 明细层</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/dwd/dwd_rps_tll_order_details_di/" class="">
+      门店报货信息</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/dwd/dwd_rps_tll_order_di/" class="">
+      门店报货订单头</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/dwd/dwd_rps_tll_order_data_merge_di/" class="">
+      门店报货订单（合并版）</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/dim/" class="">
+      DIM 维度层</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/dim/dim_oas_formmain_0145_df/" class="">
+      门店管理表</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f65cd99f51ae67f54d53f672b9120002" class="toggle"  />
+    <label for="section-f65cd99f51ae67f54d53f672b9120002" class="flex">
+      <a href="/schema/biz/" class="">
+        BIZ 业务库配置</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/schema/biz/%E6%B8%A0%E9%81%93%E6%98%A0%E5%B0%84%E8%A1%A8/" class="">
+      渠道映射表（channel_mapping）</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d43966a73403828c9c11f55cc6f0f707" class="toggle"  />
+    <label for="section-d43966a73403828c9c11f55cc6f0f707" class="flex">
+      <a href="/queries/" class="">
+        常用查询</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-a277d2e380da469916dcdfafc8c82113" class="toggle"  />
+    <label for="section-a277d2e380da469916dcdfafc8c82113" class="flex">
+      <a href="/queries/trade/" class="">
+        门店销售</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/trade/%E9%97%A8%E5%BA%97%E6%97%A5GMV%E6%9F%A5%E8%AF%A2/" class="">
+      门店日GMV查询</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/trade/%E5%8A%A0%E7%9B%9F%E5%BA%97%E6%AF%8F%E6%97%A5%E5%90%84%E6%B8%A0%E9%81%93%E6%B5%81%E6%B0%B4/" class="">
+      加盟店每日各渠道流水</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/trade/%E6%9D%A5%E6%BA%90%E6%B8%A0%E9%81%93%E6%9C%88%E6%B5%81%E6%B0%B4%E4%B8%8E%E8%90%A5%E4%B8%9A%E5%A4%A9%E6%95%B0/" class="">
+      来源渠道月流水与营业天数</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-9f42d3c439d0a872027b6fd3fd5ebb93" class="toggle"  />
+    <label for="section-9f42d3c439d0a872027b6fd3fd5ebb93" class="flex">
+      <a href="/queries/product/" class="">
+        产品销售</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/product/%E8%B5%A0%E8%8C%B6%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2/" class="">
+      赠茶数据查询</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8d2b1892f9a219227730e5f314195268" class="toggle"  />
+    <label for="section-8d2b1892f9a219227730e5f314195268" class="flex">
+      <a href="/queries/order/" class="">
+        门店报货</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/order/%E9%97%A8%E5%BA%97%E6%8A%A5%E8%B4%A7%E9%87%91%E9%A2%9D/" class="">
+      门店报货金额</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ff33867fef04d8bf8bf9b129ec5eeec7" class="toggle"  />
+    <label for="section-ff33867fef04d8bf8bf9b129ec5eeec7" class="flex">
+      <a href="/queries/shop/" class="">
+        门店管理</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/shop/%E5%85%A8%E9%87%8F%E9%97%A8%E5%BA%97%E6%9F%A5%E8%AF%A2/" class="">
+      全量门店查询</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/shop/%E4%B8%AD%E5%8F%B0%E9%97%A8%E5%BA%97%E5%85%A8%E9%87%8F%E6%9F%A5%E8%AF%A2/" class="">
+      中台门店全量查询</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/queries/shop/%E6%9C%88%E6%9C%AB%E8%BF%90%E8%90%A5%E7%8A%B6%E6%80%81/" class="">
+      月末运营状态</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2cb822f103845855e927ff8ab980e529" class="toggle"  />
+    <label for="section-2cb822f103845855e927ff8ab980e529" class="flex">
+      <a href="/projects/" class="">
+        项目管理</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c24cc055d3c9e0d6450918c00f548d76" class="toggle"  />
+    <label for="section-c24cc055d3c9e0d6450918c00f548d76" class="flex">
+      <a role="button" class="">
+        日常任务</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/daily/%E5%8C%97%E6%A3%AE%E9%80%9A%E8%AE%AF%E5%BD%95%E5%90%8C%E6%AD%A5/" class="">
+      北森通讯录同步</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/daily/%E9%97%A8%E5%BA%97%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/" class="">
+      门店信息管理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/daily/%E6%A0%87%E5%87%86%E8%8F%9C%E5%93%81%E5%90%8D%E7%A7%B0%E6%A0%B8%E5%AF%B9/" class="">
+      标准菜品名称核对</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-bd1e344e17b9897a7435d9fa71e8c255" class="toggle"  />
+    <label for="section-bd1e344e17b9897a7435d9fa71e8c255" class="flex">
+      <a role="button" class="">
+        管理工具</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/manage/%E9%97%A8%E5%BA%97%E8%90%A5%E4%B8%9A%E6%89%A7%E7%85%A7%E7%AE%A1%E7%90%86/" class="">
+      门店营业执照管理</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/manage/%E9%97%A8%E5%BA%97%E9%94%80%E5%94%AE%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5/" class="">
+      门店销售数据同步</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/manage/%E9%97%A8%E5%BA%97%E6%8A%A5%E9%80%81%E5%90%8D%E7%A7%B0%E7%94%9F%E6%88%90/" class="">
+      门店报送名称生成</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-62bda4b1e27fd89189aed4fe906db280" class="toggle"  />
+    <label for="section-62bda4b1e27fd89189aed4fe906db280" class="flex">
+      <a role="button" class="">
+        月度任务</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E6%9C%88%E5%BA%A6%E4%BA%A7%E5%93%81%E9%94%80%E5%94%AE%E6%B1%87%E6%80%BB/" class="">
+      月度产品销售汇总</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E5%A4%9A%E6%97%B6%E6%AE%B5%E6%B8%A0%E9%81%93%E5%90%8C%E6%AF%94%E5%88%86%E6%9E%90/" class="">
+      多时段渠道同比分析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E5%91%A8%E8%BE%B9%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="">
+      周边数据分析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%A8%8E%E5%8A%A1%E6%8A%A5%E9%80%81/" class="">
+      小程序税务报送</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/monthly/%E6%9C%88%E5%BA%A6%E6%95%B0%E6%8D%AE%E6%A6%82%E8%A7%88/" class="">
+      月度数据概览</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E5%B7%A5%E4%BD%9C%E5%8F%B0/" class="">
+      定时任务工作台</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/%E6%A0%87%E5%87%86%E8%8F%9C%E5%93%81%E5%90%8D%E7%A7%B0%E6%B8%85%E6%B4%97/" class="">
+      标准菜品名称清洗</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/projects/csv%E6%96%87%E4%BB%B6%E7%9A%84%E5%88%86%E5%89%B2/" class="">
+      CSV文件分割</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-61c6ed61374ffd240a8e1d7e56c0da3b" class="toggle"  />
+    <label for="section-61c6ed61374ffd240a8e1d7e56c0da3b" class="flex">
+      <a href="/product/" class="">
+        产品记录</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/product/2026%E4%BA%A7%E5%93%81%E4%B8%8A%E6%96%B0%E8%AE%B0%E5%BD%95/" class="">
+      2026产品上新记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/product/2025%E4%BA%A7%E5%93%81%E4%B8%8A%E6%96%B0%E8%AE%B0%E5%BD%95/" class="">
+      2025产品上新记录</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/product/%E5%B0%8F%E6%96%99/" class="">
+      小料</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8d1c888e090c0a816366703cafaf6b63" class="toggle"  />
+    <label for="section-8d1c888e090c0a816366703cafaf6b63" class="flex">
+      <a href="/glossary/" class="">
+        常用术语</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/glossary/%E5%B8%B8%E7%94%A8%E6%9C%AF%E8%AF%AD/" class="">
+      常用术语</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-104fe6818c947ac2ac06c592cf42df12" class="toggle" checked />
+    <label for="section-104fe6818c947ac2ac06c592cf42df12" class="flex">
+      <a href="/reference/" class="">
+        参考资料</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E6%B8%A0%E9%81%93%E5%88%86%E7%BB%84/" class="">
+      支付渠道分组</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E6%9D%A5%E6%BA%90%E6%B8%A0%E9%81%93%E5%AF%B9%E6%AF%94/" class="">
+      渠道口径对比：来源 × 商品流水</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E6%94%AF%E4%BB%98%E6%B8%A0%E9%81%93%E5%AF%B9%E6%AF%94/" class="">
+      渠道口径对比：来源 × 支付渠道</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/reference/%E7%96%91%E7%82%B9%E8%A7%84%E5%88%99/" class="active">
+      平台涉税信息报送疑点规则</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>平台涉税信息报送疑点规则</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#平台涉税信息报送疑点规则">平台涉税信息报送疑点规则</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="平台涉税信息报送疑点规则">平台涉税信息报送疑点规则<a class="anchor" href="#%e5%b9%b3%e5%8f%b0%e6%b6%89%e7%a8%8e%e4%bf%a1%e6%81%af%e6%8a%a5%e9%80%81%e7%96%91%e7%82%b9%e8%a7%84%e5%88%99">#</a></h1>
+<p>税务部门对互联网平台企业报送的涉税信息做校验时命中的疑点指标，共 <strong>20 条</strong>。每条包含指标说明、应对策略与加工频率。</p>
+<table>
+  <thead>
+      <tr>
+          <th>维度</th>
+          <th>分布</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>总数</td>
+          <td>20 条</td>
+      </tr>
+      <tr>
+          <td>加工频率</td>
+          <td>日频 6 条（6、7、9、11、15、16）、月频 14 条</td>
+      </tr>
+      <tr>
+          <td>主题分类</td>
+          <td>收入数据质量 5 条、身份信息对应关系 6 条、免报与认证 2 条、代办申报 7 条</td>
+      </tr>
+  </tbody>
+</table>
+<style>
+.rule-group { margin: 2rem 0 0.5rem; padding-bottom: 6px; border-bottom: 2px solid #eee; font-size: 1.15rem; font-weight: 700; color: #2c3e50; }
+.rule-card {
+  border-left: 4px solid #3498db;
+  background: #fbfcfd;
+  border-radius: 0 8px 8px 0;
+  padding: 14px 18px;
+  margin: 12px 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.rule-card.g2 { border-left-color: #9b59b6; }
+.rule-card.g3 { border-left-color: #e67e22; }
+.rule-card.g4 { border-left-color: #27ae60; }
+.rule-head { font-weight: 700; color: #2c3e50; margin-bottom: 10px; font-size: 1rem; line-height: 1.6; }
+.rule-no {
+  display: inline-block; min-width: 26px; height: 22px; line-height: 22px;
+  text-align: center; background: #2c3e50; color: #fff;
+  border-radius: 11px; font-size: 0.8rem; margin-right: 8px; padding: 0 6px;
+}
+.freq {
+  display: inline-block; font-size: 0.75rem; font-weight: 600;
+  padding: 1px 8px; border-radius: 10px; margin-left: 8px; vertical-align: 1px;
+}
+.freq.day { background: #fdeceb; color: #c0392b; }
+.freq.month { background: #e8f2fd; color: #2471a3; }
+.rule-label {
+  display: inline-block; font-size: 0.8rem; font-weight: 600;
+  color: #7f8c8d; margin-right: 6px;
+}
+.rule-body p { margin: 6px 0; font-size: 0.92rem; line-height: 1.75; color: #3d4a57; }
+.rule-body ol, .rule-body ul { margin: 6px 0; font-size: 0.92rem; line-height: 1.75; color: #3d4a57; }
+.rule-note { margin-top: 8px; padding-top: 8px; border-top: 1px dashed #e2e8ee; font-size: 0.85rem; color: #95a5a6; }
+.rule-card.focus {
+  border-left-width: 6px;
+  border-left-color: #c0392b;
+  background: #fffbfa;
+  box-shadow: 0 1px 6px rgba(192,57,43,0.12);
+}
+.focus-tag {
+  display: inline-block; font-size: 0.72rem; font-weight: 700;
+  background: #c0392b; color: #fff; padding: 1px 8px;
+  border-radius: 10px; margin-left: 8px; vertical-align: 1px;
+}
+.focus-box {
+  border: 1px solid #d6e4f0; border-radius: 10px;
+  background: linear-gradient(180deg,#f5f9ff 0%,#fbfdff 100%);
+  padding: 18px 22px; margin: 1.5rem 0;
+}
+.focus-title {
+  font-weight: 700; font-size: 1.05rem; color: #1f5f8b;
+  margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid #e1ebf5;
+}
+.focus-box p { font-size: 0.93rem; line-height: 1.8; color: #3d4a57; margin: 8px 0; }
+.focus-box table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.9rem; }
+.focus-box th { background: #eaf3fb; color: #1f5f8b; text-align: left; padding: 8px 12px; font-weight: 600; }
+.focus-box td { padding: 8px 12px; border-bottom: 1px solid #eef4f9; vertical-align: top; }
+.focus-box td:first-child { width: 38%; color: #5a6b7b; }
+.focus-box code { background: #eef2f7; padding: 1px 6px; border-radius: 4px; font-size: 0.86rem; }
+</style>
+<div class="focus-box">
+<div class="focus-title">我们重点关注：第 06 条、第 07 条</div>
+<p>20 条里实际需要盯的是第 6、7 条——两者校验的是同一件事：<b>《收入信息报送表》里报的店铺标识，必须在《身份信息报送表》里找到同一个店铺</b>。均为日频校验，出错当天就会命中。</p>
+<table>
+<tbody>
+<tr><th>报送字段</th><th>我方取值</th></tr>
+<tr><td>收入来源的互联网平台名称</td><td>固定为 <code>甜啦啦</code>，全部门店一致</td></tr>
+<tr><td>收入来源的店铺（用户）唯一标识码</td><td><code>{门店编号}_{version}</code></td></tr>
+</tbody>
+</table>
+<p><b>为什么要带版本号</b>：门店迁址、过户时，我方系统的门店编号保持不变，但纳税主体和经营地址已经变了。税务口径下同一个店铺唯一标识码对应同一个经营主体，直接复用门店编号会被判为同一主体，属于不合法报送。因此在门店编号后追加 <code>_{版本号}</code>，让不同执照版本各自拥有独立的唯一标识码。</p>
+<p><b>校验能过的前提</b>：两张报送表必须使用<b>同一个</b>标识码。身份信息表按当前版本报 <code>门店编号_2</code>，收入信息表也必须是 <code>门店编号_2</code>。只要有一边用了旧版本号，第 06 条（店铺标识对不上）或第 07 条（有收入但无对应身份）就会命中。</p>
+<p>版本来源：执照表 <code>license_store_license</code> 以版本行存储，<code>is_latest=1</code> 标记当前版本（见 <a href="https://tll.jello.top/projects/manage/%E9%97%A8%E5%BA%97%E8%90%A5%E4%B8%9A%E6%89%A7%E7%85%A7%E7%AE%A1%E7%90%86/">门店营业执照管理</a>）；生成逻辑见 <a href="https://tll.jello.top/projects/monthly/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%A8%8E%E5%8A%A1%E6%8A%A5%E9%80%81/">小程序税务报送</a>。</p>
+</div>
+<div class="rule-group">一、收入数据质量（5 条）</div>
+<div class="rule-card">
+<div class="rule-head"><span class="rule-no">01</span>报送的收入信息中收入净额为负数比例过高（平台内的经营者和从业人员收入信息）<span class="freq month">月</span></div>
+<div class="rule-body">
+<p><span class="rule-label">指标说明</span>《平台内的经营者和从业人员收入信息报送表》：字段"已取得登记证照的平台内经营者收入信息"中的销售货物、销售无形资产、销售服务的收入净额；"未取得登记证照的平台内的经营者和从业人员收入信息"中的收入净额；"从事其他网络交易活动取得的收入（净额）"为负数的条数占比过高。</p>
+<p><span class="rule-label">应对策略</span>核对本属期报送《平台内的经营者和从业人员收入信息报送表》收入净额全为负数的数据是否占比较高。核实负数数据是否准确，数据有误的调整后可重新报送。</p>
+</div>
+</div>
+<div class="rule-card">
+<div class="rule-head"><span class="rule-no">02</span>报送的收入信息中收入净额为负数比例过高（境外经营者和从业人员收入信息）<span class="freq month">月</span></div>
+<div class="rule-body">
+<p><span class="rule-label">指标说明</span>《平台内中国境外的经营者和从业人员涉税信息报送表》：字段"境外的经营者和从业人员收入信息"中的收入（交易）净额为负数的条数占比过高。</p>
+<p><span class="rule-label">应对策略</span>核对本属期报送《平台内中国境外的经营者和从业人员涉税信息报送表》收入净额全为负数的数据是否占比较高。核实负数数据是否准确，数据有误的调整后可重新报送。</p>
+</div>
+</div>
+<div class="rule-card">
+<div class="rule-head"><span class="rule-no">03</span>报送的收入信息中收入净额为负数比例过高（网络直播涉税信息）<span class="freq month">月</span></div>
+<div class="rule-body">
+<p><span class="rule-label">指标说明</span>《网络直播涉税信息报送表》：字段"已取得登记证照的其他单位、个体工商户"中的收入净额；"未取得登记证照的网络主播、其他自然人"中的收入净额为负数的条数占比过高。</p>
+<p><span class="rule-label">应对策略</span>核对本属期报送《网络直播涉税信息报送表》收入净额全为负数的数据是否占比较高。核实负数数据是否准确，数据有误的调整后可重新报送。</p>
+</div>
+</div>
+<div class="rule-card">
+<div class="rule-head"><span class="rule-no">04</span>平台内经营者和从业人员任意两栏收入数值完全一致（平台内的经营者和从业人员收入信息）<span class="freq month">月</span></div>
+<div class="rule-body">
+<p><span class="rule-label">指标说明</span>《平台内的经营者和从业人员收入信息报送表》中同一条数据存在以下任一情形，且相同数据达到一定比例，存在错报风险：</p>
+<ol>
+<li>收入总额与其他收入净额任意两项数值完全相同（第 11、14、17、20、28 栏）；</li>
+<li>退款金额与其他收入净额任意两项数值完全相同（第 12、15、18、21、28 栏）；</li>
+<li>收入净额数值完全相同（第 13、16、19、23、24、25、26、27、28 栏任意两项，或第 22、28 栏数值完全相同）。</li>
+</ol>
+<p><span class="rule-label">应对策略</span>核对本属期报送该表上述三类栏位任意两栏数值完全相同的记录，核实调整后可重新报送。</p>
+</div>
+</div>
+<div class="rule-card">
+<div class="rule-head"><span class="rule-no">05</span>平台内经营者和从业人员任意两栏收入数值完全一致（网络直播涉税信息）<span class="freq month">月</span></div>
+<div class="rule-body">
+<p><span class="rule-label">指标说明</span>《网络直播涉税信息报送表》中同一条数据存在以下任一情形，且相同数据达到一定比例，存在错报风险：</p>
+<ol>
+<li>收入总额与其他收入净额任意两项数值完全相同（第 15、18、23 栏）；</li>
+<li>退款金额与其他收入净额任意两项数值完全相同（第 16、19、23 栏）；</li>
+<li>收入净额数值完全相同（第 17、21、22、23 栏任意两栏，或第 20、23 栏数值完全相同）。</li>
+</ol>
+<p><span class="rule-label">应对策略</span>核对本属期报送《网络直播涉税信息报送表》上述栏位任意两栏数值完全相同的记录，核实调整后可重新报送。</p>
+<div class="rule-note">原文该条"应对策略"列出的栏位（第 11、14、17、20、28 栏等）与《平台内的经营者和从业人员收入信息报送表》一致，疑似沿用序号 04 的表述，与本条指标说明所指的表和栏位不一致。使用该条时以指标说明为准。</div>
+</div>
+</div>
+<div class="rule-group">二、身份信息对应关系（6 条）</div>
+<div class="rule-card g2 focus">
+<div class="rule-head"><span class="rule-no">06</span>本平台报送的平台内经营者或从业人员收入来源相关信息在本平台身份信息中无对应数据<span class="freq day">日</span><span class="focus-tag">重点</span></div>
+<div class="rule-body">
+<p><span class="rule-label">指标说明</span>《平台内的经营者和从业人员收入信息报送表》中"收入来源的互联网平台名称"+"收入来源的店铺（用户）唯一标识码"，在收入来源的互联网平台报送的《平台内的经营者和从业人员身份信息报送表》中不存在对应的"平台名称"+"店铺（用户）唯一标识码"。收入来源的互联网平台为本平台。</p>
+<p><span class="rule-label">应对策略</span>核实《平台内的经营者和从业人员收入信息报送表》"收入来源的互联网平台名称"+"收入来源的店铺（用户）唯一标识码"是否真实。核实调整后可重新报送。</p>
+</div>
+</div>
+<div class="rule-card g2 focus">
+<div class="rule-head"><span class="rule-no">07</span>本平台报送的平台内经营者或从业人员有收入信息但在本平台无对应的身份信息<span class="freq day">日</span><span class="focus-tag">重点</span></div>
+<div class="rule-body">
+<p><span class="rule-label">指标说明</span>《平台内的经营者和从业人员收入信息报送表》中，①"收入来源的互联网平台名称"+"名称（姓名）"+"统一社会信用代码"，或②"收入来源的互联网平台名称"+"证件种类"+"证件号码"+"国家地区"，在收入来源的互联网平台报送的《平台内的经营者和从业人员身份信息报送表》中不存在对应的①"平台名称"+"统一社会信用代码"，或②"平台名称"+"姓名"+"证件种类"+"证件号码"+"国家地区"。收入来源的互联网平台为本平台。</p>
+<p><span class="rule-label">应对策略</span>核实《平台内的经营者和从业人员收入信息报送表》"收入来源的互联网平台名称"+"名称（姓名）"+"统一社会信用代码"，或"收入来源的互联网平台名称"+"姓名"+"证件种类"+"证件号码"+"国家地区"是否真实。核实调整后可重新报送。</p>
+</div>
+</div>
+<div class="rule-card g2">
+<div class="rule-head"><span class="rule-no">08</span>网络直播涉税信息报送主体在收入来源平台身份信息中无对应数据（店铺不存在）<span class="freq month">月</span></div>
+<div class="rule-body">
+<p><span class="rule-label">指标说明</span>网络直播涉税信息报送主体报送《网络直播涉税信息报送表》中的"收入来源的互联网平台名称"+"收入来源的店铺（用户）唯一标识码"，在收入来源的互联网平台报送的《平台内的经营者和从业人员身份信息报送表》中不存在对应的"平台名称"+"店铺（用户）唯一标识码"。</p>
+<p><span class="rule-label">应对策略</span>核实《网络直播涉税信息报送表》"收入来源的互联网平台名称"+"收入来源的店铺（用户）唯一标识码"是否真实。核实调整后可重新报送。</p>
+</div>
+</div>
+<div class="rule-card g2">
+<div class="rule-head"><span class="rule-no">10</span>网络直播涉税信息报送主体在收入来源平台身份信息中无对应数据（身份不存在）<span class="freq month">月</span></div>
+<div class="rule-body">
+<p><span class="rule-label">指标说明</span>《网络直播涉税信息报送表》的报送主体"收入来源的互联网平台名称"+"平台内经营者名称"+"平台内经营者统一社会信用代码"，在收入来源的互联网平台企业报送的《平台内的经营者和从业人员身份信息报送表》中不存在。</p>
+<p><span class="rule-label">应对策略</span>核实《网络直播涉税信息报送表》"收入来源的互联网平台名称"+"平台内经营者名称"+"平台内经营者统一社会信用代码"是否真实。核实调整后可重新报送。</p>
+</div>
+</div>
+<div class="rule-card g2">
+<div class="rule-head"><span class="rule-no">12</span>非本平台报送的平台内经营者或从业人员收入来源相关信息在本平台身份信息中无对应数据<span class="freq month">月</span></div>
+<div class="rule-body">
+<p><span class="rule-label">指标说明</span>《平台内的经营者和从业人员收入信息报送表》的"收入来源的互联网平台名称"+"经营者社会信用代码或从业人员自然人档案号"+"店铺唯一标识码"，在收入来源的互联网企业报送的《平台内的经营者和从业人员身份信息报送表》中不存在对应经营者或从业人员的店铺唯一标识码。收入来源的互联网平台不为本平台。</p>
+<p><span class="rule-label">应对策略</span>核实《平台内的经营者和从业人员收入信息报送表》"收入来源的互联网平台名称"+"经营者社会信用代码或从业人员自然人档案号"+"店铺唯一标识码"是否真实。核实调整后可重新报送。</p>
+</div>
+</div>
+<div class="rule-card g2">
+<div class="rule-head"><span class="rule-no">13</span>非本平台报送的平台内经营者或从业人员有收入信息但在本平台无对应的身份信息<span class="freq month">月</span></div>
+<div class="rule-body">
+<p><span class="rule-label">指标说明</span>《平台内的经营者和从业人员收入信息报送表》中，①"平台名称"+"名称（姓名）"+"统一社会信用代码"，或②"平台名称"+"姓名"+"证件种类"+"证件号码"+"国家地区"，在本平台报送的《平台内的经营者和从业人员身份信息报送表》中不存在对应的经营者（从业人员）。收入来源的互联网平台不为本平台。</p>
+<p><span class="rule-label">应对策略</span>核实《平台内的经营者和从业人员收入信息报送表》报送的经营者和从业人员，是否已经报送"平台内的经营者和从业人员身份信息"。核实调整后可重新报送。</p>
+</div>
+</div>
+<div class="rule-group">三、免报类型与实人认证（2 条）</div>
+<div class="rule-card g3">
+<div class="rule-head"><span class="rule-no">09</span>免报类型与平台类型不匹配<span class="freq day">日</span></div>
+<div class="rule-body">
+<p><span class="rule-label">指标说明</span>《互联网平台企业基本信息》中平台类型与《平台内的经营者和从业人员身份信息报送表》的免报类型不一致。存在以下任一情形即校验不通过：</p>
+<ol>
+<li>免报类型为外卖人员 → 平台类型未选择 灵活用工、生活服务 之一；</li>
+<li>免报类型为快递人员 → 平台类型未选择 灵活用工、生活服务、网络货运 之一；</li>
+<li>免报类型为家政人员 → 平台类型未选择 灵活用工、生活服务 之一；</li>
+<li>免报类型为网约车司机 → 平台类型未选择 灵活用工、生活服务 之一；</li>
+<li>免报类型为网络货运司机 → 平台类型未选择 网络货运、灵活用工、生活服务 之一；</li>
+<li>免报类型为代驾司机 → 平台类型未选择 灵活用工、生活服务 之一。</li>
+</ol>
+<p><span class="rule-label">应对策略</span>核实报送的《平台内的经营者和从业人员身份信息报送表》中免报类型与《互联网平台企业基本信息》中平台类型不一致的情形。</p>
+</div>
+</div>
+<div class="rule-card g3">
+<div class="rule-head"><span class="rule-no">11</span>平台内经营者和从业人员身份信息认证不通过<span class="freq day">日</span></div>
+<div class="rule-body">
+<p><span class="rule-label">指标说明</span>①"经营者统一社会信用代码"为 91、92、93 开头，且在税务登记信息、工商登记信息中不存在的；②从业人员（除证件类型为 208、239、240、241、299 的），通过身份信息三要素（证件类型、证件号码、国家或地区）与税务系统实人认证核验不通过。</p>
+<p><span class="rule-label">应对策略</span>核实《平台内的经营者和从业人员身份信息报送表》：</p>
+<ol>
+<li>"是否已取得登记证照"为"是"的，"经营者统一社会信用代码"是否已办理工商登记或税务登记；</li>
+<li>"是否已取得登记证照"为"否"的，从业人员（除证件类型为 208、239、240、241、299 的）实人认证是否通过。</li>
+</ol>
+<p>核实以上信息的真实性，核实调整后可重新报送。</p>
+</div>
+</div>
+<div class="rule-group">四、代办申报（7 条）</div>
+<div class="rule-card g4">
+<div class="rule-head"><span class="rule-no">14</span>从业人员"收入来源的用户名称"或"收入来源的用户唯一标识码"与收入来源的互联网平台企业报送的身份信息不一致<span class="freq month">月</span></div>
+<div class="rule-body">
+<p><span class="rule-label">指标说明</span>《互联网平台企业代办申报表》填报的从业人员的"收入来源的用户名称""收入来源的用户唯一标识码"，与"收入来源的互联网平台名称"对应的平台企业报送的《平台内的经营者和从业人员身份信息报送表》的相应从业人员"店铺（用户）名称""店铺（用户）唯一标识码"不一致。</p>
+<p><span class="rule-label">应对策略</span>核实本属期填报的《互联网平台企业代办申报表》相关从业人员的"收入来源的用户名称"与"收入来源的用户唯一标识码"是否正确，数据有误的需进行更正申报。若"收入来源的用户唯一标识码"存在错误，需要将该从业人员收入改为 0，并增加一条正确信息。</p>
+</div>
+</div>
+<div class="rule-card g4">
+<div class="rule-head"><span class="rule-no">15</span>同一从业人员同一所属期有多个"从业人员计税依据合计"金额<span class="freq day">日</span></div>
+<div class="rule-body">
+<p><span class="rule-label">指标说明</span>《互联网平台企业代办申报表》填报同一个从业人员多笔收入，多笔收入的"从业人员计税依据合计"项金额不一致。</p>
+<p><span class="rule-label">应对策略</span>平台企业应当更正代办申报，合并计算同一从业人员取得的各项服务收入的计税依据，填报在"从业人员计税依据合计"项（即同一从业人员仅有一个"从业人员计税依据合计"金额）。</p>
+</div>
+</div>
+<div class="rule-card g4">
+<div class="rule-head"><span class="rule-no">16</span>"从业人员计税依据合计"金额与"计税依据"合计金额不相等<span class="freq day">日</span></div>
+<div class="rule-body">
+<p><span class="rule-label">指标说明</span>《互联网平台企业代办申报表》填报同一个从业人员一笔或多笔收入，填写的"从业人员计税依据合计"与一笔或多笔收入的"计税依据"的合计金额不相等。</p>
+<p><span class="rule-label">应对策略</span>平台企业应当核实是否少报错报相关从业人员"计税依据"，或是否错误合计填报"从业人员计税依据合计"项，并办理更正代办申报。</p>
+</div>
+</div>
+<div class="rule-card g4">
+<div class="rule-head"><span class="rule-no">17</span>代办税款还没缴纳的，但是存在自然人办理退税的<span class="freq month">月</span></div>
+<div class="rule-body">
+<p><span class="rule-label">指标说明</span>原文件未提供该条说明。</p>
+<p><span class="rule-label">应对策略</span>原文件未提供该条应对策略，需向税务主管部门确认口径。</p>
+</div>
+</div>
+<div class="rule-card g4">
+<div class="rule-head"><span class="rule-no">18</span>同一从业人员同时存在多项不同特殊减免<span class="freq month">月</span></div>
+<div class="rule-body">
+<p><span class="rule-label">指标说明</span>《互联网平台企业代办申报表》填报同一个从业人员同时存在除普惠减免以外的多项不同减免事项（即除 10 万元以下免征增值税、小规模纳税人 3% 征收率减按 1% 征收率征收以外，还有 2 个及以上其他减免事项）。</p>
+<p><span class="rule-label">应对策略</span>平台企业核实是否错误填报该从业人员减免税性质代码，存在错误的应当更正代办申报。</p>
+</div>
+</div>
+<div class="rule-card g4">
+<div class="rule-head"><span class="rule-no">19</span>单一平台的从业人员有多项不同特殊减免<span class="freq month">月</span></div>
+<div class="rule-body">
+<p><span class="rule-label">指标说明</span>《互联网平台企业代办申报表》填报所有从业人员有除普惠减免事项以外的 3 项及以上特殊减免（即除 10 万元以下免征增值税、小规模纳税人 3% 征收率减按 1% 征收率征收以外，还有 3 个及以上其他减免事项）。</p>
+<p><span class="rule-label">应对策略</span>核实互联网平台企业是否错误填报减免税性质代码，错误享受了税收优惠。</p>
+</div>
+</div>
+<div class="rule-card g4">
+<div class="rule-head"><span class="rule-no">20</span>单一平台内从业人员特殊减免比例占比过高<span class="freq month">月</span></div>
+<div class="rule-body">
+<p><span class="rule-label">指标说明</span>《互联网平台企业代办申报表》填报所有从业人员有除普惠减免事项以外特殊减免（即除 10 万元以下免征增值税、小规模纳税人 3% 征收率减按 1% 征收率征收以外的减免事项）的人数，占当期代办申报的全部总人数比例超过 5%。</p>
+<p><span class="rule-label">应对策略</span>核实互联网平台企业是否错误填报减免税性质代码，错误享受了税收优惠。</p>
+</div>
+</div>
+<style>
+  .notice {
+    --notice-title-color: #fff;
+    --notice-title-bg: #6be;
+    --notice-content-color: #444;
+    --notice-content-bg: #e7f2fa;
+    padding: 0;
+    margin: 1em 0;
+    border-radius: 6px;
+    overflow: hidden;
+    color: var(--notice-content-color);
+    background: var(--notice-content-bg);
+    border: 1px solid var(--notice-title-bg);
+  }
+  .notice.info {
+    --notice-title-bg: #fb7;
+    --notice-content-bg: #fff8e7;
+  }
+  .notice.tip {
+    --notice-title-bg: #5a5;
+    --notice-content-bg: #e8f5e9;
+  }
+  .notice.warning {
+    --notice-title-bg: #c33;
+    --notice-content-bg: #fdecea;
+  }
+  .notice .notice-title {
+    margin: 0;
+    padding: 6px 16px;
+    font-weight: 700;
+    font-size: .9em;
+    color: var(--notice-title-color);
+    background: var(--notice-title-bg);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .notice .notice-title svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+    flex-shrink: 0;
+  }
+  .notice .notice-body {
+    padding: 12px 16px;
+    line-height: 1.7;
+  }
+  .notice .notice-body > :last-child {
+    margin-bottom: 0;
+  }
+  .notice .notice-body > :first-child {
+    margin-top: 0;
+  }
+</style><div class="notice info">
+  <div class="notice-title"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>关于栏位号</div>
+  <div class="notice-body"><p>各条指标说明中的&quot;第 N 栏&quot;指对应报送表内的字段序号，不是数据库字段。排查时需要先拿到各报送表的栏位定义，再做映射。</p></div>
+</div>
+
+<div class="notice warning">
+  <div class="notice-title"><svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>第 17 条缺说明</div>
+  <div class="notice-body"><p>原文对第 17 条（代办税款未缴纳但存在自然人退税）未给出指标说明与应对策略，本页保留空位，补全前不要臆测口径。</p></div>
+</div>
+
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+<div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/reference/%E6%94%AF%E4%BB%98%E6%B8%A0%E9%81%93%E5%AF%B9%E6%AF%94/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>渠道口径对比：来源 × 支付渠道</span>
+      </a>
+    
+    </span>
+    <span>
+    
+    </span>
+  </div>
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#平台涉税信息报送疑点规则">平台涉税信息报送疑点规则</a></li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  <script>
+(function () {
+  document.querySelectorAll('pre > code').forEach(function (codeBlock) {
+    var pre = codeBlock.parentNode;
+    var button = document.createElement('button');
+    button.className = 'copy-code';
+    button.textContent = '复制';
+    button.addEventListener('click', function () {
+      var text = codeBlock.textContent;
+      navigator.clipboard.writeText(text).then(function () {
+        button.textContent = '已复制';
+        button.classList.add('copied');
+        setTimeout(function () {
+          button.textContent = '复制';
+          button.classList.remove('copied');
+        }, 2000);
+      });
+    });
+    pre.appendChild(button);
+  });
+})();
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
