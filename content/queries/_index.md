@@ -19,6 +19,7 @@ bookCollapseSection: true
 | 查询 | 数据源 | 说明 |
 |---|---|---|
 | [赠茶数据查询]({{< ref "/queries/product/赠茶数据查询" >}}) | food_di | 指定时段/城市，实收为 0 的茶品销量明细 |
+| [产品月销售查询]({{< ref "/queries/product/产品月销售查询" >}}) | food_di | 指定月份按商品名称汇总流水/实收/订单量/销量 |
 
 ## 门店报货
 
