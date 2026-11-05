@@ -64,7 +64,7 @@ SELECT DISTINCT anal_type, channel_name
 FROM ads_dbs_trade_shop_di;
 ```
 
-**大渠道 / 中渠道分类参考 [支付渠道分组]({{< ref "/reference/渠道分组" >}})。**
+**大渠道 / 中渠道分类参考 [来源渠道分组]({{< ref "/reference/来源渠道分组" >}})。**
 
 {{< notice info "业务背景" >}}
 历史上用**美团 POS 收银系统**，现在逐步切到**自研收银**。

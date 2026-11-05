@@ -145,6 +145,8 @@ SELECT DISTINCT anal_type, channel_name
 FROM ads_dbs_trade_food_di;
 ```
 
+**大渠道 / 中渠道分类参考 [来源渠道分组]({{< ref "/reference/来源渠道分组" >}})。**
+
 | anal_type | channel_name |
 |---|---|
 | 到家 | 美团外卖 |
