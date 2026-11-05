@@ -21,6 +21,8 @@ AND TABLE_NAME = 'ads_dbs_trade_food_di';
 
 ## 字段说明
 
+### 维度字段
+
 | 字段名                           | 字段类型         | 字段注释                                               |
 | -------------------------------- | ---------------- | ------------------------------------------------------ |
 | business_date                    | bigint(20)       | 日期                                                   |
@@ -46,6 +48,21 @@ AND TABLE_NAME = 'ads_dbs_trade_food_di';
 | cup_type                         | varchar(64)      | 杯型                                                   |
 | ice_type                         | varchar(64)      | 温度                                                   |
 | sugar_type                       | varchar(64)      | 甜度                                                   |
+| item_type                        | varchar(64)      | 商品类型（单品、套餐、小料、周边、其它）               |
+| item_status                      | varchar(64)      | 饮品状态(在线饮品、不在线饮品)                         |
+| item_name_list                   | varchar(255)     | 套餐下商品/小料明细                                    |
+| up_type                          | varchar(64)      | 升级类型                                               |
+| food_series                      | varchar(64)      | 商品系列                                               |
+| release_date                     | varchar(64)      | 上新日期                                               |
+| stat_shop_id                     | varchar(64)      | 门店统计id                                             |
+| stat_shop_name                   | varchar(255)     | 门店统计名称                                           |
+| send_whse                        | varchar(64)      | 仓库                                                   |
+| load_time                        | varchar(64)      | 数据更新时间                                           |
+
+### 指标字段
+
+| 字段名                           | 字段类型         | 字段注释                                               |
+| -------------------------------- | ---------------- | ------------------------------------------------------ |
 | dp_total_amount                  | decimalv3(16, 2) | 商品流水金额                                           |
 | dp_total_amount_last_day         | decimalv3(16, 2) | 上一天商品流水金额                                     |
 | dp_total_amount_last_week        | decimalv3(16, 2) | 上一周商品流水金额                                     |
@@ -110,22 +127,12 @@ AND TABLE_NAME = 'ads_dbs_trade_food_di';
 | zb_pay_amount_last_day           | decimalv3(16, 2) | 上一天周边实收金额                                     |
 | zb_pay_amount_last_week          | decimalv3(16, 2) | 上一周周边实收金额                                     |
 | zb_pay_amount_last_year          | decimalv3(16, 2) | 去年同期周边实收金额                                   |
-| load_time                        | varchar(64)      | 数据更新时间                                           |
-| item_type                        | varchar(64)      | 商品类型（单品、套餐、小料、周边、其它）               |
-| item_status                      | varchar(64)      | 饮品状态(在线饮品、不在线饮品)                         |
-| up_type                          | varchar(64)      | 升级类型                                               |
-| food_series                      | varchar(64)      | 商品系列                                               |
-| release_date                     | varchar(64)      | 上新日期                                               |
 | dp_order_count                   | bigint(20)       | 商品订单量                                             |
 | xl_order_count                   | bigint(20)       | 小料订单量                                             |
-| item_name_list                   | varchar(255)     | 套餐下商品/小料明细                                    |
 | other_total_amount               | decimalv3(16, 2) | 其它饮品流水金额                                       |
 | other_total_amount_last_day      | decimalv3(16, 2) | 昨日其它饮品流水金额                                   |
 | other_total_amount_last_week     | decimalv3(16, 2) | 上周同期其它饮品流水金额                               |
 | other_total_amount_last_year     | decimalv3(16, 2) | 去年同期其它饮品流水金额                               |
-| stat_shop_id                     | varchar(64)      | 门店统计id                                             |
-| stat_shop_name                   | varchar(255)     | 门店统计名称                                           |
-| send_whse                        | varchar(64)      | 仓库                                                   |
 
 ## food_di vs shop_di channel_name 差异
 
@@ -145,23 +152,7 @@ SELECT DISTINCT anal_type, channel_name
 FROM ads_dbs_trade_food_di;
 ```
 
-**大渠道 / 中渠道分类参考 [来源渠道分组]({{< ref "/reference/来源渠道分组" >}})。**
-
-| anal_type | channel_name |
-|---|---|
-| 到家 | 美团外卖 |
-| 到家 | 淘宝闪购 |
-| 到家 | 自营外卖 |
-| 到家 | 京东外卖 |
-| 到店 | pos 收银 |
-| 到店 | 微信小程序 |
-| 到店 | 支付宝小程序 |
-| 到店 | 抖音小程序（核销工具） |
-| 到店 | 美团/大众点评团购 |
-| 到店 | 抖音团购 |
-| 到店 | 高德团购 |
-| 到店 | 快手团购 |
-| 到店 | 美团在线点 |
+**大渠道 / 中渠道分类参考 [来源渠道分组]({{< ref "/reference/来源渠道分组" >}})，本页不再重复枚举。**
 
 ## 注意事项
 

@@ -21,6 +21,8 @@ AND TABLE_NAME = 'dim_oas_formmain_0145_df';
 
 ## 字段说明
 
+### 维度字段
+
 | 列名                  | 数据类型         | 注释                         |
 | --------------------- | ---------------- | ---------------------------- |
 | shop_oneid            | varchar(255)     | 门店唯一编码                 |
@@ -66,7 +68,6 @@ AND TABLE_NAME = 'dim_oas_formmain_0145_df';
 | shop_level            | varchar(5)       | 门店等级                     |
 | agent_code            | varchar(10)      | 代理商编码                   |
 | agent_name            | varchar(255)     | 代理商名称                   |
-| rebate_ratio          | decimalv3(10, 2) | 代理商返利系数               |
 | sap_shop_id           | varchar(255)     | sap门店编码                  |
 | rps_discount          | varchar(255)     | 报货等级                     |
 | expand_personnel      | varchar(200)     |                              |
@@ -75,12 +76,18 @@ AND TABLE_NAME = 'dim_oas_formmain_0145_df';
 | street                | varchar(255)     | 街道                         |
 | city_level            | varchar(255)     | 所属城市等级                 |
 | registrant            | varchar(128)     | 登记人                       |
-| shop_rent             | decimalv3(10, 2) | 门店租金                     |
 | if_subsidy            | varchar(8)       | 是否补贴                     |
 | if_agent_area         | varchar(8)       | 是否属于代理区域             |
 | first_sign_date       | varchar(128)     | 初签日期                     |
 | first_sign_name       | varchar(128)     | 初签人名称                   |
 | shop_short_name       | varchar(255)     | 门店简称                     |
+
+### 指标字段
+
+| 字段名 | 类型 | 注释 |
+|---|---|---|
+| shop_rent | decimalv3(10,2) | 门店租金 |
+| rebate_ratio | decimalv3(10,2) | 代理商返利系数 |
 
 ## 常用查询
 

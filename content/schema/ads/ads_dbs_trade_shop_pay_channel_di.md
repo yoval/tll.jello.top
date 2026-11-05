@@ -25,48 +25,24 @@ AND TABLE_NAME = 'ads_dbs_trade_shop_pay_channel_di';
 
 ## 字段说明
 
-| 列名              | 数据类型         | 注释           |
-| ----------------- | ---------------- | -------------- |
-| pt                | varchar(20)      | 时间分区       |
-| shop_id           | varchar(20)      | 门店编号       |
-| payment_channels  | varchar(100)     | 结账方式名称   |
-| order_cnt         | bigint(20)       | 订单量         |
-| income            | decimalv3(16, 2) | 收入金额       |
-| discount          | decimalv3(16, 2) | 优惠金额       |
-| amount            | decimalv3(16, 2) | 流水金额       |
-| total_order_cnt   | bigint(20)       | 订单量         |
-| item_scrap_amount | decimalv3(16, 2) | 报废金额       |
+### 维度字段
 
-## payment_channels 枚举值
+| 字段名 | 类型 | 注释 |
+|---|---|---|
+| pt | varchar(20) | 时间分区 |
+| shop_id | varchar(20) | 门店编号 |
+| payment_channels | varchar(100) | 结账方式名称 |
 
-```sql
-SELECT DISTINCT payment_channels
-FROM ads_dbs_trade_shop_pay_channel_di;
-```
+### 指标字段
 
-| 渠道 | 汇总 |
-|---|---|
-| pos收银 | POS |
-| 甜啦啦小程序 | 小程序 |
-| 甜啦啦小程序-储值业务 | 小程序 |
-| 微信小程序 | 小程序 |
-| 支付宝小程序 | 小程序 |
-| 抖音小程序（核销工具） | 小程序 |
-| 美团/大众点评小程序 | 小程序 |
-| 美团外卖 | 外卖 |
-| 淘宝闪购 | 外卖 |
-| 京东外卖 | 外卖 |
-| 抖音团购 | 团购 |
-| 线上新增抖音团购 | 团购 |
-| 快手团购 | 团购 |
-| 线上新增快手团购 | 团购 |
-| 高德团购 | 团购 |
-| 美团/大众点评团购 | 团购 |
-| 线上新增美团团购 | 团购 |
-| 美团在线点 | 团购 |
-
-> `payment_channels` 是最细粒度的**原始支付渠道**，与 shop_di / food_di 两张表的 `channel_name` 并非一一对应。
-> 分组映射（pos / 小程序 / 外卖 / 团购）见 [支付渠道分组]({{< ref "/reference/渠道分组" >}})。
+| 字段名 | 类型 | 注释 |
+|---|---|---|
+| order_cnt | bigint(20) | 订单量 |
+| income | decimalv3(16,2) | 收入金额 |
+| discount | decimalv3(16,2) | 优惠金额 |
+| amount | decimalv3(16,2) | 流水金额 |
+| total_order_cnt | bigint(20) | 订单量 |
+| item_scrap_amount | decimalv3(16,2) | 报废金额 |
 
 ## 注意事项
 

@@ -21,6 +21,8 @@ AND TABLE_NAME = 'dwd_rps_tll_order_details_di';
 
 ## 字段说明
 
+### 维度字段
+
 | 列名                            | 数据类型         | 注释                                                   |
 | ------------------------------- | ---------------- | ------------------------------------------------------ |
 | pt                              | varchar(255)     | 天分区                                                 |
@@ -31,12 +33,6 @@ AND TABLE_NAME = 'dwd_rps_tll_order_details_di';
 | product_id                      | varchar(255)     | 商品ID                                                 |
 | sku_code                        | varchar(255)     | SKU代码                                                |
 | supplier                        | varchar(255)     | 供应商                                                 |
-| unit_price                      | decimalv3(10, 2) | 单价                                                   |
-| quantity                        | int(11)          | 购买数量                                               |
-| cancel_quantity                 | int(11)          | 取消数量                                               |
-| payable_amount                  | decimalv3(10, 2) | 应付金额                                               |
-| discount_amount                 | decimalv3(10, 2) | 优惠金额                                               |
-| actual_amount                   | decimalv3(10, 2) | 实付金额（**下单原始金额，不扣 SKU 取消**）            |
 | status                          | int(11)          | 状态                                                   |
 | tenant_id                       | varchar(255)     | 租户ID                                                 |
 | create_time                     | varchar(255)     | 创建时间                                               |
@@ -44,31 +40,42 @@ AND TABLE_NAME = 'dwd_rps_tll_order_details_di';
 | warehouse_id                    | int(11)          | 发货仓库                                               |
 | warehouse_batch_no              | varchar(255)     | 仓库批次号                                             |
 | category_id                     | bigint(20)       | 类目id                                                 |
-| tax_rate                        | decimalv3(10, 2) | 税率                                                   |
 | is_freebies                     | int(11)          | 是否为赠品：0：否 1：是                                |
 | packaging_unit                  | varchar(255)     | 包装单位                                               |
 | unit_code                       | varchar(255)     | 单位编码                                               |
 | serial_no                       | varchar(255)     | 流水号                                                 |
-| out_quantity                    | int(11)          | 出库数量                                               |
-| customer_discount_amount        | decimalv3(10, 2) | 客户优惠                                               |
-| rent_subsidy_amount             | decimalv3(10, 2) | 房租优惠                                               |
-| agent_amount                    | decimalv3(10, 2) | 代理商代收代付款                                       |
-| bank_actual_amount              | decimalv3(10, 2) | 银行实付金额                                           |
-| pt_discount_amount              | decimalv3(10, 2) | 平台优惠金额                                           |
 | is_combination_children_product | int(11)          | 是否是组合子商品(1-是,2-否)                            |
-| final_pay_amount                | decimalv3(10, 2) | 最终支付金额，包含银行和平台付款，折后单价乘以出库数量 |
 | cancel_order_num                | string           | 退款单号                                               |
 | created_at                      | string           | 退款时间                                               |
 | warehouse_name                  | string           | 仓库名称                                               |
-| refund_fee                      | decimalv3(10, 2) | 退单金额                                               |
 | modify_time                     | varchar(255)     | 更新时间                                               |
 | activity_id                     | varchar(255)     | 活动id                                                 |
 | combination_code                | varchar(255)     | 组合商品编码                                           |
-| logistic_fee_amount             | decimalv3(10, 2) |                                                        |
 | has_logistic_fee                | int(11)          |                                                        |
 | delivery_method                 | int(11)          | 配送方式,1:物流,2:快递,3:上门自提                      |
 | shipping_method                 | int(11)          | 送货方式,0:起订,1:包邮,2:送货上门                      |
 | real_store_code                 | varchar(128)     | 真实门店code                                           |
+
+### 指标字段
+
+| 字段名 | 类型 | 注释 |
+|---|---|---|
+| unit_price | decimalv3(10,2) | 单价 |
+| quantity | int(11) | 购买数量 |
+| cancel_quantity | int(11) | 取消数量 |
+| payable_amount | decimalv3(10,2) | 应付金额 |
+| discount_amount | decimalv3(10,2) | 优惠金额 |
+| actual_amount | decimalv3(10,2) | 实付金额（**下单原始金额，不扣 SKU 取消**） |
+| tax_rate | decimalv3(10,2) | 税率 |
+| out_quantity | int(11) | 出库数量 |
+| customer_discount_amount | decimalv3(10,2) | 客户优惠 |
+| rent_subsidy_amount | decimalv3(10,2) | 房租优惠 |
+| agent_amount | decimalv3(10,2) | 代理商代收代付款 |
+| bank_actual_amount | decimalv3(10,2) | 银行实付金额 |
+| pt_discount_amount | decimalv3(10,2) | 平台优惠金额 |
+| final_pay_amount | decimalv3(10,2) | 最终支付金额，包含银行和平台付款，折后单价乘以出库数量 |
+| refund_fee | decimalv3(10,2) | 退单金额 |
+| logistic_fee_amount | decimalv3(10,2) |  |
 
 ## 关联表
 

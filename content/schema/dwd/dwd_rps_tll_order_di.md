@@ -23,7 +23,7 @@ AND TABLE_NAME = 'dwd_rps_tll_order_di';
 
 ## 字段说明
 
-### 订单核心
+### 维度字段
 
 | 字段 | 类型 | 注释 |
 |---|---|---|
@@ -36,11 +36,6 @@ AND TABLE_NAME = 'dwd_rps_tll_order_di';
 | order_source | varchar(255) | 订单来源：如甜掌柜 |
 | tenant_id | varchar(255) | 租户 ID |
 | third_order_no | bigint(20) | 第三方单号 |
-
-### 状态与时间
-
-| 字段 | 类型 | 注释 |
-|---|---|---|
 | order_status | int(11) | 订单状态（见下方枚举） |
 | order_notes | varchar(1024) | 订单备注 |
 | has_cancel | int(11) | 是否取消过：0/1 |
@@ -59,25 +54,8 @@ AND TABLE_NAME = 'dwd_rps_tll_order_di';
 | created_by | varchar(255) | 创建人 |
 | updated_time | varchar(255) | 更新时间 |
 | updated_by | varchar(255) | 更新人 |
-
-### 金额
-
-| 字段 | 类型 | 注释 |
-|---|---|---|
-| payable_amount | decimalv3(10,2) | 应付金额 |
-| discount_amount | decimalv3(10,2) | 优惠金额 |
-| actual_amount | decimalv3(10,2) | 订单总金额（**下单原始金额，不扣 SKU 取消**） |
-| refund_amount | decimalv3(10,2) | 退款金额（实际已退款金额，多数取消订单此字段为 0） |
-| delivery_fee | decimalv3(10,2) | 配送费 |
-| packing_fee | decimalv3(10,2) | 打包费 |
-| franchisee_rate | decimalv3(10,2) | 加盟商费率折扣金额 |
 | payment_method | varchar(255) | 支付方式：1-银行卡余额 2-平台余额 3-组合支付 |
 | currency | varchar(255) | 结算币种：默认 CNY |
-
-### 门店 / 地址
-
-| 字段 | 类型 | 注释 |
-|---|---|---|
 | store_id | bigint(20) | 门店 ID |
 | store_code | varchar(255) | 门店 code |
 | store_name | varchar(1024) | 门店名称 |
@@ -88,11 +66,6 @@ AND TABLE_NAME = 'dwd_rps_tll_order_di';
 | delivery_method | int(11) | 配送方式：1-物流 2-快递 3-上门自提 |
 | shipping_method | int(11) | 送货方式：0-起订 1-包邮 2-送货上门 |
 | free_shipping | int(11) | 包邮：1-包邮 2-不包邮 |
-
-### 人员 / 组织
-
-| 字段 | 类型 | 注释 |
-|---|---|---|
 | manager_id | bigint(20) | 客户经理 ID |
 | reviewer_id | bigint(20) | 审核人 ID |
 | reviewer_name | varchar(255) | 审核人姓名 |
@@ -102,12 +75,24 @@ AND TABLE_NAME = 'dwd_rps_tll_order_di';
 | salesman | varchar(255) | 销售员 |
 | agent_code | int(11) | 代理商 code |
 | agent_name | varchar(255) | 代理商名称 |
-| ratio | decimalv3(10,2) | 代理系数 |
 | tll_user_id | varchar(255) | 用户 ID |
 | is_push_sap | int(11) | 是否推 SAP：0 否 / 1 是 |
 | sales_organization | varchar(255) | 销售组织：默认 1000-汇旺 |
 | business_type | int(11) | 业务类型：如 1-首批大机器 |
 | order_used_type | varchar(255) | 订单用途类型（废弃） |
+
+### 指标字段
+
+| 字段 | 类型 | 注释 |
+|---|---|---|
+| payable_amount | decimalv3(10,2) | 应付金额 |
+| discount_amount | decimalv3(10,2) | 优惠金额 |
+| actual_amount | decimalv3(10,2) | 订单总金额（**下单原始金额，不扣 SKU 取消**） |
+| refund_amount | decimalv3(10,2) | 退款金额（实际已退款金额，多数取消订单此字段为 0） |
+| delivery_fee | decimalv3(10,2) | 配送费 |
+| packing_fee | decimalv3(10,2) | 打包费 |
+| franchisee_rate | decimalv3(10,2) | 加盟商费率折扣金额 |
+| ratio | decimalv3(10,2) | 代理系数 |
 
 ## order_status 枚举
 

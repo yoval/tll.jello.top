@@ -36,17 +36,12 @@ AND TABLE_NAME = 'dwd_rps_tll_order_data_merge_di';
 
 ## 字段说明
 
-### 分区与主键
+### 维度字段
 
 | 字段 | 类型 | 注释 |
 |---|---|---|
 | pt | varchar(8) | 天分区 |
 | id | varchar(128) | 订单号（头表 id，详表 order_id 的合并键） |
-
-### 门店与状态
-
-| 字段 | 类型 | 注释 |
-|---|---|---|
 | store_code | varchar(64) | 门店编码 |
 | real_store_code | varchar(128) | 真实门店 code |
 | order_status | int(11) | 订单状态（见下方枚举） |
@@ -54,8 +49,13 @@ AND TABLE_NAME = 'dwd_rps_tll_order_data_merge_di';
 | order_num | string | 订单编号（业务编号） |
 | cancel_order_num | string | 退款单号 |
 | order_used_type | varchar(128) | 订单用途：1-首批配货 2-首批大机器 3-翻新机器 4-其他 5-首批小机器 6-拼单 |
+| sku_code | varchar(128) | 商品编码 |
+| product_info | varchar(255) | 商品名称 |
+| product_spec | varchar(128) | 商品规格 |
+| category_name | varchar(128) | 商品分类 |
+| create_time | varchar(128) | 创建时间 |
 
-### 金额与数量
+### 指标字段
 
 | 字段 | 类型 | 注释 |
 |---|---|---|
@@ -67,21 +67,6 @@ AND TABLE_NAME = 'dwd_rps_tll_order_data_merge_di';
 {{< notice warning "金额口径关键：只有 merge 推导值可靠" >}}
 **所有有效金额必须用 `actual_num * discount_unit_price` 推导**。头表 `actual_amount`、详表 `actual_amount`、详表 `refund_fee` 都是下单/退款流水值，有 SKU 取消时不会对应扣减商品金额。实测：365,109 个无取消订单零差额，1,381 个有 SKU 取消订单平均差额 170 元。
 {{< /notice >}}
-
-### 商品明细
-
-| 字段 | 类型 | 注释 |
-|---|---|---|
-| sku_code | varchar(128) | 商品编码 |
-| product_info | varchar(255) | 商品名称 |
-| product_spec | varchar(128) | 商品规格 |
-| category_name | varchar(128) | 商品分类 |
-
-### 时间
-
-| 字段 | 类型 | 注释 |
-|---|---|---|
-| create_time | varchar(128) | 创建时间 |
 
 ## order_status 枚举
 
